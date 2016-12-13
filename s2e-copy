@@ -1,0 +1,47 @@
+#!/bin/sh
+
+cp_cfg ()
+{
+    src=$1
+    tgt=$2
+    string=$3
+    files=$(find ${src} -name ${string})
+    if [ "${files}" != "" ]; then cp -i ${files} ${tgt}/; fi
+}
+
+
+if [ "$#" -lt "2" ]
+then
+    echo "Usage: s2e-copy <source directory> <experiment directory>"
+    echo "e.g. s2e-copy islj exp/default"
+  exit 0
+fi
+
+src=$1
+exp=$2
+
+SRC_DIR=${src}
+TGT_DIR=${exp}
+
+if ! test -d ${SRC_DIR}; then echo "Can't read from ${SRC_DIR}."; exit 1; fi
+if ! test -d ${TGT_DIR}; then echo "Can't read from ${TGT_DIR}."; exit 1; fi
+
+#
+# properties files
+#
+#cp -i $(find ${SRC_DIR} -name "*.properties") ${TGT_DIR}/
+cp_cfg ${SRC_DIR}/src ${TGT_DIR} "*.properties"
+
+#
+# javascripts
+#
+#cp -i $(find ${SRC_DIR} -name "*.js") ${TGT_DIR}/
+cp_cfg ${SRC_DIR}/src ${TGT_DIR} "*.js"
+
+#
+# hepinit json files
+#
+#cp -i $(find ${SRC_DIR} -name "*.json") ${TGT_DIR)/
+cp_cfg ${SRC_DIR}/resources ${TGT_DIR} "*.json"
+
+exit 0

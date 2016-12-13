@@ -1,0 +1,14 @@
+#!/bin/bash
+if [ "$#" -lt "2" ]
+then
+  echo "Usage: linkexp <parameter directory> <query directories>"
+  echo "  E.g. linkexp exp000 2015-03-*"
+  echo "  would create a symbolic link like \"exp000x -> 2015-03-12-1293\""
+  exit 1
+fi
+expname=$1
+shift 1
+dirs=$@
+ln -s $(same $expname $dirs) ${expname}x
+exit 0
+

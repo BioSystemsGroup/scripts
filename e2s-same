@@ -1,0 +1,20 @@
+#!/bin/sh
+#
+# compare flat exp dir with hier run dir
+#
+if [ "$#" -lt "2" ]
+then
+   echo "  Usage: e2s-same <exp dir> <run dir>"
+   exit 0
+fi
+expdir=$1
+rundir=$2
+
+for ef in $expdir/*
+do
+    echo "\n\ndiffing $ef"
+    rf=$(find $rundir -name ${ef##*/})
+    diff -u $ef $rf
+done
+exit 0
+

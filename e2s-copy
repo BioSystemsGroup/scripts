@@ -1,0 +1,19 @@
+#!/bin/sh
+#
+# copies files from flat exp dir into hier run dir
+#
+if [ "$#" -lt "2" ]
+then
+   echo "  Usage: e2s-copy <exp dir> <run dir>"
+   exit 0
+fi
+expdir=$1
+rundir=$2
+
+for ef in $expdir/*
+do
+    rf=$(find $rundir -name ${ef##*/})
+    cp -i $ef $rf
+done
+exit 0
+

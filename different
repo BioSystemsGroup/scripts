@@ -1,0 +1,27 @@
+#!/bin/sh
+#
+# report the file that's different
+#
+if [ "$#" -lt "2" ]
+then
+   echo "  Usage: different <reference dir> <query dir1> <query dir2> ..."
+   echo "    All files in the reference dir will be diffed against"
+   echo "    the corresponding file in the query dir(s).  The ones"
+   echo "    that differ will be printed."
+   exit 0
+fi
+
+ANSWER=$1
+shift 1
+for j in $@
+  do
+    QUESTION=$j
+    for i in $ANSWER/*
+      do
+        if ! diff $i $QUESTION/${i#*/} > /dev/null
+        then echo $QUESTION/${i#*/}
+        fi
+    done
+done
+exit 0
+
