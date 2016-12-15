@@ -1,10 +1,10 @@
 #! /usr/bin/Rscript
-####! /bin/bash setR
+##! /bin/bash setR
 
 ##
 # Read multiple *.csv files and plot each column vs the 1st.
 #
-# Time-stamp: <2016-12-15 10:03:18 gepr>
+# Time-stamp: <2016-12-15 11:17:51 gepr>
 #
 #dev.off()
 
@@ -51,6 +51,8 @@ for (f in argv) {
   raw <- read.csv(f)
   data[[filenum]] <- raw
 
+  raw[is.na(raw)] <- 0 # replace NAs with zeros?
+
   ma <- apply(raw[,2:ncol(raw)], 2, SMA, n=300)
   ma <- cbind(raw[,1], ma)
   colnames(ma)[1] <- colnames(raw)[1]
@@ -69,7 +71,10 @@ max.1 <- max(data[[1]][column.1])
 for (column in columns[2:length(columns)]) {
   skip <- FALSE
 
-  ## get max of this column over all data sets if it exists
+  ###
+  ## get min & max of this column over all data sets if it exists
+  ##
+  min.2 <- Inf
   max.2 <- -1 # init max.2
 
   ## if we're plotting the original data, use it for the dependent scale
@@ -78,13 +83,16 @@ for (column in columns[2:length(columns)]) {
 
   for (df in refData) {
     if (!is.element(column,colnames(df))) skip <- TRUE
-    else
+    else {
+      min.2 <- min(min.2, min(df[column], na.rm=TRUE), na.rm=TRUE)
       max.2 <- max(max.2, max(df[column], na.rm=TRUE), na.rm=TRUE)
+    }
   }
   if (skip) next  # skip columns that don't exist in all files
 
   print(paste("Working on",column,"..."))
-  fileName <- paste("graphics/", fileName.base, "-", column, expnames, ".png", sep="")
+  fileName <- paste("graphics/", fileName.base, "-", column, 
+  ifelse(plot.data, "-wd", ""), expnames, ".png", sep="")
    png(fileName, width=1600, height=1600)
    # set margins and title, axis, and label font sizes
    par(mar=c(5,6,4,2), cex.main=2, cex.axis=2, cex.lab=2)
@@ -98,13 +106,13 @@ for (column in columns[2:length(columns)]) {
        ma <- cbind(get(column.1), get(column))
        detach(df)
        colnames(ma) <- c(column.1, column)
-       plot(ma, main=titles[[ndx]], xlim=c(0,max.1), ylim=c(0,max.2))
+       plot(ma, main=titles[[ndx]], xlim=c(0,max.1), ylim=c(min.2,max.2))
        ## if we're plotting original data, use points()
        if (plot.data) {
           attach(data[[ndx]])
           dat <- cbind(get(column.1), get(column))
           detach(data[[ndx]])
-          points(dat[,1],dat[,2],"p")
+          points(dat[,1],dat[,2],pch="·")
        }
 
        grid()
