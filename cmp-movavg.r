@@ -4,13 +4,24 @@
 ##
 # Read multiple *.csv files and plot each column vs the 1st.
 #
-# Time-stamp: <2016-12-15 11:17:51 gepr>
+# Time-stamp: <2016-12-23 10:46:49 gepr>
 #
 #dev.off()
 
-plot.data <- FALSE
+plot.data <- TRUE
 
-library(TTR) # for moving averages
+#########################################
+## define the moving average functions
+ma.cent <- function(x,n=5) {
+  if (n%%2 == 0) {
+     print("A centered moving average should use an odd window.")
+     q("no")
+  }
+  filter(x,rep(1/n,n), sides=2)
+}
+ma.left <- function(x,n=5){filter(x,rep(1/n,n), sides=1)}
+##
+#########################################
 
 argv <- commandArgs(TRUE)
 
@@ -24,11 +35,11 @@ if (length(argv) < 2) {
 
 # determine # of plots
 nplots <- length(argv)
-#plot.cols <- round(sqrt(nplots))
+plot.cols <- round(sqrt(nplots))
 # add a new row if we rounded up
-#plot.rows <- ifelse(plot.cols >= sqrt(nplots), plot.cols, plot.cols+1)
-plot.cols <- 4
-plot.rows <- 3
+plot.rows <- ifelse(plot.cols >= sqrt(nplots), plot.cols, plot.cols+1)
+#plot.cols <- 4
+#plot.rows <- 3
 
 #
 # test for and create graphics subdirectory
@@ -53,7 +64,7 @@ for (f in argv) {
 
   raw[is.na(raw)] <- 0 # replace NAs with zeros?
 
-  ma <- apply(raw[,2:ncol(raw)], 2, SMA, n=300)
+  ma <- apply(raw[,2:ncol(raw)], 2, ma.cent, n=301)
   ma <- cbind(raw[,1], ma)
   colnames(ma)[1] <- colnames(raw)[1]
   data.ma[[filenum]] <- as.data.frame(ma)
