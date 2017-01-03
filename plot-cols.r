@@ -3,7 +3,7 @@
 ##
 # Read multiple *.csv files and plot each column.
 #
-# Time-stamp: <2016-07-27 14:26:09 gepr>
+# Time-stamp: <2017-01-03 10:49:56 gepr>
 #
 #dev.off()
 
@@ -21,8 +21,11 @@ if (length(argv) < 1) {
 if (!file.exists("graphics")) dir.create("graphics")
 
 for (f in argv) {
+  seps <- gregexpr('/',f)[[1]] # get all the '/' locations
+  aftersep <- substr(f,seps[length(seps)]+1,nchar(f)) # get everything after the last '/'
+  expname <- substr(aftersep,0,regexpr('_',aftersep)-1)
   compname <- substr(f,regexpr('_',f)+1,nchar(f))
-  fileName.base <- substr(compname, 0, regexpr('(_|.csv)', compname)-1)
+  fileName.base <- paste(expname,substr(compname, 0, regexpr('(_|.csv)', compname)-1),sep='-')
   dat <- read.csv(f)
 
   attach(dat)
@@ -32,6 +35,7 @@ for (f in argv) {
 
     plot(Time,type="l", dat[[column]], ylab=column)
     grid()
+    title(expname)
   }
   detach(dat)
 }
