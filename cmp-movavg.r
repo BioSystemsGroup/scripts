@@ -57,7 +57,7 @@ filenum <- 1
 for (f in argv) {
   nxtName <- substr(f,0,regexpr('_',f)-1)
   titles[[filenum]] <- nxtName
-  ##fileName.base <- paste(fileName.base,nxtName,sep="-")
+  fileName.base <- paste(fileName.base,nxtName,sep="-")
   expnames <- paste(expnames,nxtName,sep="-")
   raw <- read.csv(f)
   data[[filenum]] <- raw
