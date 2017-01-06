@@ -20,6 +20,8 @@ dPVMax <- as.numeric(argv[2])
 
 fileRoot <- "rxnProduct_zone_"
 
+highest.dPV <- -1
+
 # for each experiment
 for (expDir in argv[3:length(argv)]) {
     files <- list.files(path = expDir, pattern=fileRoot)
@@ -37,6 +39,7 @@ for (expDir in argv[3:length(argv)]) {
         for (cname in colnames(fileDat[2:ncol(fileDat)])) {
             dPV <- unlist(strsplit(cname,"[.]"))[4] # dPV is the 4th thing in the column name
             dPV <- as.numeric(dPV)
+            highest.dPV <- max(highest.dPV, dPV)
             if ((dPVMin <= dPV) && (dPV < dPVMax)) {
                 nPVcolumns <- append(nPVcolumns, nPVNdx+1)  # Add 1 to skip the first column
             }
@@ -80,5 +83,5 @@ for (expDir in argv[3:length(argv)]) {
     write.csv(cellNum, paste(expDir,"_rxnProduct_dPV∈[", as.character(dPVMin), ",", as.character(dPVMax), "]-divisors.csv", sep=""), row.names=FALSE)
     
 }
-
-#q()
+print(paste("highest dPV found → ",highest.dPV), sep="")
+q()
