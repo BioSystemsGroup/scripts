@@ -14,13 +14,23 @@ usage <- function() {
 
 
 if (length(argv) < 2) usage()
-fileRoot <- "rxnProduct_zone_"
 
+###
+##  Declare a couple of globals
+###
+inFileRoot <- "rxnProduct_zone_"
+outFileRoot <- "dPV.rxn/"
+if (!file.exists(outFileRoot)) dir.create(outFileRoot)
+
+
+###
+## Calculate the maximum dPV in all files in all experiments. 
+###
 maxdPV <- function(exps) {
   total.maxdPV <- -1
   for (expDir in exps) {
     exp.maxdPV <- -1
-    files <- list.files(path = expDir, pattern=fileRoot)
+    files <- list.files(path = expDir, pattern=inFileRoot)
     for (file in files) {
       file.maxdPV <- -1
       cols <- colnames(read.csv(paste(expDir,file,sep="/"), nrows=1))
@@ -40,7 +50,9 @@ maxdPV <- function(exps) {
   total.maxdPV
 }
 
+###
 ## calc and write sums and divisors files
+###
 snd <- function(band, exps) {
   dPVMin <- band[1]
   dPVMax <- band[2]
@@ -48,13 +60,13 @@ snd <- function(band, exps) {
   print(paste("Sums and divisors for dPV∈[",dPVMin,",",dPVMax,")", sep=""))
 
 for (expDir in exps) {
-    files <- list.files(path = expDir, pattern=fileRoot)
+    files <- list.files(path = expDir, pattern=inFileRoot)
     cellNum <- data.frame(character(),numeric(), stringsAsFactors=FALSE) # num columns per file so that averages can be calculated in the next round
     cellNum <- cellNum[2,]
     fileNdx <- 1 # needed to build cellNum as a data.frame with stringsAsFactors=FALSE (can't use rbind())
     for (file in files) {
         print(paste("Processing",file))
-        datasetname <- sub(".csv","",sub("rxnProduct_zone_","",file))
+        datasetname <- sub(".csv","",sub(inFileRoot,"",file))
         dat <- data.frame()
         fileDat <- read.csv(paste(expDir,file,sep="/"))
         # extract the relevant data from this file and cbind it
@@ -96,7 +108,8 @@ for (expDir in exps) {
             rxnSum <- cbind(rxnSum, rowSums(rxnDat))
         }
         colnames(rxnSum) <- c("Time",rxnnames)
-        write.csv(rxnSum,paste(expDir, "_rxnProduct_dPV∈[", as.character(dPVMin), ",", as.character(dPVMax), "]-", datasetname, "-sum.csv", sep=""), row.names=FALSE)
+        sumname <- paste(outFileRoot, expDir, "_rxnProduct_dPV∈[", as.character(dPVMin), ",", as.character(dPVMax), "]-", datasetname, "-sum.csv", sep="")
+        write.csv(rxnSum, sumname, row.names=FALSE)
         cellNum[fileNdx,] <- c(datasetname,length(nPVcolumns)) # divisor for Sums to get averages
         fileNdx <- fileNdx + 1
 
@@ -104,21 +117,25 @@ for (expDir in exps) {
         gc()
     } ## end for (file in files) {
     colnames(cellNum) <- c("trialfile", "#columns")
-    write.csv(cellNum, paste(expDir,"_rxnProduct_dPV∈[", as.character(dPVMin), ",", as.character(dPVMax), "]-divisors.csv", sep=""), row.names=FALSE)
+
+    divname <- paste(outFileRoot, expDir,"_rxnProduct_dPV∈[", as.character(dPVMin), ",", as.character(dPVMax), "]-divisors.csv", sep="")
+    write.csv(cellNum, divname, row.names=FALSE)
 
   } ## end for (expDir in exps) {
 
 } ## end snd()
 
+###
+## Read the sums and divisors and divide
+###
 tot <- function(band, expName) {
   dPVMin <- band[1]
   dPVMax <- band[2]
 
-  print(paste("Totals for dPV∈[",dPVMin,",",dPVMax,")",sep=""))
-
   ## get the file names
-  fileRoot <- paste(expName,"_rxnProduct_dPV∈\\[",dPVMin,",",dPVMax,"]",sep="")
-  files <- list.files(pattern=fileRoot)
+  sndFileRoot <- paste(expName,"_rxnProduct_dPV∈\\[",dPVMin,",",dPVMax,"]",sep="")
+  files <- list.files(path=outFileRoot, pattern=sndFileRoot, full.names=TRUE)
+
   sumfiles <- files[grep("-sum.csv",files)]
   divfile <- files[grep("-divisors.csv",files)]
 
