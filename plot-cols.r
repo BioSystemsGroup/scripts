@@ -3,9 +3,22 @@
 ##
 # Read multiple *.csv files and plot each column.
 #
-# Time-stamp: <2017-01-03 10:49:56 gepr>
+# Time-stamp: <2017-01-14 10:15:40 gepr>
 #
 #dev.off()
+
+#########################################
+## define the moving average functions
+ma.cent <- function(x,n=5) {
+  if (n%%2 == 0) {
+     print("A centered moving average should use an odd window.")
+     q("no")
+  }
+  filter(x,rep(1/n,n), sides=2)
+}
+ma.left <- function(x,n=5){filter(x,rep(1/n,n), sides=1)}
+##
+#########################################
 
 argv <- commandArgs(TRUE)
 
@@ -28,12 +41,21 @@ for (f in argv) {
   fileName.base <- paste(expname,substr(compname, 0, regexpr('(_|.csv)', compname)-1),sep='-')
   dat <- read.csv(f)
 
+  dat.tmp <- dat
+  dat.tmp[is.na(dat.tmp)] <- 0 # replace NAs with zeros
+  dat.ma <- apply(dat.tmp[,2:ncol(dat.tmp)], 2, ma.cent, n=301)
+  dat.ma <- cbind(dat.tmp[,1], dat.ma)
+  dat.ma <- as.data.frame(dat.ma)
+  colnames(dat.ma) <- colnames(dat)
+
   attach(dat)
   for (column in colnames(dat)[2:ncol(dat)]) {
     png(paste("graphics/",fileName.base,"-", column,".png",sep=""), width=1600, height=1600)
     par(cex=2, lwd=3, mar=c(5,6,4,2), cex.main=3, cex.axis=2, cex.lab=2)
 
-    plot(Time,type="l", dat[[column]], ylab=column)
+    plot(Time,pch="·", dat[[column]], ylab=column)
+    lines(dat.ma[[column]])
+
     grid()
     title(expname)
   }

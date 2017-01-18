@@ -1,0 +1,8 @@
+2017-01-17-17:08  gepr  <gepr@tempusdictum.com>
+
+
+	* plot-cols.r: Add moving average functions and plot them.
+	* countHbydCV.r (dCV <- splitCName[5]): Fix comment mentioning the right element for dCV.
+	* countHbydPV.r (baseNames <- append(baseNames,splitCName[6])): Bump to reflect new dCV entry.
+	* rxn-dPV.r (rxnnames): Bump to reflect new dCV entry in column headers.
+

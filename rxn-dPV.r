@@ -96,7 +96,7 @@ for (expDir in exps) {
         # parse out rxn products
         rxnnames <- list()
         for (cname in colnames(dat[2:ncol(dat)])) {
-            rxnnames[cname] <- unlist(strsplit(cname,"[.]"))[5] # rxnprod name is the 5th element
+            rxnnames[cname] <- unlist(strsplit(cname,"[.]"))[6] # rxnprod name is the 6th element
         }
         rxnnames <- unique(rxnnames)
 

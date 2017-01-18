@@ -43,7 +43,7 @@ for (expDir in argv[3:length(argv)]) {
         nPVcolumns <- append(nPVcolumns, nPVNdx+1)  # Add 1 to skip the first column
       }
       ## append the base name for this column
-      baseNames <- append(baseNames,splitCName[5])
+      baseNames <- append(baseNames,splitCName[6])
       nPVNdx <- nPVNdx + 1
     }
     totalCount <- length(nPVcolumns) # count all the columns ∈[dPVMin,dPVMax]

@@ -38,7 +38,7 @@ for (expDir in argv[3:length(argv)]) {
     nCVcolumns <- vector() # list of columns where dCV ∈ [dCVMin, dCVMax]
     for (cname in colnames(fileDat[2:ncol(fileDat)])) {
       splitCName <- unlist(strsplit(cname,"[.]"))
-      dCV <- splitCName[5] # dCV is the 4th thing in the column name
+      dCV <- splitCName[5] # dCV is the 5th thing in the column name
       dCV <- as.numeric(dCV)
       if ((dCVMin <= dCV) && (dCV <= dCVMax)) {
         nCVcolumns <- append(nCVcolumns, nCVNdx+1)  # Add 1 to skip the first column
