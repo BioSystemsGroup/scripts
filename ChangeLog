@@ -1,3 +1,7 @@
+2017-01-19-12:38  gepr  <gepr@tempusdictum.com>
+
+	* plot-dPV: Fix the script so that pathname expansion ordering is irrelevant.
+
 2017-01-19-11:59  gepr  <gepr@tempusdictum.com>
 
 	* plot-dPV: Bash script to plot all the output of rxn-dPV.r. We'll probably replace this with an R script later.

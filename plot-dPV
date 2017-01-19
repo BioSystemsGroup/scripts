@@ -5,10 +5,19 @@ filebase="_rxnProduct_dPV∈" # note the [] characters need escaping for Bash bu
 filesuff="-totals.csv"
 exp=$1
 
-lastfile=$( ls ${exp}${filebase}\[+([[:digit:]]),+([[:digit:]])\]${filesuff} | tail -n 1 )
-max=$(echo $lastfile | awk -F ']' '{print $1}'|awk -F',' '{print $2}')
-min=$(echo $lastfile | awk -F '[' '{print $2}'|awk -F',' '{print $1}')
-band=$(( max-min ))
+files=$( ls ${exp}${filebase}\[+([[:digit:]]),+([[:digit:]])\]${filesuff})
+min=100000
+max=0
+for f in ${files}
+do
+  high=$(echo $f | awk -F ']' '{print $1}'|awk -F',' '{print $2}')
+  low=$(echo $f | awk -F '[' '{print $2}'|awk -F',' '{print $1}')
+  if (( high > max )); then max=${high}; fi
+  if (( low < min )); then min=${low}; fi
+done
+echo $min $max
+
+band=$(( high-low ))
 
 for (( ndx=0 ; ndx<${max} ; ndx=ndx+${band} ))
 do
