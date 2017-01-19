@@ -1,0 +1,18 @@
+#! /bin/bash
+shopt -s extglob
+
+filebase="_rxnProduct_dPV∈" # note the [] characters need escaping for Bash but not for R
+filesuff="-totals.csv"
+exp=$1
+
+lastfile=$( ls ${exp}${filebase}\[+([[:digit:]]),+([[:digit:]])\]${filesuff} | tail -n 1 )
+max=$(echo $lastfile | awk -F ']' '{print $1}'|awk -F',' '{print $2}')
+min=$(echo $lastfile | awk -F '[' '{print $2}'|awk -F',' '{print $1}')
+band=$(( max-min ))
+
+for (( ndx=0 ; ndx<${max} ; ndx=ndx+${band} ))
+do
+  file="${exp}${filebase}[${ndx},$(( ndx+${band} ))]${filesuff}"
+  echo "Processing ${file}"
+  /home/gepr/local/scripts/plot-cols.r ${file}
+done

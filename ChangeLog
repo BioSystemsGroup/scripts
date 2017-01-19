@@ -1,3 +1,8 @@
+2017-01-19-11:59  gepr  <gepr@tempusdictum.com>
+
+	* plot-dPV: Bash script to plot all the output of rxn-dPV.r. We'll probably replace this with an R script later.
+	* plot-cols.r: Change latter delimiter for the "compname" (for component name) from "_" to "-" so that it works for rxn-dPV.r output.
+
 2017-01-17-17:08  gepr  <gepr@tempusdictum.com>
 
 

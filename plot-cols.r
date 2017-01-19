@@ -3,7 +3,7 @@
 ##
 # Read multiple *.csv files and plot each column.
 #
-# Time-stamp: <2017-01-14 10:15:40 gepr>
+# Time-stamp: <2017-01-19 11:47:15 gepr>
 #
 #dev.off()
 
@@ -38,7 +38,7 @@ for (f in argv) {
   aftersep <- substr(f,seps[length(seps)]+1,nchar(f)) # get everything after the last '/'
   expname <- substr(aftersep,0,regexpr('_',aftersep)-1)
   compname <- substr(f,regexpr('_',f)+1,nchar(f))
-  fileName.base <- paste(expname,substr(compname, 0, regexpr('(_|.csv)', compname)-1),sep='-')
+  fileName.base <- paste(expname,substr(compname, 0, regexpr('(-|.csv)', compname)-1),sep='-')
   dat <- read.csv(f)
 
   dat.tmp <- dat
