@@ -1,15 +1,14 @@
+#! /usr/bin/Rscript
 #! /bin/bash setR
-##! /usr/bin/Rscript
+argv <- commandArgs(TRUE)
 
 ##
 # Read multiple *.csv files and plot each column vs the 1st.
 #
-# Time-stamp: <2017-01-20 10:01:56 gepr>
+# Time-stamp: <2017-01-20 11:36:13 gepr>
 #
-#dev.off()
 
 plot.data <- TRUE
-#argv <- commandArgs(TRUE)
 
 #########################################
 ## define the moving average functions
@@ -98,12 +97,6 @@ bounds <- bounds[sort.list(bounds[,2],decreasing=T),]
 for (rndx in seq(0,max(bounds[,2])-band,band)) {
   print(paste("Processing dPV∈[", rndx, ",", rndx+band, "]", sep=""))
 
-  ## set up the page
-  outputFile <- paste("graphics/rxn-",paste(exps,collapse="_"),"-APAP-dPV∈[",rndx,",",rndx+band,"].png",sep="")
-  png(outputFile, width=1600, height=1600)
-  par(mar=c(5,6,4,2), cex.main=2, cex.axis=2, cex.lab=2)
-  par(mfrow=c(plot.rows, plot.cols))
-
   ## build this list of data.frames
   dat <- vector("list")
   dat.ma <- vector("list")
@@ -127,16 +120,39 @@ for (rndx in seq(0,max(bounds[,2])-band,band)) {
       dat.ma[[endx]] <- dat[[endx]]
     }
 
-    ## plot this data.frame on the page
-    attach(dat[[endx]])
-    plot(Time, oAPAP, pch="·")
-    detach(dat[[endx]])
-    attach(dat.ma[[endx]])
-    lines(Time, oAPAP)
-    detach(dat.ma[[endx]])
-    grid()
+  } ## end for (endx in 1:nrow(bounds))
 
-  } ## end for (exp in exps)
+  ## plot all experiments 1 page/column
+  columns <- colnames(dat[[1]])
+  for (column in columns[2:length(columns)]) {
+    min.y <- 0
+    max.y <- 0
+    for (endx in 1:nrow(bounds)) {
+      if (!is.element(column,colnames(dat[[endx]]))) next # skip columns that don't exist in all experiments
+      max.exp <- max(dat[[endx]][column])
+      if (max.exp > max.y) max.y <- max.exp
+    }
+
+    ## set up the page
+    outputFile <- paste("graphics/rxn-",paste(exps,collapse="_"),"-",column,"-dPV∈[",rndx,",",rndx+band,"].png",sep="")
+    png(outputFile, width=1600, height=1600)
+    par(mar=c(5,6,4,2), cex.main=2, cex.axis=2, cex.lab=2)
+    par(mfrow=c(plot.rows, plot.cols))
+
+    for (endx in 1:nrow(bounds)) {
+      exp <- rownames(bounds)[endx]
+      ## plot this data.frame on the page
+      attach(dat[[endx]])
+      plot(Time, get(column), pch="•", ylab=column, ylim=c(min.y,max.y))
+      detach(dat[[endx]])
+
+      attach(dat.ma[[endx]])
+      lines(Time, get(column),lwd=2)
+      detach(dat.ma[[endx]])
+      grid()
+    }
+    dev.off()
+  }
 
 } ## end for (rndx in 0:max(bounds[,2]))
 
