@@ -5,7 +5,7 @@ argv <- commandArgs(TRUE)
 ##
 # Read multiple *.csv files and plot each column vs the 1st.
 #
-# Time-stamp: <2017-01-20 11:36:13 gepr>
+# Time-stamp: <2017-01-20 16:21:19 gepr>
 #
 
 plot.data <- TRUE
@@ -134,7 +134,8 @@ for (rndx in seq(0,max(bounds[,2])-band,band)) {
     }
 
     ## set up the page
-    outputFile <- paste("graphics/rxn-",paste(exps,collapse="_"),"-",column,"-dPV∈[",rndx,",",rndx+band,"].png",sep="")
+    plottitle <- paste(paste(exps,collapse="_"),"-",column,"-dPV∈[",rndx,",",rndx+band,"]",sep="")
+    outputFile <- paste("graphics/rxn-",plottitle,".png",sep="")
     png(outputFile, width=1600, height=1600)
     par(mar=c(5,6,4,2), cex.main=2, cex.axis=2, cex.lab=2)
     par(mfrow=c(plot.rows, plot.cols))
@@ -143,7 +144,7 @@ for (rndx in seq(0,max(bounds[,2])-band,band)) {
       exp <- rownames(bounds)[endx]
       ## plot this data.frame on the page
       attach(dat[[endx]])
-      plot(Time, get(column), pch="•", ylab=column, ylim=c(min.y,max.y))
+      plot(Time, get(column), pch="•", ylab=column, ylim=c(min.y,max.y), main=plottitle)
       detach(dat[[endx]])
 
       attach(dat.ma[[endx]])
