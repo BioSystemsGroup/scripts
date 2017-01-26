@@ -13,7 +13,7 @@ usage <- function() {
 }
 
 
-if (length(argv) < 2) usage()
+if (length(argv) < 2 || is.na(strtoi(argv[1]))) usage()
 
 ###
 ##  Declare a couple of globals
