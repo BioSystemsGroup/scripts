@@ -96,7 +96,12 @@ for (expDir in exps) {
         # parse out rxn products
         rxnnames <- list()
         for (cname in colnames(dat[2:ncol(dat)])) {
-            rxnnames[cname] <- unlist(strsplit(cname,"[.]"))[6] # rxnprod name is the 6th element
+            rxnName <- unlist(strsplit(cname,"[.]"))[6] # rxnprod name is the 6th element
+            if (is.na(rxnName)) {
+              print("Could not parse reaction product name from column header.")
+              q()
+            }
+            rxnnames[cname] <- rxnName
         }
         rxnnames <- unique(rxnnames)
 
