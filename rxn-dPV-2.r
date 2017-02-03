@@ -1,6 +1,6 @@
+#! /bin/bash setR
 #! /usr/bin/Rscript
-####! /bin/bash setR
-argv <- commandArgs(TRUE)
+#argv <- commandArgs(TRUE)
 
 #dev.off()
 
@@ -39,6 +39,7 @@ rxnnames <- rxnnames[2:length(rxnnames)]
 # sum the sums per unique reaction product
 for (rxn in rxnnames) {
     rxnDat <- dat[,grep(paste(rxn,"$",sep=""),names(dat))]
+    rxnDat <- as.matrix(rxnDat)
     if (!exists("rxnSum"))
         rxnSum <- rowSums(rxnDat)
     else
