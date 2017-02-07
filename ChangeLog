@@ -1,3 +1,11 @@
+2017-02-07-10:24  gepr  <gepr@tempusdictum.com>
+
+	* rxn-dPV-[12].r, rxn-dPV.r: Move function definitions to a misc.r file in "~/R".  Don't know if that'll work on other operating systems.
+
+2017-02-07-10:23  gepr  <gepr@tempusdictum.com>
+
+	* cmp-dPVs.r, cmp-movavg.r: Add minor.tick function stolen from Harrel's Hmisc R library.  Use it to add minor tickmarks to the plots.
+
 2017-01-20-10:03  gepr  <gepr@tempusdictum.com>
 
 	* cmp-dPVs.r: New script to plot multiple experiments side-by-side (only APAP so far)
