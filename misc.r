@@ -1,4 +1,15 @@
 #########################################
+## Define the following functions:
+## ma.cent, ma.left: moving averages centered and left
+## minor.tick: add minor tickmarks to a plot
+## maxdPV: get the maximum dPV values from rxnProduct files
+## snd: calculate and write sums and divisors for rxnProducts
+## tot: use sums and divisors files to calculate totals (averages)
+##
+## Time-stamp: <2017-02-08 09:15:37 gepr>
+#########################################
+
+#########################################
 ## centered moving average
 require(stats)
 ma.cent <- function(x, n=5) {
