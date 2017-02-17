@@ -1,7 +1,7 @@
-#! /bin/bash setR
 #! /usr/bin/Rscript
-#argv <- commandArgs(TRUE)
-dev.off()
+#! /bin/bash setR
+argv <- commandArgs(TRUE)
+##dev.off()
 
 usage <- function() {
     print("Usage: rxn-dPV-2.r dPVMin dPVMax <exp name>")
@@ -19,11 +19,6 @@ dPVMax <- as.numeric(argv[2])
 
 source("~/R/misc.r")
 
-###
-##  Declare a couple of globals
-###
-inFileRoot <- "rxnProduct_zone_"
-outFileRoot <- "dPV.rxn/"
 if (!file.exists(outFileRoot)) {
   print(paste(outFileRoot,"must exist and contain the sums and divisors files."))
   usage()
@@ -31,7 +26,7 @@ if (!file.exists(outFileRoot)) {
 }
 
 exps <- argv[3:length(argv)]
-highest.dPV <- maxdPV(exps)
+##highest.dPV <- maxdPV(exps)
 
 band <- c(dPVMin, dPVMax)
 for (expName in exps) tot(band, expName)

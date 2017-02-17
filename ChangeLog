@@ -1,3 +1,9 @@
+2017-02-16-16:21  gepr  <gepr@tempusdictum.com>
+
+	* rxn-dPV-2.r: Don't calculate the max dPV.
+	* misc.r,rxndPV-[12].r: Move inFileRoot and outFileRoot from client scripts into misc.r.
+	* cmp-dPVs.r: Make the x-axes all the same length.
+
 2017-02-07-10:24  gepr  <gepr@tempusdictum.com>
 
 	* rxn-dPV-[12].r, rxn-dPV.r: Move function definitions to a misc.r file in "~/R".  Don't know if that'll work on other operating systems.

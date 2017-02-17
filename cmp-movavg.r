@@ -4,7 +4,7 @@
 ##
 # Read multiple *.csv files and plot each column vs the 1st.
 #
-# Time-stamp: <2017-02-03 11:45:27 gepr>
+# Time-stamp: <2017-02-16 16:19:53 gepr>
 #
 #dev.off()
 
@@ -69,8 +69,8 @@ nplots <- length(argv)
 plot.cols <- round(sqrt(nplots))
 # add a new row if we rounded up
 plot.rows <- ifelse(plot.cols >= sqrt(nplots), plot.cols, plot.cols+1)
-#plot.cols <- 4
-#plot.rows <- 3
+#plot.cols <- 3
+#plot.rows <- 6
 
 #
 # test for and create graphics subdirectory

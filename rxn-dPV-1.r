@@ -1,8 +1,7 @@
+#! /usr/bin/Rscript
 #! /bin/bash setR
-####! /usr/bin/Rscript
-#argv <- commandArgs(TRUE)
-
-dev.off()
+argv <- commandArgs(TRUE)
+##dev.off()
 
 usage <- function() {
     print("Usage: rxn-dPV-1.r dPVMin dPVMax <exp directories>")
@@ -13,18 +12,9 @@ if (length(argv) < 3) usage()
 
 source("~/R/misc.r")
 
-# for the color space max and min
-minmean <-  9e10
-maxmean <- -9e10
-
 dPVMin <- as.numeric(argv[1])
 dPVMax <- as.numeric(argv[2])
 
-###
-##  Declare a couple of globals
-###
-inFileRoot <- "rxnProduct_zone_"
-outFileRoot <- "dPV.rxn/"
 if (!file.exists(outFileRoot)) dir.create(outFileRoot)
 
 exps <- argv[3:length(argv)]

@@ -60,6 +60,12 @@ minor.tick <- function (nx = 2, ny = 2, tick.ratio = 0.5, x.args = list(), y.arg
 }
 ##
 
+###
+##  Declare a couple of globals
+###
+inFileRoot <- "rxnProduct_zone_"
+outFileRoot <- "dPV.rxn/"
+
 #########################################
 ## Calculate the maximum dPV in all files in all experiments. 
 ##

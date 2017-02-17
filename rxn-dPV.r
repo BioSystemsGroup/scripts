@@ -1,6 +1,6 @@
 #! /usr/bin/Rscript
 #! /bin/bash setR
-#dev.off()
+##dev.off()
 argv <- commandArgs(TRUE)
 
 
@@ -16,11 +16,6 @@ if (length(argv) < 2 || is.na(strtoi(argv[1]))) usage()
 
 source("~/R/misc.r")
 
-###
-##  Declare a couple of globals
-###
-inFileRoot <- "rxnProduct_zone_"
-outFileRoot <- "dPV.rxn/"
 if (!file.exists(outFileRoot)) dir.create(outFileRoot)
 
 exps <- argv[2:length(argv)]

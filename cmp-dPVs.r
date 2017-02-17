@@ -5,7 +5,7 @@ argv <- commandArgs(TRUE)
 ##
 # Read multiple *.csv files and plot each column vs the 1st.
 #
-# Time-stamp: <2017-02-03 11:47:02 gepr>
+# Time-stamp: <2017-02-15 11:24:25 gepr>
 #
 
 plot.data <- TRUE
@@ -72,10 +72,10 @@ fnsuff <- "]-totals.csv"
 # determine # of plots
 nplots <- length(exps)
 plot.cols <- round(sqrt(nplots))
+#plot.cols <- 3
 # add a new row if we rounded up
 plot.rows <- ifelse(plot.cols >= sqrt(nplots), plot.cols, plot.cols+1)
-#plot.cols <- 4
-#plot.rows <- 3
+#plot.rows <- 6
 
 #
 # test for and create graphics subdirectory
@@ -155,6 +155,8 @@ for (rndx in seq(0,max(bounds[,2])-band,band)) {
 
   ## plot all experiments 1 page/column
   columns <- colnames(dat[[1]])
+  max.x <- max(dat[[1]][1])
+
   for (column in columns[2:length(columns)]) {
     min.y <- 0
     max.y <- 0
@@ -175,7 +177,7 @@ for (rndx in seq(0,max(bounds[,2])-band,band)) {
       exp <- rownames(bounds)[endx]
       ## plot this data.frame on the page
       attach(dat[[endx]])
-      plot(Time, get(column), pch="•", ylab=column, ylim=c(min.y,max.y), main=paste(exp,title.suff,sep=""))
+      plot(Time, get(column), pch="•", ylab=column, ylim=c(min.y,max.y), xlim=c(0,max.x), main=paste(exp,title.suff,sep=""))
       detach(dat[[endx]])
 
       attach(dat.ma[[endx]])
