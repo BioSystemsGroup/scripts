@@ -119,7 +119,7 @@ for (expDir in exps) {
         for (cname in colnames(fileDat[2:ncol(fileDat)])) {
             dPV <- unlist(strsplit(cname,"[.]"))[4] # dPV is the 4th thing in the column name
             dPV <- as.numeric(dPV)
-            highest.dPV <- max(highest.dPV, dPV)
+##            highest.dPV <- max(highest.dPV, dPV)
             if ((dPVMin <= dPV) && (dPV < dPVMax)) {
                 nPVcolumns <- append(nPVcolumns, nPVNdx+1)  # Add 1 to skip the first column
             }

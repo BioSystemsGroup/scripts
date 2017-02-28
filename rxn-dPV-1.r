@@ -18,7 +18,7 @@ dPVMax <- as.numeric(argv[2])
 if (!file.exists(outFileRoot)) dir.create(outFileRoot)
 
 exps <- argv[3:length(argv)]
-highest.dPV <- maxdPV(exps)
+##highest.dPV <- maxdPV(exps)
 
 band <- c(dPVMin, dPVMax)
 snd(band, exps)
