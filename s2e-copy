@@ -30,7 +30,7 @@ if ! test -d ${TGT_DIR}; then echo "Can't read from ${TGT_DIR}."; exit 1; fi
 # properties files
 #
 #cp -i $(find ${SRC_DIR} -name "*.properties") ${TGT_DIR}/
-cp_cfg ${SRC_DIR}/src ${TGT_DIR} "*.properties"
+cp_cfg ${SRC_DIR}/ ${TGT_DIR} "*.properties"
 
 #
 # javascripts

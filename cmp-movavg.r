@@ -4,55 +4,13 @@
 ##
 # Read multiple *.csv files and plot each column vs the 1st.
 #
-# Time-stamp: <2017-02-16 16:19:53 gepr>
+# Time-stamp: <2017-03-13 08:51:41 gepr>
 #
 #dev.off()
 
 plot.data <- TRUE
 
-#########################################
-## define the moving average and minor.tick functions
-ma.cent <- function(x,n=5) {
-  if (n%%2 == 0) {
-     print("A centered moving average should use an odd window.")
-     q("no")
-  }
-  filter(x,rep(1/n,n), sides=2)
-}
-ma.left <- function(x,n=5){filter(x,rep(1/n,n), sides=1)}
-
-## stolen from: https://github.com/harrelfe/Hmisc/blob/master/R/minor.tick.s
-minor.tick <- function (nx = 2, ny = 2, tick.ratio = 0.5, x.args = list(), y.args = list()) {
-  ax <- function(w, n, tick.ratio, add.args) {
-    range <- par("usr")[if (w == "x") 1 : 2  else 3 : 4]
-    tick.pos <- if (w == "x") par("xaxp") else par("yaxp")
-    distance.between.minor <- (tick.pos[2] - tick.pos[1])/tick.pos[3]/n
-    possible.minors <- tick.pos[1] - (0 : 100) * distance.between.minor
-    low.candidates <- possible.minors >= range[1]
-    low.minor <- if (any(low.candidates))
-                   min(possible.minors[low.candidates])
-                 else 
-                   tick.pos[1]
-    possible.minors <- tick.pos[2] + (0 : 100) * distance.between.minor
-    hi.candidates <- possible.minors <= range[2]
-    hi.minor <- if (any(hi.candidates)) 
-                  max(possible.minors[hi.candidates])
-                else
-                  tick.pos[2]
-    axis.args <- c(list(if (w == "x") 1 else 2,
-                        seq(low.minor, hi.minor, by = distance.between.minor), 
-                        labels = FALSE, tcl = par("tcl") * tick.ratio),
-                        add.args);
-	do.call(axis, axis.args);
-    }
-  if (nx > 1) 
-    ax("x", nx, tick.ratio = tick.ratio, x.args)
-  if (ny > 1) 
-    ax("y", ny, tick.ratio = tick.ratio, y.args)
-  invisible()
-}
-##
-#########################################
+source("~/R/misc.r")
 
 argv <- commandArgs(TRUE)
 
@@ -88,7 +46,6 @@ filenum <- 1
 for (f in argv) {
   nxtName <- substr(f,0,regexpr('_',f)-1)
   titles[[filenum]] <- nxtName
-  fileName.base <- paste(fileName.base,nxtName,sep="-")
   expnames <- paste(expnames,nxtName,sep="-")
   raw <- read.csv(f)
   data[[filenum]] <- raw
@@ -136,6 +93,8 @@ for (column in columns[2:length(columns)]) {
   fileName <- paste("graphics/", fileName.base, "-", column, 
   ifelse(plot.data, "-wd", ""), expnames, ".png", sep="")
    png(fileName, width=1600, height=1600)
+##  ifelse(plot.data, "-wd", ""), expnames, ".svg", sep="")
+##   svg(fileName, width=10, height=10)
    # set margins and title, axis, and label font sizes
    par(mar=c(5,6,4,2), cex.main=2, cex.axis=2, cex.lab=2)
    par(mfrow=c(plot.rows,plot.cols))
@@ -148,7 +107,8 @@ for (column in columns[2:length(columns)]) {
        ma <- cbind(get(column.1), get(column))
        detach(df)
        colnames(ma) <- c(column.1, column)
-       plot(ma, main=titles[[ndx]], xlim=c(0,max.1), ylim=c(min.2,max.2))
+       plot(ma, main=titles[[ndx]], xlim=c(0,max.1), ylim=c(min.2,max.2)) ##, pch=NA)
+##lines(ma)
        ## if we're plotting original data, use points()
        if (plot.data) {
           attach(data[[ndx]])
@@ -156,7 +116,7 @@ for (column in columns[2:length(columns)]) {
           detach(data[[ndx]])
           points(dat[,1],dat[,2],pch="·")
        }
-       minor.tick(nx=4,ny=4)
+       minor.tick(nx=5,ny=5)
 
        grid()
        ndx <- ndx+1

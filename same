@@ -19,7 +19,7 @@ for j in $@
     QUESTION=$j
     for i in $ANSWER/*.properties $ANSWER/*.js
       do
-        if ! diff $i $QUESTION/${i#*/} > /dev/null
+        if ! diff $i $QUESTION/cfg/ > /dev/null
         then IS_SAME=1
         fi
     done
