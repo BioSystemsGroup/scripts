@@ -64,7 +64,7 @@ minor.tick <- function (nx = 2, ny = 2, tick.ratio = 0.5, x.args = list(), y.arg
 ##  Declare a couple of globals
 ###
 inFileRoot <- "rxnProduct_zone_"
-outFileRoot <- "dPV.rxn/"
+outFileRoot <- "dPV.rxn"
 
 #########################################
 ## Calculate the maximum dPV in all files in all experiments. 
@@ -157,7 +157,7 @@ for (expDir in exps) {
             rxnSum <- cbind(rxnSum, rowSums(rxnDat))
         }
         colnames(rxnSum) <- c("Time",rxnnames)
-        sumname <- paste(outFileRoot, expDir, "_rxnProduct_dPV∈[", as.character(dPVMin), ",", as.character(dPVMax), "]-", datasetname, "-sum.csv", sep="")
+        sumname <- paste(outFileRoot, "/", expDir, "_rxnProduct_dPV∈[", as.character(dPVMin), ",", as.character(dPVMax), "]-", datasetname, "-sum.csv", sep="")
         write.csv(rxnSum, sumname, row.names=FALSE)
         cellNum[fileNdx,] <- c(datasetname,length(nPVcolumns)) # divisor for Sums to get averages
         fileNdx <- fileNdx + 1
@@ -167,7 +167,7 @@ for (expDir in exps) {
     } ## end for (file in files) {
     colnames(cellNum) <- c("trialfile", "#columns")
 
-    divname <- paste(outFileRoot, expDir,"_rxnProduct_dPV∈[", as.character(dPVMin), ",", as.character(dPVMax), "]-divisors.csv", sep="")
+    divname <- paste(outFileRoot, "/", expDir,"_rxnProduct_dPV∈[", as.character(dPVMin), ",", as.character(dPVMax), "]-divisors.csv", sep="")
     write.csv(cellNum, divname, row.names=FALSE)
 
   } ## end for (expDir in exps) {
@@ -185,6 +185,8 @@ tot <- function(band, expName) {
   ## get the file names
   sndFileRoot <- paste(expName,"_rxnProduct_dPV∈\\[",dPVMin,",",dPVMax,"]",sep="")
   files <- list.files(path=outFileRoot, pattern=sndFileRoot, full.names=TRUE)
+  ## ensure that the files start with the expName
+  files <- files[grep(paste(outFileRoot,expName,sep="/"), files)]
 
   sumfiles <- files[grep("-sum.csv",files)]
   divfile <- files[grep("-divisors.csv",files)]
