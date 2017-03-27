@@ -5,6 +5,8 @@
 ## maxdPV: get the maximum dPV values from rxnProduct files
 ## snd: calculate and write sums and divisors for rxnProducts
 ## tot: use sums and divisors files to calculate totals (averages)
+## insertRow: inserts a row of zeros into a data.frame
+## pad1stcolumns: pads the 1st DF with new columns from the 2nd
 ##
 ## Time-stamp: <2017-02-08 09:15:37 gepr>
 #########################################
@@ -268,4 +270,37 @@ pad1stColumns <- function(first, second) {
     colnames(first) <- c(total.names, colnames(second)[col.index])
   }
   first
+}
+
+###
+## Written for the EnzymeGroup data reduction workflow.  Takes the output
+## of eg-dPV.r, selects the columns within the band and sums them by EG.
+###
+sumBandByLastTag <- function(dat, band) {
+  dMin <- band[1]
+  dMax <- band[2]
+
+  groups <- vector()
+  colmatches <- vector()
+  for (cn in colnames(dat)[2:ncol(dat)]) {
+    splitted <- unlist(strsplit(cn,':'))
+    d <- as.numeric(splitted[1])
+    g <- splitted[2]
+    if (dMin <= d && d < dMax) colmatches <- c(colmatches,cn)
+    groups <- c(groups,g)
+  }
+  groups <- unique(groups)
+  inband <- dat[,colmatches]
+
+  for (g in groups) {
+    gsum <- inband[,grep(g,colnames(inband))]
+    if (ncol(inband) > length(groups))
+      gsum <- rowSums(gsum)
+    if (exists("gsums")) gsums <- cbind(gsums,gsum)
+    else gsums <- gsum
+  }
+  gsums <- cbind(dat[,1],gsums)
+  colnames(gsums) <- c("Time",groups)
+
+  gsums
 }

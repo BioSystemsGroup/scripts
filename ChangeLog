@@ -1,3 +1,7 @@
+2017-03-27-15:31  gepr  <gepr@tempusdictum.com>
+
+	* misc.r(sumBandByLastTag()): New function, takes a min,max and sums, by the 2nd element of the column name, all the columns whose 1st element is in [min,max).  Mainly to operate over the output of eg-dPV.r.
+
 2017-03-27-09:11  gepr  <gepr@tempusdictum.com>
 
 	* rxn-dPV.r: Add comment describing the difference between this and the new rxn-dPV-inband.r script.
