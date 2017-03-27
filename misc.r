@@ -116,7 +116,9 @@ for (expDir in exps) {
         # extract the relevant data from this file and cbind it
         nPVNdx <- 1
         nPVcolumns <- vector() # list of columns where dPV ∈ [dPVMin, dPVMax)
-        for (cname in colnames(fileDat[2:ncol(fileDat)])) {
+        column.names <- colnames(fileDat[2:ncol(fileDat)])
+
+        for (cname in column.names) {
             dPV <- unlist(strsplit(cname,"[.]"))[4] # dPV is the 4th thing in the column name
             dPV <- as.numeric(dPV)
 ##            highest.dPV <- max(highest.dPV, dPV)
@@ -226,3 +228,44 @@ tot <- function(band, expName) {
 
 } ## end tot()
 ##
+
+###
+## inserts newrow into a DF sorted by the 1st element of newrow.
+## stolen and modified from: 
+## http://stackoverflow.com/questions/11561856/add-new-row-to-dataframe-at-specific-row-index-not-appended
+###
+insertRow <- function(existingDF, newrow) {
+  edf1 <- existingDF[,1]
+  ## index <- which(abs(edf1-newrow[[1]])==min(abs(edf1-newrow[[1]]))) ## find index of the next row > the value
+  index <- which((edf1-newrow[[1]]) > 0) ## find index of the next row > the value
+
+  ##print(index)
+
+  ## if it never goes negative, then append to the end
+  if (length(index) == 0 ) existingDF <- rbind(existingDF,newrow)
+
+  if (length(index) >= 1) {
+    index <- index[1]
+    existingDF[seq(index+1,nrow(existingDF)+1),] <- existingDF[seq(index,nrow(existingDF)),]
+    existingDF[index,] <- newrow
+  }
+
+  existingDF
+}
+
+###
+## add columns and rows that exist in operand 2 to operand 1, setting the 
+## column name as it is in operand 2
+###
+pad1stColumns <- function(first, second) {
+  ## insert columns of NAs that don't exist in first
+  matched.columns <- match(colnames(second), colnames(first))
+  for (col.index in which(is.na(matched.columns))) {
+    newcol <- vector(mode="numeric",length=length(first[,1]))
+    ##newcol[] <- NA
+    total.names <- colnames(first)
+    first <- cbind(first, newcol)
+    colnames(first) <- c(total.names, colnames(second)[col.index])
+  }
+  first
+}

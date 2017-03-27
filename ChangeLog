@@ -1,3 +1,8 @@
+2017-03-27-09:11  gepr  <gepr@tempusdictum.com>
+
+	* rxn-dPV.r: Add comment describing the difference between this and the new rxn-dPV-inband.r script.
+	* misc.r(insertRow(), pad1stColumns()): New functions in support of the new enzyme group data reduction script (ei-group.r).
+
 2017-03-15-12:05  gepr  <gepr@tempusdictum.com>
 
 	* misc.r: Path delimeter and extra grep for expnames that match on their suffix but not their prefix.

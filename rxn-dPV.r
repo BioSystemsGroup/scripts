@@ -3,6 +3,14 @@
 ##dev.off()
 argv <- commandArgs(TRUE)
 
+###
+## Calculates the averages of the reaction product data.  Differs from
+## rxn-dPV-inband.r in that you provide a band and it extracts the max
+## dPV from the data files, where rxn-dPV-inband.r takes the min and
+## max as parameters.
+##
+## Time-stamp: <2017-03-21 09:15:37 gepr>
+###
 
 usage <- function() {
     print("Usage: rxn-dPV.r <band width> <exp directories>")

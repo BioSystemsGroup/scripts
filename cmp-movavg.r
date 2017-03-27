@@ -4,7 +4,7 @@
 ##
 # Read multiple *.csv files and plot each column vs the 1st.
 #
-# Time-stamp: <2017-03-13 08:51:41 gepr>
+# Time-stamp: <2017-03-24 15:18:10 gepr>
 #
 #dev.off()
 
@@ -121,6 +121,7 @@ for (column in columns[2:length(columns)]) {
        grid()
        ndx <- ndx+1
    }
+   dev.off()
 }
 
 #q()
