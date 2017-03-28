@@ -5,7 +5,7 @@ argv <- commandArgs(TRUE)
 ##
 # Read multiple *.csv files and plot each column vs the 1st.
 #
-# Time-stamp: <2017-03-13 08:47:56 gepr>
+# Time-stamp: <2017-03-28 08:27:07 gepr>
 #
 
 plot.data <- TRUE
@@ -13,8 +13,8 @@ plot.data <- TRUE
 source("~/R/misc.r")
 
 if (length(argv) < 2) {
-    print("Usage: cmp-dPVs.r <experiment names>")
-    print("  e.g. cmp-by-col.r exp000x exp001x ...")
+    print("Usage: cmp-rxn-dPV.r <experiment names>")
+    print("  e.g. cmp-rxn-dPV.r exp000x exp001x ...")
     print("  Files like dPV.rxn/exp000x_rxnProduct_dPV∈[0,5]-totals.csv should exist.")
     print("Note that columns and band sizes must match across all files.")
     quit()

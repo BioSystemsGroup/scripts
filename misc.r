@@ -155,7 +155,7 @@ for (expDir in exps) {
 
         rxnSum <- dat[1] # start with Time column
         for (rxnName in rxnnames) {
-            rxnDat <- dat[,grep(paste(".",rxnName,"$",sep=""),names(dat))]
+            rxnDat <- dat[,grep(paste("[.]",rxnName,"$",sep=""),names(dat))]
             # finally get the means for each time
             if (is.vector(rxnDat)) rxnDat <- as.data.frame(rxnDat) # defensive
             rxnSum <- cbind(rxnSum, rowSums(rxnDat))
@@ -209,7 +209,7 @@ tot <- function(band, expName) {
 
   ## sum the sums per unique reaction product
   for (rxn in rxnnames) {
-    rxnDat <- dat[,grep(paste(rxn,"$",sep=""),names(dat))]
+    rxnDat <- dat[,grep(paste("^",rxn,"$",sep=""),names(dat))]
     rxnDat <- as.matrix(rxnDat)
     if (!exists("rxnSum"))
       rxnSum <- rowSums(rxnDat)

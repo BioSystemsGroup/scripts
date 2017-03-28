@@ -1,3 +1,8 @@
+2017-03-28-16:37  gepr  <gepr@tempusdictum.com>
+
+	* misc.r: Fixed bug when using grep to extract Enzyme Group names, where one is a substring of another (e.g. PAP⊂APAP).
+	* cmp-rxn-dPV.r: Renamed.
+
 2017-03-27-15:31  gepr  <gepr@tempusdictum.com>
 
 	* misc.r(sumBandByLastTag()): New function, takes a min,max and sums, by the 2nd element of the column name, all the columns whose 1st element is in [min,max).  Mainly to operate over the output of eg-dPV.r.
