@@ -1,0 +1,114 @@
+Return-path: <btv1==1853a3de7f0==Yanli.Xu@ucsf.edu>
+Envelope-to: gepr@tempusdictum.com
+Delivery-date: Wed, 11 Jan 2017 16:06:52 -0800
+Received: from [68.232.141.34] (helo=esa1.ucsf.iphmx.com)
+	by tempusdictum.com with esmtps (TLS1.2:RSA_ARCFOUR_128_SHA1:128)
+	(Exim 4.84_2)
+	(envelope-from <btv1==1853a3de7f0==Yanli.Xu@ucsf.edu>)
+	id 1cRSup-0003bY-LY
+	for gepr@tempusdictum.com; Wed, 11 Jan 2017 16:06:52 -0800
+Received: from mcvontlap002.ucsfmedicalcenter.org (HELO bcuda4.ucsf.edu) ([64.54.36.44])
+  by esa1.ucsf.iphmx.com with ESMTP/TLS/AES256-SHA; 11 Jan 2017 16:06:46 -0800
+X-ASG-Debug-ID: 1484179604-0ac91d7e0a293040002-7FxSV1
+Received: from exht02.net.ucsf.edu (mx.ucsf.edu [64.54.247.193]) by bcuda4.ucsf.edu with ESMTP id fmZLfkgxYJPmon6Q (version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NO); Wed, 11 Jan 2017 16:06:45 -0800 (PST)
+X-Barracuda-Envelope-From: Yanli.Xu@ucsf.edu
+X-Barracuda-Effective-Source-IP: mx.ucsf.edu[64.54.247.193]
+X-Barracuda-Apparent-Source-IP: 64.54.247.193
+Received: from EX09.net.ucsf.edu ([64.54.247.186]) by exht02.net.ucsf.edu
+ ([64.54.247.219]) with mapi id 14.03.0319.002; Wed, 11 Jan 2017 16:06:40
+ -0800
+From: "Xu, Yanli" <Yanli.Xu@ucsf.edu>
+To: glen ep ropella <gepr@tempusdictum.com>
+CC: "Hunt, C. Anthony" <a.hunt@ucsf.edu>, Andrew Smith
+	<dr.andrew.k.smith@gmail.com>
+Thread-Topic: measure extracellular APAP in SSes
+X-ASG-Orig-Subj: RE: measure extracellular APAP in SSes
+Thread-Index: AQHSbDJ41+KMpHbxRsODXsPxRLiffKEzr6uTgAAm26OAABz4cQ==
+Date: Thu, 12 Jan 2017 00:06:39 +0000
+Message-ID: <8ccc99a3-74a3-43d2-87a0-6dd35cfb83f3@EXHT02.net.ucsf.edu>
+References: <314785cf-064f-4ee1-88db-d55aa5783c71@EXHT05.net.ucsf.edu>
+ <a02c0b0e-a45c-8461-d6be-0e1d191cb52d@tempusdictum.com>
+ <d7149341-5ce4-40eb-acb0-d9ee06e6d718@EXHT04.net.ucsf.edu>
+ <0a543c95-f677-5b56-55d7-52e1c583fe63@tempusdictum.com>
+ <62346360-2c3d-4683-86e5-22d938dbcd69@EXHT02.net.ucsf.edu>,<0c9e183f-77a3-e909-dd2c-7b186df0c24e@tempusdictum.com>
+In-Reply-To: <0c9e183f-77a3-e909-dd2c-7b186df0c24e@tempusdictum.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [10.59.132.62]
+x-pmwin-version: 3.1.3.0, Antivirus-Engine: 3.64.3, Antivirus-Data: 5.35
+Content-Type: text/plain; charset="iso-2022-jp"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-Barracuda-Connect: mx.ucsf.edu[64.54.247.193]
+X-Barracuda-Start-Time: 1484179605
+X-Barracuda-Encrypted: ECDHE-RSA-AES256-SHA
+X-Barracuda-URL: https://bcuda4.ucsf.edu:443/cgi-mod/mark.cgi
+X-Barracuda-Scan-Msg-Size: 2069
+X-Virus-Scanned: by bsmtpd at ucsf.edu
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Spam-Score: -0.00
+X-Barracuda-Spam-Status: No, SCORE=-0.00 using per-user scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=ISO2022JP_CHARSET
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.35723
+	Rule breakdown below
+	 pts rule name              description
+	---- ---------------------- --------------------------------------------------
+	-0.00 ISO2022JP_CHARSET      ISO-2022-JP message
+X-CFilter-Loop: Reflected
+X-SA-Exim-Connect-IP: 68.232.141.34
+X-SA-Exim-Mail-From: btv1==1853a3de7f0==Yanli.Xu@ucsf.edu
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on tempusdictum.com
+X-Spam-Level: *
+X-Spam-Status: No, score=1.3 required=3.0 tests=RCVD_IN_DNSWL_LOW=-0.7,
+	RDNS_NONE=2 autolearn=no autolearn_force=no version=3.4.0
+Subject: RE: measure extracellular APAP in SSes
+X-SA-Exim-Version: 4.2.1 (built Mon, 26 Dec 2011 16:57:07 +0000)
+X-SA-Exim-Scanned: Yes (on tempusdictum.com)
+
+Thank you so much for the detailed explanation. I learned a lot today. I wi=
+ll take some time to study the java classes later. It is a great way to lea=
+rn by practice. =0A=
+=0A=
+I still have another question, you mentioned 4 grids: sSpace, eSpace, SoD, =
+hepSpace. I can understand the last three are endothelial cell space, space=
+ of disse and HPC space, but cold you tell me what is "sSpace"? I know the =
+analogue still includes a "blood-cell interface", is the "blood-cell interf=
+ace" the same with "sSpace"? Thanks.=0A=
+=0A=
+=0A=
+________________________________________=0A=
+From: glen ep ropella [gepr@tempusdictum.com]=0A=
+Sent: Wednesday, January 11, 2017 2:09 PM=0A=
+To: Xu, Yanli=0A=
+Cc: Hunt, C. Anthony; Andrew Smith=0A=
+Subject: Re: measure extracellular APAP in SSes=0A=
+=0A=
+A Solute _can_ be in a grid point without being inside a Cell.  But I was w=
+rong about how it can happen.  See this code:=0A=
+=0A=
+https://app.assembla.com/spaces/bsg-ucsf/subversion/source/HEAD/trunks/islj=
+/src/isl/model/SSGrid.java#ln367=0A=
+=0A=
+If, when the SS tries to move a Solute object (through SS.moveMoore()) that=
+ already sits inside a Cell, but there's a Cell at the new location that re=
+jects that Solute object, then the Solute exits its current Cell, but stays=
+ at that grid point.  This can only happen (so far) when a Solute is design=
+ated with membraneCrossing=3D=3Dfalse and transportOut=3D=3Dtrue.  Such a S=
+olute will leave its Cell and can only move to empty grid points (within th=
+e current grid or jumping inward or outward to another grid).=0A=
+=0A=
+Thanks for asking the question and causing me to re-read the code!  It's al=
+ways fun (and good practice) to go through and re-verify how something shou=
+ld be coded, especially when several people are working on the same body of=
+ code.=0A=
+=0A=
+=0A=
+On 01/11/2017 12:18 PM, Xu, Yanli wrote:=0A=
+> (1) Thank you very much for your explanation about the grid points.=0A=
+> (2) You already answered  all my questions about APAP in "rxn.csv" file. =
+The last part of the question is just what i thought about the "APAP". It i=
+s really difficult for me write English like a native speaker.=0A=
+=0A=
+--=0A=
+glen ep ropella =1B$B"]=1B(B 971-280-5699=

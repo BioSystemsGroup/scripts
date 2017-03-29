@@ -1,0 +1,142 @@
+Return-path: <btv1==184e17fbd87==Yanli.Xu@ucsf.edu>
+Envelope-to: gepr@tempusdictum.com
+Delivery-date: Wed, 11 Jan 2017 11:30:56 -0800
+Received: from [68.232.143.34] (helo=esa2.ucsf.iphmx.com)
+	by tempusdictum.com with esmtps (TLS1.2:RSA_ARCFOUR_128_SHA1:128)
+	(Exim 4.84_2)
+	(envelope-from <btv1==184e17fbd87==Yanli.Xu@ucsf.edu>)
+	id 1cRObm-0002xm-Of
+	for gepr@tempusdictum.com; Wed, 11 Jan 2017 11:30:56 -0800
+Received: from srp006617srs.ucsfmedicalcenter.org (HELO bcuda2.ucsf.edu) ([64.54.16.52])
+  by esa2.ucsf.iphmx.com with ESMTP/TLS/AES256-SHA; 11 Jan 2017 11:30:32 -0800
+X-ASG-Debug-ID: 1484162847-0a8b7b1b8e214f20013-7FxSV1
+Received: from exht04.net.ucsf.edu (mx.ucsf.edu [64.54.247.193]) by bcuda2.ucsf.edu with ESMTP id svIA94e1y131SRo4 (version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NO); Wed, 11 Jan 2017 11:30:14 -0800 (PST)
+X-Barracuda-Envelope-From: Yanli.Xu@ucsf.edu
+X-Barracuda-Effective-Source-IP: mx.net.ucsf.edu[64.54.247.193]
+X-Barracuda-Apparent-Source-IP: 64.54.247.193
+Received: from EX09.net.ucsf.edu ([64.54.247.186]) by exht04.net.ucsf.edu
+ ([64.54.247.221]) with mapi id 14.03.0319.002; Wed, 11 Jan 2017 11:27:20
+ -0800
+From: "Xu, Yanli" <Yanli.Xu@ucsf.edu>
+To: glen ep ropella <gepr@tempusdictum.com>
+CC: "Hunt, C. Anthony" <a.hunt@ucsf.edu>, Andrew Smith
+	<dr.andrew.k.smith@gmail.com>
+Thread-Topic: measure extracellular APAP in SSes
+X-ASG-Orig-Subj: RE: measure extracellular APAP in SSes
+Thread-Index: AQHSbDJ41+KMpHbxRsODXsPxRLiffKEzoLd8
+Date: Wed, 11 Jan 2017 19:27:20 +0000
+Message-ID: <d7149341-5ce4-40eb-acb0-d9ee06e6d718@EXHT04.net.ucsf.edu>
+References: <314785cf-064f-4ee1-88db-d55aa5783c71@EXHT05.net.ucsf.edu>,<a02c0b0e-a45c-8461-d6be-0e1d191cb52d@tempusdictum.com>
+In-Reply-To: <a02c0b0e-a45c-8461-d6be-0e1d191cb52d@tempusdictum.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [10.59.132.62]
+x-pmwin-version: 3.1.3.0, Antivirus-Engine: 3.64.3, Antivirus-Data: 5.35
+Content-Type: text/plain; charset="iso-2022-jp"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-Barracuda-Connect: mx.ucsf.edu[64.54.247.193]
+X-Barracuda-Start-Time: 1484163005
+X-Barracuda-Encrypted: ECDHE-RSA-AES256-SHA
+X-Barracuda-URL: https://bcuda2.ucsf.edu:443/cgi-mod/mark.cgi
+X-Barracuda-Scan-Msg-Size: 3540
+X-Virus-Scanned: by bsmtpd at ucsf.edu
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Spam-Score: -0.00
+X-Barracuda-Spam-Status: No, SCORE=-0.00 using per-user scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=ISO2022JP_CHARSET
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.35717
+	Rule breakdown below
+	 pts rule name              description
+	---- ---------------------- --------------------------------------------------
+	-0.00 ISO2022JP_CHARSET      ISO-2022-JP message
+X-CFilter-Loop: Reflected
+X-SA-Exim-Connect-IP: 68.232.143.34
+X-SA-Exim-Mail-From: btv1==184e17fbd87==Yanli.Xu@ucsf.edu
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on tempusdictum.com
+X-Spam-Level: *
+X-Spam-Status: No, score=1.3 required=3.0 tests=RCVD_IN_DNSWL_LOW=-0.7,
+	RDNS_NONE=2 autolearn=no autolearn_force=no version=3.4.0
+Subject: RE: measure extracellular APAP in SSes
+X-SA-Exim-Version: 4.2.1 (built Mon, 26 Dec 2011 16:57:07 +0000)
+X-SA-Exim-Scanned: Yes (on tempusdictum.com)
+
+(1) Yes, I am using the output fraction combined with an estimate of the si=
+zes of all the SSes to arrive at an estimate of the total amount inside all=
+ the SSes.=0A=
+(2) Yes, I use the SS_size(cylinder volume) to estimate the APAP amount, an=
+d the inner_surface_area of the grids to estimate the HPC numbers.  But I c=
+alculate the type A and type B SSes separately. =0A=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=0A=
+(3) I think is is a good way to add an extra class to measure the actual am=
+ount of APAP in the SSes. I have no problem in writing java class, but I pr=
+obably still need some time to be familiar with the details of our Analog b=
+efore I can write a class for our project. =0A=
+(4) I agree that the estimate is "rough" and I only considered the Core. =
+=0A=
+I agree that "Given that each grid point can contain "scale" number of Solu=
+te objects, that's a sizeable amount of objects the estimate will miss.  (e=
+.g. Type A =3D> 30 circumference * 8 length * 4 grids * (40+18+3) typeA_SSe=
+s * 15.5 scale =3D> 907,680 total capacity.)".=0A=
+But I have a question here about the grid points. most of the grid points a=
+re occupied by the cells, if we calculate the APAP in the grid point, then =
+we are calculating the APAP inside the cells, right? It seems that the extr=
+a cellular concentration shouldn't consider the APAP inside the cells.=0A=
+I am still thinking about the APAP inside the grid points, thank you very m=
+uch for your suggestion. =0A=
+=0A=
+I still have one more question, The "APAP" in the "rxn.csv" file is not a m=
+etabolite, but the APAP entering the cell and not metabolized, right?=0A=
+=0A=
+__________________________________________=0A=
+From: glen ep ropella [gepr@tempusdictum.com]=0A=
+Sent: Wednesday, January 11, 2017 9:45 AM=0A=
+To: Xu, Yanli=0A=
+Cc: Hunt, C. Anthony; Andrew Smith=0A=
+Subject: Re: measure extracellular APAP in SSes=0A=
+=0A=
+Very nice!  If I understand correctly, you're using the output fraction (am=
+ount coming out of all the SSes into the CV) combined with an estimate of t=
+he sizes of all the SSes to arrive at an estimate of the total amount insid=
+e all the SSes.  Is that right?=0A=
+=0A=
+So, we derive something like:=0A=
+=0A=
+  output =3D output_fraction * refDose=0A=
+  intraLobular_amount =3D output * sum_of_SS_sizes=0A=
+=0A=
+Then you divide by the number of HPCs to get a intraLobular_amount/HPC.  Is=
+ that right?=0A=
+=0A=
+----------=0A=
+=0A=
+This is a rough estimate[*] for total Solute objects inside the Lobule.  Bu=
+t what I was suggesting was to add a measurement to the analog (new Java cl=
+ass in src/isl/measurement/) so that the simulation outputs an actual count=
+ of how many Solute objects are inside an SS, but not inside an Hepatocyte.=
+=0A=
+=0A=
+[*] The reason the estimate is "rough" is because this calculation would on=
+ly consider the Core (blood flow down the middle of an SS).  The concentric=
+ gridded cylinders around the Core will each contain some Solute (4 grids: =
+sSpace, eSpace, SoD, hepSpace).  Given that each grid point can contain "sc=
+ale" number of Solute objects, that's a sizeable amount of objects the esti=
+mate will miss.  (e.g. Type A =3D> 30 circumference * 8 length * 4 grids * =
+(40+18+3) typeA_SSes * 15.5 scale =3D> 907,680 total capacity.)=0A=
+=0A=
+It would be interesting to add that to the estimate.  But the question is: =
+Should we add another measure to the code or just go with an estimate like =
+this?=0A=
+=0A=
+p.s. I added a suggestion to the google doc intro.=0A=
+=0A=
+On 01/11/2017 02:02 AM, Xu, Yanli wrote:=0A=
+> I uploaded a script to compare the solute concentrations here:=0A=
+> https://drive.google.com/drive/u/0/folders/0BzQhxI-Ub6w3aVo3bTEzQmF5OEE=
+=0A=
+> Comments and suggestions are welcome.=0A=
+=0A=
+--=0A=
+glen ep ropella =1B$B"]=1B(B 971-280-5699=
