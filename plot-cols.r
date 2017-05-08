@@ -23,7 +23,7 @@ ma.left <- function(x,n=5){filter(x,rep(1/n,n), sides=1)}
 argv <- commandArgs(TRUE)
 
 if (length(argv) < 1) {
-    print("Usage: plot-cols *_rxnProduct_zone_0.csv")
+    print("Usage: plot-cols *_hsolute_zone_0.csv")
     print("  e.g. cmp-by-col.r x00[1-6]_mean_body.csv")
     quit()
 }

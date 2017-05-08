@@ -1,3 +1,15 @@
+2017-05-08-16:16  gepr  <gepr@tempusdictum.com>
+
+	* rf-plot.r: New script to plot the "imager" images converted from each rxnprod output file.
+
+2017-05-03-15:48  gepr  <gepr@tempusdictum.com>
+
+	* cmp-hsol-dPV.r: Changed "rxn" to "hsol" everywhere to better reflect that the data being handled is intra-Hepatocyte data.  Also makes way for the new measure (introduced into islj-zb) which does only count (particular specified) reaction products.
+
+2017-03-29-10:19  gepr  <gepr@tempusdictum.com>
+
+	* extcell: Add subdirectory for Yanli's R script to estimate the # Solute in the extracellular grid points.  Also add documents and emails about the script.
+
 2017-03-28-16:37  gepr  <gepr@tempusdictum.com>
 
 	* misc.r: Fixed bug when using grep to extract Enzyme Group names, where one is a substring of another (e.g. PAP⊂APAP).

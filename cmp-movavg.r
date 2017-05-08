@@ -15,7 +15,7 @@ source("~/R/misc.r")
 argv <- commandArgs(TRUE)
 
 if (length(argv) < 2) {
-    print("Usage: cmp-by-col.r *_rxnProduct_zone_0.csv")
+    print("Usage: cmp-by-col.r *_hsolute_zone_0.csv")
     print("  e.g. cmp-by-col.r x00[1-6]_mean_body.csv")
     print("Note that columns must match across all files.")
     quit()

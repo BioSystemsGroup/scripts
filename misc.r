@@ -2,8 +2,8 @@
 ## Define the following functions:
 ## ma.cent, ma.left: moving averages centered and left
 ## minor.tick: add minor tickmarks to a plot
-## maxdPV: get the maximum dPV values from rxnProduct files
-## snd: calculate and write sums and divisors for rxnProducts
+## maxdPV: get the maximum dPV values from hsolute files
+## snd: calculate and write sums and divisors for hsolutes
 ## tot: use sums and divisors files to calculate totals (averages)
 ## insertRow: inserts a row of zeros into a data.frame
 ## pad1stcolumns: pads the 1st DF with new columns from the 2nd
@@ -65,8 +65,8 @@ minor.tick <- function (nx = 2, ny = 2, tick.ratio = 0.5, x.args = list(), y.arg
 ###
 ##  Declare a couple of globals
 ###
-inFileRoot <- "rxnProduct_zone_"
-outFileRoot <- "dPV.rxn"
+inFileRoot <- "hsolute_zone_"
+outFileRoot <- "dPV.hsol"
 
 #########################################
 ## Calculate the maximum dPV in all files in all experiments. 
@@ -141,28 +141,28 @@ for (expDir in exps) {
 #stop()
         rm(fileDat)  # attempt to keep a small memory footprint
         
-        # parse out rxn products
-        rxnnames <- list()
+        # parse out hsol products
+        hsolnames <- list()
         for (cname in colnames(dat[2:ncol(dat)])) {
-            rxnName <- unlist(strsplit(cname,"[.]"))[6] # rxnprod name is the 6th element
-            if (is.na(rxnName)) {
+            hsolName <- unlist(strsplit(cname,"[.]"))[6] # hsolprod name is the 6th element
+            if (is.na(hsolName)) {
               print("Could not parse reaction product name from column header.")
               q()
             }
-            rxnnames[cname] <- rxnName
+            hsolnames[cname] <- hsolName
         }
-        rxnnames <- unique(rxnnames)
+        hsolnames <- unique(hsolnames)
 
-        rxnSum <- dat[1] # start with Time column
-        for (rxnName in rxnnames) {
-            rxnDat <- dat[,grep(paste("[.]",rxnName,"$",sep=""),names(dat))]
+        hsolSum <- dat[1] # start with Time column
+        for (hsolName in hsolnames) {
+            hsolDat <- dat[,grep(paste("[.]",hsolName,"$",sep=""),names(dat))]
             # finally get the means for each time
-            if (is.vector(rxnDat)) rxnDat <- as.data.frame(rxnDat) # defensive
-            rxnSum <- cbind(rxnSum, rowSums(rxnDat))
+            if (is.vector(hsolDat)) hsolDat <- as.data.frame(hsolDat) # defensive
+            hsolSum <- cbind(hsolSum, rowSums(hsolDat))
         }
-        colnames(rxnSum) <- c("Time",rxnnames)
-        sumname <- paste(outFileRoot, "/", expDir, "_rxnProduct_dPV∈[", as.character(dPVMin), ",", as.character(dPVMax), "]-", datasetname, "-sum.csv", sep="")
-        write.csv(rxnSum, sumname, row.names=FALSE)
+        colnames(hsolSum) <- c("Time",hsolnames)
+        sumname <- paste(outFileRoot, "/", expDir, "_hsolute_dPV∈[", as.character(dPVMin), ",", as.character(dPVMax), "]-", datasetname, "-sum.csv", sep="")
+        write.csv(hsolSum, sumname, row.names=FALSE)
         cellNum[fileNdx,] <- c(datasetname,length(nPVcolumns)) # divisor for Sums to get averages
         fileNdx <- fileNdx + 1
 
@@ -171,7 +171,7 @@ for (expDir in exps) {
     } ## end for (file in files) {
     colnames(cellNum) <- c("trialfile", "#columns")
 
-    divname <- paste(outFileRoot, "/", expDir,"_rxnProduct_dPV∈[", as.character(dPVMin), ",", as.character(dPVMax), "]-divisors.csv", sep="")
+    divname <- paste(outFileRoot, "/", expDir,"_hsolute_dPV∈[", as.character(dPVMin), ",", as.character(dPVMax), "]-divisors.csv", sep="")
     write.csv(cellNum, divname, row.names=FALSE)
 
   } ## end for (expDir in exps) {
@@ -187,7 +187,7 @@ tot <- function(band, expName) {
   dPVMax <- band[2]
 
   ## get the file names
-  sndFileRoot <- paste(expName,"_rxnProduct_dPV∈\\[",dPVMin,",",dPVMax,"]",sep="")
+  sndFileRoot <- paste(expName,"_hsolute_dPV∈\\[",dPVMin,",",dPVMax,"]",sep="")
   files <- list.files(path=outFileRoot, pattern=sndFileRoot, full.names=TRUE)
   ## ensure that the files start with the expName
   files <- files[grep(paste(outFileRoot,expName,sep="/"), files)]
@@ -195,8 +195,8 @@ tot <- function(band, expName) {
   sumfiles <- files[grep("-sum.csv",files)]
   divfile <- files[grep("-divisors.csv",files)]
 
-  ## extract and sum each rxn product from each data set and divide by the sum of the column numbers
-  ## i.e. (∑rxnᵢ)/∑colsⱼ, where i ∈ {NecInhib, S, G, Marker, ...} and j ∈ {1_2-????, 3-????}
+  ## extract and sum each hsol product from each data set and divide by the sum of the column numbers
+  ## i.e. (∑hsolᵢ)/∑colsⱼ, where i ∈ {NecInhib, S, G, Marker, ...} and j ∈ {1_2-????, 3-????}
 
   for (sumfile in sumfiles) {
     fileDat <- read.csv(sumfile)
@@ -204,29 +204,29 @@ tot <- function(band, expName) {
     dat <- cbind(dat,fileDat[2:ncol(fileDat)])
   }
 
-  rxnnames <- unique(colnames(dat))
-  rxnnames <- rxnnames[2:length(rxnnames)]
+  hsolnames <- unique(colnames(dat))
+  hsolnames <- hsolnames[2:length(hsolnames)]
 
   ## sum the sums per unique reaction product
-  for (rxn in rxnnames) {
-    rxnDat <- dat[,grep(paste("^",rxn,"$",sep=""),names(dat))]
-    rxnDat <- as.matrix(rxnDat)
-    if (!exists("rxnSum"))
-      rxnSum <- rowSums(rxnDat)
+  for (hsol in hsolnames) {
+    hsolDat <- dat[,grep(paste("^",hsol,"$",sep=""),names(dat))]
+    hsolDat <- as.matrix(hsolDat)
+    if (!exists("hsolSum"))
+      hsolSum <- rowSums(hsolDat)
     else
-      rxnSum <- cbind(rxnSum, rowSums(rxnDat))
+      hsolSum <- cbind(hsolSum, rowSums(hsolDat))
   }
-  colnames(rxnSum) <- rxnnames
+  colnames(hsolSum) <- hsolnames
 
   ## now read in the total number of columns
   divs <- read.csv(divfile)
-  totalcells <- sum(divs[2])/length(rxnnames)  # number of columns divided by number of rxn products
+  totalcells <- sum(divs[2])/length(hsolnames)  # number of columns divided by number of hsol products
 
   ## now divide in the total columns (number of cells) to get the avg per cell
-  rxnAvg <- cbind(dat[1], rxnSum/totalcells)
+  hsolAvg <- cbind(dat[1], hsolSum/totalcells)
 
   avgname <- sub("-divisors","-totals",divfile)
-  write.csv(rxnAvg, avgname, row.names=FALSE)
+  write.csv(hsolAvg, avgname, row.names=FALSE)
 
 } ## end tot()
 ##
