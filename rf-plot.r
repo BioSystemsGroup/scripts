@@ -4,10 +4,10 @@
 ##
 # Read multiple reaction field MC trial data files from the experiment directory and plot them as images.
 #
-# Time-stamp: <2017-05-10 15:10:35 gepr>
+# Time-stamp: <2017-05-24 13:41:15 gepr>
 #
 #dev.off()
-
+INVERT <- T
 argv <- commandArgs(TRUE)
 
 usage <- function() {
@@ -38,7 +38,9 @@ for (dir in c("dPV","dCV")) {
   pdf(paste("graphics/",filename,".pdf",sep=""),width=8.5,height=11)
   par(mar=c(5,6,4,2), oma=c(0,0,3,0), cex.main=2, cex.axis=2, cex.lab=2)
   rf <- read.csv(paste(filename,".csv",sep=""))
-  rfi <- as.cimg(t(as.matrix(rf)))
+  rfmt <- t(as.matrix(rf))
+  if (INVERT) rfmt <- max(rfmt)-rfmt
+  rfi <- as.cimg(rfmt)
   plot(rfi,asp="varying",main="Average", xlab=dir, ylab="Cycle")
   grid()
   minor.tick(nx=5,ny=5)
@@ -58,7 +60,9 @@ for (dir in c("dPV","dCV")) {
     print(paste("    Now trial ",trials,sep=""))
 
     rf <- read.csv(f,colClasses="numeric")
-    rfi <- as.cimg(t(as.matrix(rf)))
+    rfmt <- t(as.matrix(rf))
+    if (INVERT) rfmt <- max(rfmt)-rfmt
+    rfi <- as.cimg(rfmt)
     plot(rfi,asp="varying",main=paste("Trial",trials), xlab=dir,ylab="Cycle")
     grid()
     minor.tick(nx=5,ny=5)
