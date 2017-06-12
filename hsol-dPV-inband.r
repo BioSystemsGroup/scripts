@@ -30,6 +30,8 @@ exps <- argv[3:length(argv)]
 
 band <- c(dPVMin, dPVMax)
 snd(band, exps) # sum and divisors
+
+invisible(gc())
 for (expName in exps) tot(band, expName) # sums/divisors
 
 q()

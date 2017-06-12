@@ -40,23 +40,23 @@ minor.tick <- function (nx = 2, ny = 2, tick.ratio = 0.5, x.args = list(), y.arg
     low.candidates <- possible.minors >= range[1]
     low.minor <- if (any(low.candidates))
                    min(possible.minors[low.candidates])
-                 else 
+                 else
                    tick.pos[1]
     possible.minors <- tick.pos[2] + (0 : 100) * distance.between.minor
     hi.candidates <- possible.minors <= range[2]
-    hi.minor <- if (any(hi.candidates)) 
+    hi.minor <- if (any(hi.candidates))
                   max(possible.minors[hi.candidates])
                 else
                   tick.pos[2]
     axis.args <- c(list(if (w == "x") 1 else 2,
-                        seq(low.minor, hi.minor, by = distance.between.minor), 
+                        seq(low.minor, hi.minor, by = distance.between.minor),
                         labels = FALSE, tcl = par("tcl") * tick.ratio),
                         add.args);
 	do.call(axis, axis.args);
     }
-  if (nx > 1) 
+  if (nx > 1)
     ax("x", nx, tick.ratio = tick.ratio, x.args)
-  if (ny > 1) 
+  if (ny > 1)
     ax("y", ny, tick.ratio = tick.ratio, y.args)
   invisible()
 }
@@ -69,7 +69,7 @@ inFileRoot <- "hsolute_zone_"
 outFileRoot <- "dPV.hsol"
 
 #########################################
-## Calculate the maximum dPV in all files in all experiments. 
+## Calculate the maximum dPV in all files in all experiments.
 ##
 maxdPV <- function(exps) {
   total.maxdPV <- -1
@@ -111,7 +111,7 @@ for (expDir in exps) {
     cellNum <- cellNum[2,]
     fileNdx <- 1 # needed to build cellNum as a data.frame with stringsAsFactors=FALSE (can't use rbind())
     for (file in files) {
-        print(paste("Processing",file))
+        print(paste("Calculating Sums and Divisors for ",file))
         datasetname <- sub(".csv","",sub(inFileRoot,"",file))
         dat <- data.frame()
         fileDat <- read.csv(paste(expDir,file,sep="/"))
@@ -132,7 +132,7 @@ for (expDir in exps) {
 
         # if there are no columns ∈ [dPVMin,dPVMax] go to next file
         if (length(nPVcolumns) <= 0) next
-        
+
         # use time column as initial data.frame
         if (nrow(dat) <= 0) dat <- fileDat[1]
 
@@ -140,7 +140,7 @@ for (expDir in exps) {
         dat <- cbind(dat, fileDat[nPVcolumns])
 #stop()
         rm(fileDat)  # attempt to keep a small memory footprint
-        
+
         # parse out hsol products
         hsolnames <- list()
         for (cname in colnames(dat[2:ncol(dat)])) {
@@ -185,6 +185,8 @@ for (expDir in exps) {
 tot <- function(band, expName) {
   dPVMin <- band[1]
   dPVMax <- band[2]
+
+  print(paste("Calculating totals for",expName))
 
   ## get the file names
   sndFileRoot <- paste(expName,"_hsolute_dPV∈\\[",dPVMin,",",dPVMax,"]",sep="")
@@ -233,7 +235,7 @@ tot <- function(band, expName) {
 
 ###
 ## inserts newrow into a DF sorted by the 1st element of newrow.
-## stolen and modified from: 
+## stolen and modified from:
 ## http://stackoverflow.com/questions/11561856/add-new-row-to-dataframe-at-specific-row-index-not-appended
 ###
 insertRow <- function(existingDF, newrow) {
@@ -256,7 +258,7 @@ insertRow <- function(existingDF, newrow) {
 }
 
 ###
-## add columns and rows that exist in operand 2 to operand 1, setting the 
+## add columns and rows that exist in operand 2 to operand 1, setting the
 ## column name as it is in operand 2
 ###
 pad1stColumns <- function(first, second) {
