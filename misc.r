@@ -306,3 +306,65 @@ sumBandByLastTag <- function(dat, band) {
 
   gsums
 }
+
+
+###
+## Written for the EnzymeGroup data reduction workflow.  Called by eg-dPV.r;
+## sums all the columns in files in allfiles and divides by |allfiles|.
+###
+avgByColumn <- function(allfiles) {
+  dat <- vector("list")
+  groups <- vector()
+
+  pb <- txtProgressBar(min=0,max=length(allfiles),style=3)  ## progress bar
+  setTxtProgressBar(pb,0); ## progress bar
+
+  tNdx <- 1
+  for (t in allfiles) {
+    tdat <- read.csv(t, check.names=F)
+
+    ## get unique groups from 1st file
+    if (tNdx == 1) {
+      for (cn in colnames(tdat)[2:length(colnames(tdat))]) {
+        group <- unlist(strsplit(cn,":"))[3]
+        groups <- c(groups,group)
+      }
+      groups <- unique(groups)
+    }
+
+    ## add this trial data to the list of DFs
+    ##dat[[tNdx]] <- tdat
+
+    ## merge with total sums
+    if (tNdx == 1) {
+      time <- tdat[,1]
+      tdat <- tdat[2:ncol(tdat)]
+      totals <- tdat
+    } else {
+      ## slice off Time
+      totals <- totals[,2:ncol(totals)]
+      tdat <- tdat[,2:ncol(tdat)]
+      ## pad with any missing columns
+      totals <- pad1stColumns(totals, tdat)
+      tpad <- pad1stColumns(tdat, totals)
+      ## sort both before adding
+      totals <- totals[, order(names(totals))]
+      tpad <- tpad[, order(names(tpad))]
+      totals <- totals[,2:ncol(totals)] + tpad[,2:ncol(tpad)]
+    }
+
+    setTxtProgressBar(pb,tNdx); ## progress bar
+
+    tNdx <- tNdx + 1
+  } ## for (f in allfiles)
+
+  setTxtProgressBar(pb,tNdx); ## progress bar
+
+  totals <- totals[,2:length(totals)]/length(allfiles)
+  totals <- cbind(time,totals)
+  colnames(totals)[1] <- "Time"
+
+  close(pb) ## progress bar
+
+  totals
+}
