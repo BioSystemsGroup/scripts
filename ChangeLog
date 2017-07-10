@@ -1,3 +1,7 @@
+2017-07-10-10:19  gepr  <gepr@tempusdictum.com>
+
+	* LOPAnalysis.R, distance.R: Import from old Swarm-based ISL.
+
 2017-06-15-15:31  gepr  <gepr@tempusdictum.com>
 
 	* misc.r (avgByColumn()): New function extracted from eg-dPV.r in the main codebase.  Allows reuse in the new script hsol-inband.r in the main codebase.
