@@ -1,3 +1,9 @@
+2017-07-10-14:35  gepr  <gepr@tempusdictum.com>
+
+	* distance.R (calcVar.func): Init "Model" variable for logit=False case.
+	* distance.R (calcSimilarity()): Truncate reference data if it happens to be longer than model data. Replace NA with 0.0 in reference data.  Only average over the columns of the reference data if there's more than one column there.
+	* LOPAnalysis.R (approxLOP()): Update call to apply(), since it now needs arrays with named columns.
+
 2017-07-10-10:19  gepr  <gepr@tempusdictum.com>
 
 	* LOPAnalysis.R, distance.R: Import from old Swarm-based ISL.

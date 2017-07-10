@@ -79,9 +79,8 @@ approxLOP <- function(x, method="linear",...) {
   if (data.class(x) != "LOP") stop("Please input an object of class LOP...")
   R <- x$Reference
   Time <- x$Model[,1]
-  Reference <- apply(R[,-1],2,function(z) {
-    approx(R[,1], z, method=method, xout=Time)$y})
-  x$Reference <- cbind(Time, Reference)
+  Reference <- apply(R, 2, function(z) { approx(R[,1], z, method=method, xout=Time)$y })
+  x$Reference <- Reference
 
   return(x)
 }

@@ -156,11 +156,24 @@ setMethod("calcSimilarity", "LOP", function(object, logit=TRUE, index=NULL, inte
   NRun <- object$NRun
   NRef <- object$NRef
   NSim <- length(similarity.funcs)
-  if(interpolate) object <- approxLOP(object)
-  Ref <- object$Reference
-  if (logit) Ref[,2:(NRef+1)] <- log10(Ref[,2:(NRef+1)])
-  r <- rowMeans(Ref[,2:(NRef+1)], na.rm=TRUE)
 
+  if(interpolate) {
+    object <- approxLOP(object)
+  } else {
+    if (nrow(object$Reference) > nrow(object$Model))
+      object$Reference <- object$Reference[1:nrow(object$Model),]
+  }
+
+  Ref <- object$Reference
+  Ref[is.na(Ref)] <- 0.0
+
+  if (logit) Ref[,2:(NRef+1)] <- log10(Ref[,2:(NRef+1)])
+
+  if (NRef > 1)
+    r <- rowMeans(Ref[,2:(NRef+1)], na.rm=TRUE)
+  else
+    r <- Ref[,2]
+  r[is.nan(r)] <- 0.0
 
   if (smooth) {# smooth the model data
     smooth.func <- match.arg(smooth.func)
@@ -168,12 +181,14 @@ setMethod("calcSimilarity", "LOP", function(object, logit=TRUE, index=NULL, inte
     pred.s <- predict(s, Ref[,1])
     if (data.class(pred.s)=="list") m <- pred.s$y
     else m <- pred.s
+
     D <- list()
     for (sim.func in similarity.funcs)
        D <- c(D, list(sim.func(m, r))) # calculates the similarity between the smoothed model and the reference
-   }
-  else { # don't smooth
+
+  } else { # don't smooth
     if (is.null(index)) index <- c(1:NRun)
+    Model <- object$Model
     if (logit) Model <- log10(object$Model)
     D <- list()
     for (i in 1:NSim) {
@@ -189,12 +204,8 @@ setMethod("calcSimilarity", "LOP", function(object, logit=TRUE, index=NULL, inte
     }
 
   }
+
   names(D) <- names(similarity.funcs)
   class(D) <- "LOPsimilarity"
   return(D)
   })
-
-
-
-
-
