@@ -14,25 +14,19 @@
     </jenkins.model.BuildDiscarderProperty>
     <org.jenkinsci.plugins.workflow.job.properties.DisableConcurrentBuildsJobProperty/>
     <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
-      <triggers>
-        <hudson.triggers.SCMTrigger>
-          <spec>H/15 * * * *</spec>
-          <ignorePostCommitHooks>false</ignorePostCommitHooks>
-        </hudson.triggers.SCMTrigger>
-      </triggers>
+      <triggers/>
     </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
   </properties>
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.36">
     <script>node {
-  stage(&apos;Preparation&apos;) { // for display purposes
-    // Get some code from a GitHub repository
-    sh &quot;REPO_NAME=bsg-ucsf svn co svn+ssh://subversion.assembla.com/trunks/islj&quot;
+  stage(&apos;Preparation&apos;) {
+    if (isUnix()) {
+      sh &quot;REPO_NAME=bsg-ucsf svn co svn+ssh://subversion.assembla.com/trunks/islj&quot;
+    }
   }
   stage(&apos;Build&apos;) {
     if (isUnix()) {
       sh &quot;cd ${WORKSPACE}/islj; ant -Dplatforms.Open_JDK_1.8.home=/usr/lib/jvm/java-8-openjdk-amd64 compile&quot;
-    } else {
-      echo &quot;you suck&quot;
     }
   }
   stage(&apos;Execute&apos;) {
@@ -41,13 +35,16 @@
     }
   }
   stage(&apos;Test&apos;) {
-      EXPDIR = sh (returnStdout: true, script: &apos;cd ${WORKSPACE}/islj; ls -d 201?-??-??-*&apos;).trim()
-      r &quot;library(methods); source(\&quot;~/local/scripts/LOPAnalysis.R\&quot;); source(\&quot;~/local/scripts/distance.R\&quot;); lop &lt;- read.LOP(path=\&quot;${WORKSPACE}/islj/${EXPDIR}\&quot;,ref.pattern=\&quot;datModel\&quot;); calcSimilarity(lop);&quot;
-      sh &quot;rm -rf ${WORKSPACE}/islj/${EXPDIR}&quot;
+      if (isUnix()) {
+        EXPDIR = sh (returnStdout: true, script: &apos;cd ${WORKSPACE}/islj; ls -d 201?-??-??-*&apos;).trim()
+        r &quot;library(methods); source(\&quot;~/local/scripts/LOPAnalysis.R\&quot;); source(\&quot;~/local/scripts/distance.R\&quot;); lop &lt;- read.LOP(path=\&quot;${WORKSPACE}/islj/${EXPDIR}\&quot;,ref.pattern=\&quot;datModel\&quot;); calcSimilarity(lop);&quot;
+        sh &quot;rm -rf ${WORKSPACE}/islj/${EXPDIR}&quot;
+      }
   }
 }</script>
     <sandbox>false</sandbox>
   </definition>
   <triggers/>
+  <authToken>uppish</authToken>
   <disabled>false</disabled>
 </flow-definition>

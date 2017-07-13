@@ -1,0 +1,77 @@
+Because Assembla does not allow post-commit hooks (at least with the free account we use), it is difficult to create an event-driven build workflow.  I experimented with a Github sync of the Assembla repos as well as polling.  Both of which were difficult due to Jenkins' credentials configuration.  Ι settled on a simpler solution consisting of a trigger URL set in Assembla's configuration, that pings a minimal HTTP server, that then triggers the Jenkins build.  I don't see a way to trigger the build directly without the HTTP server in between because Assembla's trigger URL doesn't (seem to) allow adding the Jenkins "crumb" as part of the URL.  Note that you set the trigger URL for the entire repository.  So, checkins to unrelated sub-directories will trigger a useless build.  C'est la vie.  In any case, here is a brief how-to.  When we move away from Assembla, we'll use a post-commit hook.
+
+1) Configure the Jenkins build (as shown in the jenkins-config.xml file.  And set the remote trigger toggle and input a trigger token.
+  1.1) Get the Jenkins crumb with a command like:
+
+$ wget -q --auth-no-challenge --user <username> --password "<password>" --output-document - 'http://localhost:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)'
+
+This outputs something like:
+
+Jenkins-Crumb:<long string>
+
+  1.2) Find out your Jenkins apikey by clicking on your name in the upper right, then "Configure", then "Show API Token".  This goes into the curl command.
+
+2) In Assembla, on the SVN:Settings page,  set the trigger url to:
+
+   http://<hostexternal>:<port>
+
+3) On the externally accessible host, launch a Bash script through xinetd.
+
+   3.1) Bash script:
+
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv http server in bash vvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+#!/bin/bash
+LOGFILE=/home/gepr/scripts/bash_httpd.log
+
+echo "["$(date "+%F %T %Z")"] $REMOTE_HOST " >> $LOGFILE
+x=0;
+while read I[$x] && [ ${#I[$x]} -gt 1 ]
+do
+    echo ${I[$x]} >> $LOGFILE
+    let "x = $x + 1"
+done
+echo "" >> $LOGFILE
+
+METHOD=$(echo ${I[0]} |cut -d" " -f1)
+REQUEST=$(echo ${I[0]} |cut -d" " -f2)
+HTTP_VERSION=$(echo ${I[0]} |cut -d" " -f3)
+if [ $METHOD = "GET" ]
+then
+  case "$REQUEST" in
+      "/") Message="Triggering Jenkins Build!"
+           curl -I -X POST http://<username>:<apikey>@localhost:8080/job/test/build?token=<trigger token> -H "Jenkins-Crumb:<long string>" >> $LOGFILE
+           echo "" >> $LOGFILE
+           ;;
+      /ping) Message="Pong!"
+           ;;
+      *) Message= "Error! Page not found header and content."
+         ;;
+  esac
+fi
+
+Message_Body="<html>$Message</html>"
+echo -e "HTTP/1.0 200 OK\nContent-Type: text/html\nContent-Length: ${#Message_Body}\n\n$Message_Body"
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   3.2) /etc/xinetd.d/bash_httpd
+
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv /etc/xinetd.d/bash_httpd vvvvvvvvvvvvvvvvvvvvvvvvvvvv
+service bash_httpd
+{
+    instances       = 2
+    log_type        = authpriv
+    log_on_success  = HOST PID DURATION USERID
+    log_on_failure  = HOST RECORD USERID
+    disable         = no
+    port            = <externally accessible port>
+    socket_type     = stream
+    protocol        = tcp
+    wait            = no
+    user            = gepr
+    server          = /home/gepr/scripts/bash_httpd.sh
+    server_args     = test
+    instances       = 1
+    type            = unlisted
+    only_from       = <assembla ip addresses> <local machine for debugging>
+}
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
