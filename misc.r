@@ -295,7 +295,7 @@ sumBandByLastTag <- function(dat, band) {
   inband <- dat[,colmatches]
 
   for (g in groups) {
-    gsum <- inband[,grep(g,colnames(inband))]
+    gsum <- inband[,grep(paste(":",g,sep=""),colnames(inband))]
     if (ncol(inband) > length(groups))
       gsum <- rowSums(gsum)
     if (exists("gsums")) gsums <- cbind(gsums,gsum)
