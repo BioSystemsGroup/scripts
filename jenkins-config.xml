@@ -17,11 +17,12 @@
       <triggers/>
     </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
   </properties>
-  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.36">
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.36.1">
     <script>node {
   stage(&apos;Preparation&apos;) {
     if (isUnix()) {
-      sh &quot;REPO_NAME=bsg-ucsf svn co svn+ssh://subversion.assembla.com/trunks/islj&quot;
+      //sh &quot;REPO_NAME=bsg-ucsf svn co svn+ssh://subversion.assembla.com/trunks/islj&quot;
+      sh &quot;svn co --username gepr_github_export --password <passwordgoeshere> https://subversion.assembla.com/svn/bsg-ucsf/trunks/islj&quot;
     }
   }
   stage(&apos;Build&apos;) {

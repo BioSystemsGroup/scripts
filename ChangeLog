@@ -1,3 +1,7 @@
+2017-07-27-13:51  gepr  <gepr@tempusdictum.com>
+
+	* jenkins-config.xml: SSH key pair doesn't work when jenkins is started by crontab.  Adding --username --password flags to svn checkout command.
+
 2017-07-14-14:46  gepr  <gepr@tempusdictum.com>
 
 	* misc.r (sumBandByLastTag): Bit by simple grep pattern again.  Prepend ":" to the Solute name so as to avoid conflating APAP and PAP.
