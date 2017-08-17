@@ -1,3 +1,7 @@
+2017-08-16-17:22  gepr  <gepr@tempusdictum.com>
+
+	* listen3 (run/outFract): Change the name of the file to test for and monitor from "run-" to "outFract-", in response to the change where we output all 3 profile measures "outFract", "doseFract", and "extRatio".
+
 2017-07-27-13:51  gepr  <gepr@tempusdictum.com>
 
 	* jenkins-config.xml: SSH key pair doesn't work when jenkins is started by crontab.  Adding --username --password flags to svn checkout command.
