@@ -23,7 +23,7 @@ setClass("LOPsimilarity", representation("list"))
 # 4)this function returns an object of class "LOP"
 ##--------------------------------------------------------------------------------
 read.LOP <-
-  function(run.fnames, run.pattern="run",
+  function(run.fnames, run.pattern="outFract",
            ref.fname="reference.csv", ref.pattern="reference",
            path=".",
            ...)

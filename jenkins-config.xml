@@ -22,7 +22,7 @@
   stage(&apos;Preparation&apos;) {
     if (isUnix()) {
       //sh &quot;REPO_NAME=bsg-ucsf svn co svn+ssh://subversion.assembla.com/trunks/islj&quot;
-      sh &quot;svn co --username gepr_github_export --password <passwordgoeshere> https://subversion.assembla.com/svn/bsg-ucsf/trunks/islj&quot;
+      sh &quot;svn co --username gepr_github_export --password \&quot;I need 1 account for github exports.\&quot; https://subversion.assembla.com/svn/bsg-ucsf/trunks/islj&quot;
     }
   }
   stage(&apos;Build&apos;) {
@@ -33,12 +33,16 @@
   stage(&apos;Execute&apos;) {
     if (isUnix()) {
       sh &quot;cd ${WORKSPACE}/islj; ./bin/run.sh; ant -Dplatforms.Open_JDK_1.8.home=/usr/lib/jvm/java-8-openjdk-amd64 clean&quot;
+      EXPDIR = sh (returnStdout: true, script: &apos;cd ${WORKSPACE}/islj; ls -d 201?-??-??-*&apos;).trim()
     }
   }
   stage(&apos;Test&apos;) {
       if (isUnix()) {
-        EXPDIR = sh (returnStdout: true, script: &apos;cd ${WORKSPACE}/islj; ls -d 201?-??-??-*&apos;).trim()
         r &quot;library(methods); source(\&quot;~/local/scripts/LOPAnalysis.R\&quot;); source(\&quot;~/local/scripts/distance.R\&quot;); lop &lt;- read.LOP(path=\&quot;${WORKSPACE}/islj/${EXPDIR}\&quot;,ref.pattern=\&quot;datModel\&quot;); calcSimilarity(lop);&quot;
+      }
+  }
+  stage(&apos;Cleanup&apos;) {
+      if (isUnix()) {
         sh &quot;rm -rf ${WORKSPACE}/islj/${EXPDIR}&quot;
       }
   }

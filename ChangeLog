@@ -1,3 +1,8 @@
+2017-08-17-14:07  gepr  <gepr@tempusdictum.com>
+
+	* jenkins-config.xml: Move EXPDIR variable defn to the Execute stage and create a new stage (Cleanup) for removing the output directory.
+	* LOPAnalysis.R (read.LOP): Change default run.pattern from "run" to "outFract".
+
 2017-08-16-17:22  gepr  <gepr@tempusdictum.com>
 
 	* listen3 (run/outFract): Change the name of the file to test for and monitor from "run-" to "outFract-", in response to the change where we output all 3 profile measures "outFract", "doseFract", and "extRatio".
