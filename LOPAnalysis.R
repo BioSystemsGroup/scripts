@@ -2,6 +2,7 @@
 # LOP: Liver Outflow Profile class
 # methods for this class include:
 # plot, smoothing, points, scattermatrix, profile.test, tail.test, calcSimilarity
+# Author: Yuanyuan Xiao
 ###------------------------------------------------------------------------------
 setClass("LOP", representation("list"))
 
