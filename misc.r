@@ -12,6 +12,12 @@
 #########################################
 
 #########################################
+## a function to apply is.nan() and is.infinite to data.frames
+## e.g.: df[is.nan(df)] <- 0.0
+is.nan.data.frame <- function(x) do.call(cbind, lapply(x, is.nan))
+is.infinite.data.frame <- function(x) do.call(cbind, lapply(x, is.infinite))
+
+#########################################
 ## centered moving average
 require(stats)
 ma.cent <- function(x, n=5) {

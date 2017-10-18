@@ -3,7 +3,7 @@ proc=$1
 stat=$(ps -p $proc)
 while (( $? == 0 ))
 do
-  file=$(ls -ltra logs/outFract-*.csv |tail -n 1 |awk '{print $9}')
+  file=$(ls -ltra logs/rawOutput-*.csv |tail -n 1 |awk '{print $9}')
   mem=$(ps aux|grep $proc|grep java|awk '{print $5/(1024^2), $6/(1024^2)}')
   time=$(tail -n 1 $file|awk -F',' '{print $1}')
   echo $file $mem $time

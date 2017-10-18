@@ -1,3 +1,9 @@
+2017-10-18-16:45  gepr  <gepr@tempusdictum.com>
+
+	* misc.r (is.nan.data.frame(), is.infinite.data.frame()): New functions for easily replacing NaNs and Infs in data frames.
+	* listen3 (stat): Monitor new file rawOutput-????.csv instead of old outFract-????.csv.
+	* cmp-movavg.r: Turn off plotting individual data points as default.  Only plot moving avg.
+
 2017-08-17-14:07  gepr  <gepr@tempusdictum.com>
 
 	* jenkins-config.xml: Move EXPDIR variable defn to the Execute stage and create a new stage (Cleanup) for removing the output directory.

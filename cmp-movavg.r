@@ -4,11 +4,11 @@
 ##
 # Read multiple *.csv files and plot each column vs the 1st.
 #
-# Time-stamp: <2017-03-24 15:18:10 gepr>
+# Time-stamp: <2017-09-27 09:54:58 gepr>
 #
 #dev.off()
 
-plot.data <- TRUE
+plot.data <- FALSE
 
 source("~/R/misc.r")
 
@@ -90,7 +90,7 @@ for (column in columns[2:length(columns)]) {
   if (skip) next  # skip columns that don't exist in all files
 
   print(paste("Working on",column,"..."))
-  fileName <- paste("graphics/", fileName.base, "-", column, 
+  fileName <- paste("graphics/", fileName.base, "-", column,
   ifelse(plot.data, "-wd", ""), expnames, ".png", sep="")
    png(fileName, width=1600, height=1600)
 ##  ifelse(plot.data, "-wd", ""), expnames, ".svg", sep="")
