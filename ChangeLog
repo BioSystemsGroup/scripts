@@ -1,3 +1,9 @@
+2017-11-06-11:01  gepr  <gepr@tempusdictum.com>
+
+	* plot-cols.r (fileName.base): Remove regexpr option to slice off fileName.base after a '-' character.  This allows hsolute plots to contain the d[PC]V∈[x,y) suffix in the output PNG filename.
+	(plot titles): Use the fileName.base as the plot title to provide more information for each plot.
+	* misc.r (avgByColumn()): Remove attempts to slice off the Time column.
+
 2017-10-18-16:45  gepr  <gepr@tempusdictum.com>
 
 	* misc.r (is.nan.data.frame(), is.infinite.data.frame()): New functions for easily replacing NaNs and Infs in data frames.

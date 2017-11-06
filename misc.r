@@ -348,7 +348,6 @@ avgByColumn <- function(allfiles) {
       totals <- tdat
     } else {
       ## slice off Time
-      totals <- totals[,2:ncol(totals)]
       tdat <- tdat[,2:ncol(tdat)]
       ## pad with any missing columns
       totals <- pad1stColumns(totals, tdat)
@@ -356,7 +355,7 @@ avgByColumn <- function(allfiles) {
       ## sort both before adding
       totals <- totals[, order(names(totals))]
       tpad <- tpad[, order(names(tpad))]
-      totals <- totals[,2:ncol(totals)] + tpad[,2:ncol(tpad)]
+      totals <- totals + tpad
     }
 
     setTxtProgressBar(pb,tNdx); ## progress bar
@@ -366,7 +365,7 @@ avgByColumn <- function(allfiles) {
 
   setTxtProgressBar(pb,tNdx); ## progress bar
 
-  totals <- totals[,2:length(totals)]/length(allfiles)
+  totals <- totals/length(allfiles)
   totals <- cbind(time,totals)
   colnames(totals)[1] <- "Time"
 
