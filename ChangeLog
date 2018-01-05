@@ -1,3 +1,8 @@
+2018-01-05-10:42  gepr  <gepr@tempusdictum.com>
+
+	* cmp-movavg.r: Add the ability to operate over sub-directories by using the basename of the various input files.
+	Replace print statements with the txtProgressBar.
+
 2017-11-10-11:51  gepr  <gepr@tempusdictum.com>
 
 	* jsd.r: Similarity measure using Jensen-Shannon Divergence.
