@@ -1,3 +1,7 @@
+2018-01-23-16:53  gepr  <gepr@tempusdictum.com>
+
+	* misc.r (sumBandByLastTag()): Append "$" to the search string so a search for "G" doesn't match both "G " and "GSH_...".
+
 2018-01-05-10:42  gepr  <gepr@tempusdictum.com>
 
 	* cmp-movavg.r: Add the ability to operate over sub-directories by using the basename of the various input files.

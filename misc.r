@@ -1,4 +1,6 @@
 #########################################
+## Time-stamp: <2018-01-23 16:54:26 gepr>
+##
 ## Define the following functions:
 ## ma.cent, ma.left: moving averages centered and left
 ## minor.tick: add minor tickmarks to a plot
@@ -8,7 +10,6 @@
 ## insertRow: inserts a row of zeros into a data.frame
 ## pad1stcolumns: pads the 1st DF with new columns from the 2nd
 ##
-## Time-stamp: <2017-02-08 09:15:37 gepr>
 #########################################
 
 #########################################
@@ -301,7 +302,8 @@ sumBandByLastTag <- function(dat, band) {
   inband <- dat[,colmatches]
 
   for (g in groups) {
-    gsum <- inband[,grep(paste(":",g,sep=""),colnames(inband))]
+    ## note the "$" in the grep() call delimits the search string (without it, a grep for "G" finds both "G" and "GSH_..."
+    gsum <- inband[,grep(paste(":",g,"$",sep=""),colnames(inband))]
     if (ncol(inband) > length(groups))
       gsum <- rowSums(gsum)
     if (exists("gsums")) gsums <- cbind(gsums,gsum)
