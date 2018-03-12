@@ -1,3 +1,7 @@
+2018-03-12-14:28  gepr  <gepr@tempusdictum.com>
+
+	* ntsnaps.r: Use clearer file names.  Also create the animation.
+
 2018-03-12-10:08  gepr  <gepr@tempusdictum.com>
 
 	* ntsnaps.r: Render necrosis trigger snapshots, in the form of matrices with elements ∈ {0,1,2} as black, gray, and white.  Use ImageMagick's "convert" to scale the pixel-sized image up to something visible.
