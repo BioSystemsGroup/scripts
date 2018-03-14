@@ -1,3 +1,7 @@
+2018-03-14-12:45  gepr  <gepr@tempusdictum.com>
+
+	* ntvscv.r: New script to create a barplot of aHPC necTrigs versus mean dCV. Operates on an output of nectrig-inband.r (originally committed to ^/branches/islj-hepn).
+
 2018-03-12-14:28  gepr  <gepr@tempusdictum.com>
 
 	* ntsnaps.r: Use clearer file names.  Also create the animation.
