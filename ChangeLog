@@ -1,3 +1,11 @@
+2018-04-05-11:23  gepr  <gepr@tempusdictum.com>
+
+	* ntsnaps.r: Set color map to grayscale.  Add ANIMATE parameter.
+
+2018-04-04-11:12  gepr  <gepr@tempusdictum.com>
+
+	* ntsnaps.r: Add an extra state.  Fix a transpose problem. Add temporary if-blocks for animating and/or using plot vs. save.image routines. Etc.  This produces shades of blue, which we'll turn into colors later.
+
 2018-03-14-12:45  gepr  <gepr@tempusdictum.com>
 
 	* ntvscv.r: New script to create a barplot of aHPC necTrigs versus mean dCV. Operates on an output of nectrig-inband.r (originally committed to ^/branches/islj-hepn).
