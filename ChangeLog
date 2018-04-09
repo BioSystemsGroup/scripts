@@ -1,3 +1,7 @@
+2018-04-09-14:09  gepr  <gepr@tempusdictum.com>
+
+	* ntsnaps.r: Add color.  Hack up a plot, axis ticks still not right.
+
 2018-04-05-11:23  gepr  <gepr@tempusdictum.com>
 
 	* ntsnaps.r: Set color map to grayscale.  Add ANIMATE parameter.
