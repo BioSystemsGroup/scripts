@@ -1,3 +1,12 @@
+2018-04-23-11:13  gepr  <gepr@tempusdictum.com>
+
+	* names.csv: Added a bunch of deity names from different cultures. Added an index.
+
+2018-04-23-10:34  gepr  <gepr@tempusdictum.com>
+
+	* plot-cols.r: Plot with larger bullet (• instead of ·).
+	* names.csv: Potential database for automatic release naming.
+
 2018-04-09-14:09  gepr  <gepr@tempusdictum.com>
 
 	* ntsnaps.r: Add color.  Hack up a plot, axis ticks still not right.
