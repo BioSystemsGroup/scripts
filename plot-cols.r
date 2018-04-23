@@ -1,11 +1,10 @@
 #! /usr/bin/Rscript
 
+###
+## Read multiple *.csv files and plot each column.
 ##
-# Read multiple *.csv files and plot each column.
-#
-# Time-stamp: <2017-11-05 08:46:46 gepr>
-#
-#dev.off()
+## Time-stamp: <2018-04-23 10:34:40 gepr>
+##
 
 #########################################
 ## define the moving average functions
@@ -28,9 +27,9 @@ if (length(argv) < 1) {
     quit()
 }
 
-#
-# test for and create graphics subdirectory
-#
+###
+## test for and create graphics subdirectory
+###
 if (!file.exists("graphics")) dir.create("graphics")
 
 for (f in argv) {
@@ -54,7 +53,7 @@ print(fileName.base)
     png(paste("graphics/",fileName.base,"-", column,".png",sep=""), width=1600, height=1600)
     par(cex=2, lwd=3, mar=c(5,6,4,2), cex.main=3, cex.axis=2, cex.lab=2)
 
-    plot(Time,pch="·", dat[[column]], ylab=column)
+    plot(Time,pch="•", dat[[column]], ylab=column)
     lines(dat.ma[[column]])
 
     grid()
