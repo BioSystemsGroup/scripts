@@ -1,3 +1,8 @@
+2018-04-24-10:47  gepr  <gepr@tempusdictum.com>
+
+	* usednames.csv: As names are used, they're moved from names.csv to this file.
+	* randname.sh: Script to take snapshots of the codebases.
+
 2018-04-23-12:51  gepr  <gepr@tempusdictum.com>
 
 	* names.csv: Added species prefixes, colors, and US cities.
