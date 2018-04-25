@@ -1,7 +1,12 @@
 #!/bin/bash
+LOGLEVEL=0
 snapdir="/home/gepr/gdrive/TDI:UCSF/TDI:UCSF-shared/analog-snapshots"
 LOGFILE="${snapdir}/snap.log"
 SRC_DIR=$(dirname ${BASH_SOURCE[0]})
+
+log() {
+  if (( LOGLEVEL > 0 )); then echo $1 >> ${LOGFILE}; fi
+}
 
 getName() {
   length=$(wc -l ${SRC_DIR}/names.csv)
@@ -10,7 +15,7 @@ getName() {
   line=$(sed "${rand}q;d" ${SRC_DIR}/names.csv)
   sed -i "/${line}/d" ${SRC_DIR}/names.csv
   echo "${line}" >> ${SRC_DIR}/usednames.csv
-  echo "Marking ${line} as used." >> ${LOGFILE}
+  log "Marking ${line} as used."
   line=$(echo ${line} | sed 's/ /_/g')
   echo "${line}"
 }
@@ -21,17 +26,22 @@ DATE=$(date +"%F")
 if ! test -e ${snapdir}; then mkdir -p ${snapdir}; fi
 cd ${snapdir}
 
+echo "${DATE} -- Starting snapshot script." >> ${LOGFILE}
 for sb in ${sandboxes}
 do
   # check it out
-  echo "Checking out ${sb}." >> ${LOGFILE}
+  log "Checking out ${sb}."
   svn co -q --username gepr_github_export --password "I need 1 account for github exports." https://subversion.assembla.com/svn/bsg-ucsf/${sb}
   # zip it up
   name=`getName`
-  echo "Zipping ${sb} into ${sb#*/}-${name}-${DATE}.zip." >> ${LOGFILE}
-  zip -qr9 ${sb#*/}-${name}-${DATE}.zip ${sb#*/}
-  echo "Removing temp ${sb#*/} directory." >> ${LOGFILE}
+  log "Zipping ${sb} into ${name}-${DATE}.zip."
+  zip -qr9 ${name}-${DATE}.zip ${sb#*/}
+  log "Removing temp ${sb#*/} directory."
   rm -rf ${sb#*/}
+  log "Checking for ${sb} sub-directories."
+  if ! test -e ${sb}; then mkdir -p ${sb}; fi
+  mv ${name}-${DATE}.zip ${sb}/
 done
-echo "Uploading to GDrive." >> ${LOGFILE}
-drive push -no-prompt
+log "Uploading to GDrive."
+/usr/local/go/bin/drive push -no-prompt >> ${LOGFILE} 2>&1
+echo "${DATE} -- Complete." >> ${LOGFILE}
