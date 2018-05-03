@@ -1,7 +1,14 @@
 #!/bin/bash
+
+###
+## Archive various parts of the Subversion repository.
+## Time-stamp: <2018-05-03 07:59:23 gepr>
+###
+
 LOGLEVEL=0
 snapdir="/home/gepr/gdrive/TDI:UCSF/TDI:UCSF-shared/analog-snapshots"
 LOGFILE="${snapdir}/snap.log"
+sandboxes="trunks/islj branches/islj-hepn branches/islj-ALTrelease branches/islj-ssf"
 SRC_DIR=$(dirname ${BASH_SOURCE[0]})
 
 log() {
@@ -20,7 +27,6 @@ getName() {
   echo "${line}"
 }
 
-sandboxes="trunks/islj branches/islj-hepn branches/islj-ALTrelease"
 DATE=$(date +"%F")
 
 if ! test -e ${snapdir}; then mkdir -p ${snapdir}; fi

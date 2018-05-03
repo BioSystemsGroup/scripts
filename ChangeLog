@@ -1,3 +1,8 @@
+2018-05-03-07:59  gepr  <gepr@tempusdictum.com>
+
+	* randname.sh: Add islj-ssf to the schedule. Add description and time stamp.
+	* names.csv, usednames.csv: Update after 1st iteration, moving the used names out of the main file.
+
 2018-04-25-15:37  gepr  <gepr@tempusdictum.com>
 
 	* randname.sh: Better logging, sub-directories for branches.
