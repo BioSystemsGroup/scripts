@@ -79,11 +79,16 @@ for (f in datafiles) {
 		svg(paste("graphics/",fileName.base,"-", column,".svg",sep=""))
 		#par(cex=2, lwd=3, mar=c(5,6,4,2), cex.main=3, cex.axis=2, cex.lab=2)
 		
-		plot(dat[[1]],pch="·", dat[[column]], xlab="Time", ylab=column)
+		# plot points
+		#plot(dat[[1]],pch="·", dat[[column]], xlab="Time", ylab=column)
 		#plot(Time,pch="·", dat[[column]], ylab=column)
 		
+		# plot lines
+		plot(dat[[1]], dat[[column]], type = "l", xlab="Time", ylab=column)
+		
+		# plot moving average as lines
 		if (mavg) {
-			lines(dat.ma[[column]])
+			lines(dat.ma[[column]], col = "red")
 		}
 
 		grid()

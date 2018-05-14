@@ -1,3 +1,8 @@
+2018-05-14  aks   <drandrewksmith@gmail.com>
+
+	* cmp-movavg.r: changed usage text to determine if this script or cmp-by-col.r failed when not enough arguments when calling compare-experiments.sh
+	* plot-vs-time.r: minor comment changes
+
 2018-05-03-07:59  gepr  <gepr@tempusdictum.com>
 
 	* randname.sh: Add islj-ssf to the schedule. Add description and time stamp.
