@@ -2,11 +2,12 @@
 ##
 # Read multiple *.csv files and plot each column vs the 1st.
 #
-# Time-stamp: <2018-01-03 17:09:46 gepr>
+# Time-stamp: <2018-05-16 09:58:08 gepr>
 #
 
 
-plot.data <- FALSE
+plot.data <- F
+plot.svg <- F
 
 source("~/R/misc.r")
 
@@ -52,7 +53,7 @@ for (f in argv) {
 
   raw[is.na(raw)] <- 0 # replace NAs with zeros?
 
-  ma <- apply(raw[,2:ncol(raw)], 2, ma.cent, n=301)
+  ma <- apply(raw[,2:ncol(raw)], 2, ma.cent, n=181)
   ma <- cbind(raw[,1], ma)
   colnames(ma)[1] <- colnames(raw)[1]
   data.ma[[filenum]] <- as.data.frame(ma)
@@ -95,16 +96,19 @@ for (column in columns[2:length(columns)]) {
   ##print(paste("Working on",column,"..."))
 
   fileName <- paste("graphics/", fileName.base, "-", column,
-                    ifelse(plot.data, "-wd", ""), expnames, ".png", sep="")
+                    ifelse(plot.data, "-wd", ""), expnames, sep="")
   if (nchar(fileName) > 255) {
     library(digest)
     fileName <- paste("graphics/", fileName.base, "-", column,
-                      ifelse(plot.data, "-wd", ""), digest(expnames), ".png", sep="")
+                      ifelse(plot.data, "-wd", ""), digest(expnames), sep="")
   }
 
-  png(fileName, width=1600, height=1600)
-##  ifelse(plot.data, "-wd", ""), expnames, ".svg", sep="")
-##   svg(fileName, width=10, height=10)
+  if (plot.svg) {
+    svg(paste(fileName,".svg",sep=""), width=10, height=10)
+  } else {
+    png(paste(fileName,".png",sep=""), width=1600, height=1600)
+  }
+
   # set margins and title, axis, and label font sizes
   par(mar=c(5,6,4,2), cex.main=2, cex.axis=2, cex.lab=2)
   par(mfrow=c(plot.rows,plot.cols))
@@ -117,7 +121,7 @@ for (column in columns[2:length(columns)]) {
     ma <- cbind(get(column.1), get(column))
     detach(df)
     colnames(ma) <- c(column.1, column)
-    plot(ma, main=titles[[ndx]], xlim=c(0,max.1), ylim=c(min.2,max.2)) ##, pch=NA)
+    plot(ma, main=titles[[ndx]], xlim=c(0,max.1), ylim=c(min.2,max.2), type="l") ##, pch=NA)
     ##lines(ma)
     ## if we're plotting original data, use points()
     if (plot.data) {
