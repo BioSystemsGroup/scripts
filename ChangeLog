@@ -1,3 +1,8 @@
+2018-05-22-12:19  gepr  <gepr@tempusdictum.com>
+
+	* plot-cols.r: Remove cut-n-paste definition of the moving average function and source() misc.r instead. Parameterize for plotting data as well as moving average and for PNG vs SVG.
+	* cmp-movavg.r: Parameterize SVG vs. PNG construction. Change plot type to lines by default.
+
 2018-05-14  aks   <drandrewksmith@gmail.com>
 
 	* cmp-movavg.r: changed usage text to determine if this script or cmp-by-col.r failed when not enough arguments when calling compare-experiments.sh

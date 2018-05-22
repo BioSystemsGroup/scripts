@@ -2,11 +2,11 @@
 ##
 # Read multiple *.csv files and plot each column vs the 1st.
 #
-# Time-stamp: <2018-05-16 09:58:08 gepr>
+# Time-stamp: <2018-05-22 11:25:55 gepr>
 #
 
 
-plot.data <- F
+plot.data <- T
 plot.svg <- F
 
 source("~/R/misc.r")
@@ -14,7 +14,7 @@ source("~/R/misc.r")
 argv <- commandArgs(TRUE)
 
 if (length(argv) < 2) {
-    print("Usage: cmp-movavg.r <analysis .csv file> <analysis .csv file")
+    print("Usage: cmp-movavg.r <analysis .csv file> <analysis .csv file>")
     print("  e.g. cmp-movavg.r x00[1-6]_body.csv y00[1-6]_hsolute-dCV.csv")
     print("Note that columns must match across all files.")
     quit()
