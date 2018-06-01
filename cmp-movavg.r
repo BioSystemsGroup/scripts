@@ -2,12 +2,13 @@
 ##
 # Read multiple *.csv files and plot each column vs the 1st.
 #
-# Time-stamp: <2018-05-22 11:25:55 gepr>
+# Time-stamp: <2018-06-01 09:55:07 gepr>
 #
 
 
 plot.data <- T
 plot.svg <- F
+ma.window <- 181
 
 source("~/R/misc.r")
 
@@ -53,14 +54,18 @@ for (f in argv) {
 
   raw[is.na(raw)] <- 0 # replace NAs with zeros?
 
-  ma <- apply(raw[,2:ncol(raw)], 2, ma.cent, n=181)
+  if (nrow(raw) < ma.window) {
+    ma.window.new <- nrow(raw)/4
+    cat("WARNING! MA Window of",ma.window,"is longer than series. Using window of",ma.window.new,"\n")
+    ma.window <- ma.window.new
+  }
+  ma <- apply(raw[,2:ncol(raw)], 2, ma.cent, n=ma.window)
   ma <- cbind(raw[,1], ma)
   colnames(ma)[1] <- colnames(raw)[1]
   data.ma[[filenum]] <- as.data.frame(ma)
 
   filenum <- filenum+1
 }
-
 ## assume all Time vectors are the same
 ## only plot columns from the 1st file, and that exist in all other files
 
@@ -85,7 +90,7 @@ for (column in columns[2:length(columns)]) {
   else refData <- data.ma
 
   for (df in refData) {
-    if (!is.element(column,colnames(df))) skip <- TRUE
+    if (!is.element(column,colnames(df)) || all(is.na(df[column]))) skip <- TRUE
     else {
       min.2 <- min(min.2, min(df[column], na.rm=TRUE), na.rm=TRUE)
       max.2 <- max(max.2, max(df[column], na.rm=TRUE), na.rm=TRUE)
@@ -112,7 +117,6 @@ for (column in columns[2:length(columns)]) {
   # set margins and title, axis, and label font sizes
   par(mar=c(5,6,4,2), cex.main=2, cex.axis=2, cex.lab=2)
   par(mfrow=c(plot.rows,plot.cols))
-
 
   # plot this column from all data sets
   ndx <- 1

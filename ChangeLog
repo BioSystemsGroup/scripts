@@ -1,3 +1,7 @@
+2018-06-01-10:35  gepr  <gepr@tempusdictum.com>
+
+	* cmp-movavg.r: Parameterize the moving average window. Add a test to skip series that only contain NA values (frequenetly the std dev column). Add a test, warning, and workaround for series shorter than the moving average window. The workaround divides the rows in the data by 4 and uses that.
+
 2018-05-22-12:19  gepr  <gepr@tempusdictum.com>
 
 	* plot-cols.r: Remove cut-n-paste definition of the moving average function and source() misc.r instead. Parameterize for plotting data as well as moving average and for PNG vs SVG.
