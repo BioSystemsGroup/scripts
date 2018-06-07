@@ -1,3 +1,7 @@
+2018-06-07-10:02  gepr  <gepr@tempusdictum.com>
+
+	* jsd.r: Update for the new practice of putting reduced data into the <exp>-analysis subdirectory.
+
 2018-06-01-10:35  gepr  <gepr@tempusdictum.com>
 
 	* cmp-movavg.r: Parameterize the moving average window. Add a test to skip series that only contain NA values (frequenetly the std dev column). Add a test, warning, and workaround for series shorter than the moving average window. The workaround divides the rows in the data by 4 and uses that.

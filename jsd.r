@@ -3,7 +3,7 @@
 ##
 # Calculate the Jensen-Shannon Divergences between two experiments.
 #
-# Time-stamp: <2017-11-10 11:49:36 gepr>
+# Time-stamp: <2018-06-07 10:00:04 gepr>
 ##
 
 TYPE <- c("body","extra","extRatio","hsolute-dCV∈[0,100)")
@@ -50,9 +50,11 @@ getjsd <- function(ts1, ts2) {
 }
 
 ## loop over TYPE
+prefix1 <- paste(exp1,"-analysis/",sep="")
+prefix2 <- paste(exp2,"-analysis/",sep="")
 for (t in TYPE) {
-  e1d <- read.csv(paste(exp1,"_",t,".csv",sep=""))
-  e2d <- read.csv(paste(exp2,"_",t,".csv",sep=""))
+  e1d <- read.csv(paste(prefix1, exp1,"_",t,".csv",sep=""))
+  e2d <- read.csv(paste(prefix2, exp2,"_",t,".csv",sep=""))
   scols <- intersect(colnames(e1d),colnames(e2d))
   scols <- scols[scols != "Time"] ## remove time
   ## loop over shared columns
