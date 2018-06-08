@@ -1,3 +1,7 @@
+2018-06-08-16:17  gepr  <gepr@tempusdictum.com>
+
+	* similarity.r: Initial port of Yuanyuan's distance.R to a more granular use, without the monolithic LOP class.
+
 2018-06-07-10:02  gepr  <gepr@tempusdictum.com>
 
 	* jsd.r: Update for the new practice of putting reduced data into the <exp>-analysis subdirectory.
