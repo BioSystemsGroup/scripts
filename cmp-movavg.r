@@ -2,7 +2,7 @@
 ##
 # Read multiple *.csv files and plot each column vs the 1st.
 #
-# Time-stamp: <2018-06-01 09:55:07 gepr>
+# Time-stamp: <2018-06-20 11:30:27 gepr>
 #
 
 
@@ -67,7 +67,6 @@ for (f in argv) {
   filenum <- filenum+1
 }
 ## assume all Time vectors are the same
-## only plot columns from the 1st file, and that exist in all other files
 
 columns <- colnames(data[[1]])
 column.1 <- columns[1]
@@ -96,7 +95,7 @@ for (column in columns[2:length(columns)]) {
       max.2 <- max(max.2, max(df[column], na.rm=TRUE), na.rm=TRUE)
     }
   }
-  if (skip) next  # skip columns that don't exist in all files
+  ##if (skip) next  # skip columns that don't exist in all files
 
   ##print(paste("Working on",column,"..."))
 
@@ -122,13 +121,20 @@ for (column in columns[2:length(columns)]) {
   ndx <- 1
   for (df in data.ma) {
     attach(df)
-    ma <- cbind(get(column.1), get(column))
+    if (exists(column)) {
+      zeroed <- F
+      ma <- cbind(get(column.1), get(column))
+    } else {
+      zeroed <- T
+      index <- get(column.1)
+      ma <- cbind(index, rep(0,length(index)))
+    }
     detach(df)
     colnames(ma) <- c(column.1, column)
     plot(ma, main=titles[[ndx]], xlim=c(0,max.1), ylim=c(min.2,max.2), type="l") ##, pch=NA)
     ##lines(ma)
     ## if we're plotting original data, use points()
-    if (plot.data) {
+    if (plot.data && !zeroed) {
       attach(data[[ndx]])
       dat <- cbind(get(column.1), get(column))
       detach(data[[ndx]])

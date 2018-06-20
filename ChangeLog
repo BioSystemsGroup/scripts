@@ -1,3 +1,7 @@
+2018-06-20-11:30  gepr  <gepr@tempusdictum.com>
+
+	* cmp-movavg.r: Add the ability to plot all columns from the 1st experiment, even if some of those columns don't exist in later experiment files.
+
 2018-06-08-16:17  gepr  <gepr@tempusdictum.com>
 
 	* similarity.r: Initial port of Yuanyuan's distance.R to a more granular use, without the monolithic LOP class.
