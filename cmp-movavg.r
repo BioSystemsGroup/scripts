@@ -56,6 +56,9 @@ for (f in argv) {
 
   if (nrow(raw) < ma.window) {
     ma.window.new <- nrow(raw)/4
+    if((nrow(raw) %% 2) == 0) {
+		  ma.window.new <- ma.window.new + 1
+	}
     cat("WARNING! MA Window of",ma.window,"is longer than series. Using window of",ma.window.new,"\n")
     ma.window <- ma.window.new
   }
