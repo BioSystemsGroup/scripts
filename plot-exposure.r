@@ -48,14 +48,16 @@ for (f in datafiles) {
 	## read data and process
 	dat <- read.csv(f)
 	dat.time <- dat[,1]
+	dat.tmp <- dat
 	
-	dat.mat <- diff(as.matrix(dat[,2:ncol(dat)]))
-	dat.mat <- Hcount*dat.mat
-	dat.tmp <- as.data.frame(dat.mat)
-	dat.tmp <- cbind(dat.time[-length(dat.time)],dat.mat)
-	colnames(dat.tmp) <- colnames(dat)
+	if (grepl("entries", fileName.base)) {
+		dat.mat <- diff(as.matrix(dat[,2:ncol(dat)]))
+		dat.tmp <- as.data.frame(dat.mat)
+		dat.tmp <- cbind(dat.time[-length(dat.time)],dat.mat)
+		colnames(dat.tmp) <- colnames(dat)
+	}
 	
-	#dat.tmp <- dat
+	dat.tmp <- Hcount*dat.tmp
 	dat.tmp[is.na(dat.tmp)] <- 0 # replace NAs with zeros
 	dat.ma <- apply(dat.tmp[,2:ncol(dat.tmp)], 2, ma.cent, n=dTime)
 	dat.ma <- cbind(dat.tmp[,1], dat.ma)
