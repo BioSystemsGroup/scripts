@@ -55,8 +55,8 @@ for (snap in argv) {
     ##par(mar=rep(0,4)) ## no margins!
     png(imFile ,width=640,height=480)
     plot(i, xlim=c(1,ncol(s)-1), ylim=c(nrow(s),1),
-         xlab="X", ylab="-Y", main=title,
-         asp="varying", interpolate=F, colorscale=cscale, rescale=F)
+         xlab="X", ylab="Y", main=title,
+         asp="varying", interpolate=F, colorscale=cscale, rescale=F, yaxt='n', xaxt='n')
     dev.off()
   }
   if (!PLOTTING) {
