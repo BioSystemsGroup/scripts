@@ -1,3 +1,7 @@
+2018-08-02-16:18  gepr  <gepr@tempusdictum.com>
+
+	* plot-exposure.r: Include the ability to plot the raw data as well as the moving average.
+
 2018-08-02-14:40  gepr  <gepr@tempusdictum.com>
 
 	* plot-exposure.r (usage): Only scale columns 2:ncol(dat.tmp).  I.e. don't scale Time by Hcount.
