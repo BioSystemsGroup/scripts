@@ -7,6 +7,8 @@
 
 argv <- commandArgs(T)
 plot.svg <- F
+WRITE_EXPOSURE <- F
+
 require(stats) # for statistics
 source("~/R/misc.r")
 
@@ -31,59 +33,65 @@ if (!file.exists("graphics")) dir.create("graphics")
 edata <- vector("list")
 
 for (f in datafiles) {
-	print(paste("Working on", f))
+   print(paste("Working on", f))
 
-	if (!file.exists(f)) {
-		print(paste(f,"doesn't exist."))
-		next
-	}
-	
-	## parse file name
-	seps <- gregexpr('/',f)[[1]] # get all the '/' locations
-	aftersep <- substr(f,seps[length(seps)]+1,nchar(f)) # get everything after the last '/'
-	expname <- substr(aftersep,0,regexpr('_',aftersep)-1)
-	compname <- substr(f,regexpr('_',f)+1,nchar(f))
-	fileName.base <- paste(expname,substr(compname, 0, regexpr('.csv', compname)-1),sep='-')
-	
-	## read data and process
-	dat <- read.csv(f)
-	dat.time <- dat[,1]
-	dat.tmp <- dat
-	
-	if (grepl("entries", fileName.base)) {
-		dat.mat <- diff(as.matrix(dat[,2:ncol(dat)]))
-		dat.tmp <- as.data.frame(dat.mat)
-		dat.tmp <- cbind(dat.time[-length(dat.time)],dat.mat)
-		colnames(dat.tmp) <- colnames(dat)
-	}
-	
-	dat.tmp <- Hcount*dat.tmp
-	dat.tmp[is.na(dat.tmp)] <- 0 # replace NAs with zeros
-	dat.ma <- apply(dat.tmp[,2:ncol(dat.tmp)], 2, ma.cent, n=dTime)
-	dat.ma <- cbind(dat.tmp[,1], dat.ma)
-	dat.ma <- as.data.frame(dat.ma)
-	colnames(dat.ma) <- colnames(dat)
+   if (!file.exists(f)) {
+      print(paste(f,"doesn't exist."))
+      next
+   }
 
-	attach(dat.ma)
-	for (column in colnames(dat)[2:ncol(dat)]) {
-		fileName <- paste("graphics/", fileName.base, "-", column, "-exposure",sep="")
-		if (plot.svg) {
-		svg(paste(fileName,".svg",sep=""), width=10, height=10)
-		} else {
-		png(paste(fileName,".png",sep=""), width=1600, height=1600)
-		}
+   ## parse file name
+   seps <- gregexpr('/',f)[[1]] # get all the '/' locations
+   aftersep <- substr(f,seps[length(seps)]+1,nchar(f)) # get everything after the last '/'
+   expname <- substr(aftersep,0,regexpr('_',aftersep)-1)
+   compname <- substr(f,regexpr('_',f)+1,nchar(f))
+   fileName.base <- paste(expname,substr(compname, 0, regexpr('.csv', compname)-1),sep='-')
 
-		par(cex=2, lwd=3, mar=c(5,6,4,2), cex.main=1, cex.axis=1, cex.lab=1)
+   ## read data and process
+   dat <- read.csv(f)
+   dat.time <- dat[,1]
+   dat.tmp <- dat
 
-		plot(Time, dat.ma[[column]], ylab=column, type="l")
-		#if (plot.data) points(dat[[column]], pch="·")
+   if (grepl("entries", fileName.base)) {
+      dat.mat <- diff(as.matrix(dat[,2:ncol(dat)]))
+      dat.tmp <- as.data.frame(dat.mat)
+      dat.tmp <- cbind(dat.time[-length(dat.time)],dat.mat)
+      colnames(dat.tmp) <- colnames(dat)
+   }
 
-		grid()
-		minor.tick(nx=5, ny=5, tick.ratio=0.5)
+   ##dat.tmp <- Hcount*dat.tmp
+   dat.tmp[,2:ncol(dat.tmp)] <- Hcount*dat.tmp[,2:ncol(dat.tmp)]
+   dat.tmp[is.na(dat.tmp)] <- 0 # replace NAs with zeros
+   dat.ma <- apply(dat.tmp[,2:ncol(dat.tmp)], 2, ma.cent, n=dTime)
+   dat.ma <- cbind(dat.tmp[,1], dat.ma)
+   dat.ma <- as.data.frame(dat.ma)
+   colnames(dat.ma) <- colnames(dat)
 
-		title(fileName.base)
-	}
-	detach(dat.ma)
+   if (WRITE_EXPOSURE) {
+     write.csv(dat,paste(expname,"-reduced/",fileName.base,"-exposure.csv",sep=""))
+     write.csv(dat.ma,paste(expname,"-reduced/",fileName.base,"-exposure-ma.csv",sep=""))
+   }
+
+   attach(dat.ma)
+   for (column in colnames(dat)[2:ncol(dat)]) {
+      fileName <- paste("graphics/", fileName.base, "-", column, "-exposure",sep="")
+      if (plot.svg) {
+      svg(paste(fileName,".svg",sep=""), width=10, height=10)
+      } else {
+      png(paste(fileName,".png",sep=""), width=1600, height=1600)
+      }
+
+      par(cex=2, lwd=3, mar=c(5,6,4,2), cex.main=1, cex.axis=1, cex.lab=1)
+
+      plot(Time, dat.ma[[column]], ylab=column, type="l")
+      #if (plot.data) points(dat[[column]], pch="·")
+
+      grid()
+      minor.tick(nx=5, ny=5, tick.ratio=0.5)
+
+      title(fileName.base)
+   }
+   detach(dat.ma)
 }
 
 quit()

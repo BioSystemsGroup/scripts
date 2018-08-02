@@ -1,3 +1,7 @@
+2018-08-02-14:40  gepr  <gepr@tempusdictum.com>
+
+	* plot-exposure.r (usage): Only scale columns 2:ncol(dat.tmp).  I.e. don't scale Time by Hcount.
+
 2018-06-20-11:30  gepr  <gepr@tempusdictum.com>
 
 	* cmp-movavg.r: Add the ability to plot all columns from the 1st experiment, even if some of those columns don't exist in later experiment files.
