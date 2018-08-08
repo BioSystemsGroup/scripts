@@ -90,6 +90,8 @@ for (f in datafiles) {
       minor.tick(nx=5, ny=5, tick.ratio=0.5)
 
       title(fileName.base)
+      
+      dev.off()
    }
    detach(dat.ma)
 }
