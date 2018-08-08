@@ -6,6 +6,7 @@
 ###
 
 argv <- commandArgs(T)
+plot.data <- F
 plot.svg <- F
 WRITE_EXPOSURE <- F
 
@@ -45,7 +46,7 @@ for (f in datafiles) {
    aftersep <- substr(f,seps[length(seps)]+1,nchar(f)) # get everything after the last '/'
    expname <- substr(aftersep,0,regexpr('_',aftersep)-1)
    compname <- substr(f,regexpr('_',f)+1,nchar(f))
-   fileName.base <- paste(expname,substr(compname, 0, regexpr('.csv', compname)-1),sep='-')
+   fileName.base <- paste(expname,substr(compname, 0, regexpr('.csv', compname)-1),sep='_')
 
    ## read data and process
    dat <- read.csv(f)
@@ -53,26 +54,26 @@ for (f in datafiles) {
    dat.tmp <- dat
 
    if (grepl("entries", fileName.base)) {
-      dat.mat <- diff(as.matrix(dat[,2:ncol(dat)]))
-      dat.tmp <- as.data.frame(dat.mat)
-      dat.tmp <- cbind(dat.time[-length(dat.time)],dat.mat)
-      colnames(dat.tmp) <- colnames(dat)
+     ## take the derivative
+     dat.dxdt <- diff(as.matrix(dat[,2:ncol(dat)]))
+     dat.tmp <- as.data.frame(dat.dxdt)
+     dat.tmp <- cbind(dat.time[-length(dat.time)],dat.dxdt)
+     colnames(dat.tmp) <- colnames(dat)
    }
 
-   ##dat.tmp <- Hcount*dat.tmp
    dat.tmp[,2:ncol(dat.tmp)] <- Hcount*dat.tmp[,2:ncol(dat.tmp)]
    dat.tmp[is.na(dat.tmp)] <- 0 # replace NAs with zeros
-   dat.ma <- apply(dat.tmp[,2:ncol(dat.tmp)], 2, ma.cent, n=dTime)
-   dat.ma <- cbind(dat.tmp[,1], dat.ma)
+   dat.dxdt <- as.data.frame(dat.tmp)
+   dat.ma <- apply(dat.dxdt[,2:ncol(dat.dxdt)], 2, ma.cent, n=dTime)
+   dat.ma <- cbind(dat.dxdt[,1], dat.ma)
    dat.ma <- as.data.frame(dat.ma)
    colnames(dat.ma) <- colnames(dat)
 
    if (WRITE_EXPOSURE) {
-     write.csv(dat,paste(expname,"-reduced/",fileName.base,"-exposure.csv",sep=""))
-     write.csv(dat.ma,paste(expname,"-reduced/",fileName.base,"-exposure-ma.csv",sep=""))
+     write.csv(dat.dxdt,paste(expname,"-reduced/",fileName.base,"-exposure.csv",sep=""),row.names=F)
+     write.csv(dat.ma,paste(expname,"-reduced/",fileName.base,"-exposure-ma.csv",sep=""),row.names=F)
    }
 
-   attach(dat.ma)
    for (column in colnames(dat)[2:ncol(dat)]) {
       fileName <- paste("graphics/", fileName.base, "-", column, "-exposure",sep="")
       if (plot.svg) {
@@ -83,8 +84,8 @@ for (f in datafiles) {
 
       par(cex=2, lwd=3, mar=c(5,6,4,2), cex.main=1, cex.axis=1, cex.lab=1)
 
-      plot(Time, dat.ma[[column]], ylab=column, type="l")
-      #if (plot.data) points(dat[[column]], pch="·")
+      plot(dat.ma[["Time"]], dat.ma[[column]], ylab=column, xlab="Time", type="l")
+      if (plot.data) points(dat.dxdt[[column]], pch="·")
 
       grid()
       minor.tick(nx=5, ny=5, tick.ratio=0.5)
@@ -93,7 +94,6 @@ for (f in datafiles) {
       
       dev.off()
    }
-   detach(dat.ma)
 }
 
 quit()
