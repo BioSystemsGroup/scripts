@@ -1,3 +1,14 @@
+2019-05-21-09:57  gepr  <gepr@tempusdictum.com>
+
+	* cmp-plot.r: Renamed from cmp-movavg.r because all plots will have the option for raw, MA+raw, MA-raw. This accompanies a commit in Assembla's Subversion removing the cmp-by-col.r script.
+	* cmp-movavg.r: Add sample.freq allowing plots to be created with only a subset of points.
+	Add command-line parameter to specify "raw" ≡ just the data, "data" ≡ MA+raw, or "nodata" ≡ MA-raw.
+	Prepend an extra dash in front of either the experiment names or the digest() for the output filename.
+
+2018-11-26-15:23  gepr  <gepr@tempusdictum.com>
+
+	* plot-hcounts.r: Script to create Hcount plots per d[CP]V.
+
 2018-08-02-16:40  gepr  <gepr@tempusdictum.com>
 
 	* plot-exposure.r: Fix fileName.base so that cmp-by-col.r captures the experiment name correctly.

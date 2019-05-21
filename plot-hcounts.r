@@ -1,13 +1,13 @@
 #! /usr/bin/Rscript
 ##
-## Plot the Hcounts as function of d[CP]V
+## Plot the cumulative, total over all trials, Hcounts as function of d[CP]V
 ##
-## Time-stamp: <2018-11-26 13:24:54 gepr>
+## Time-stamp: <2019-04-19 09:44:20 gepr>
 ##
 argv <- commandArgs(T)
 
-CUMSUM <- F
-BARPLOT <- F
+CUMSUM <- T
+BARPLOT <- T
 PLOT.SVG <- F
 
 exps <- argv

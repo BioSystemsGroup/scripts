@@ -8,7 +8,7 @@
 argv <- commandArgs(T)
 plot.data <- F
 plot.svg <- F
-WRITE_EXPOSURE <- F
+WRITE_EXPOSURE <- T
 
 require(stats) # for statistics
 source("~/R/misc.r")

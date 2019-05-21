@@ -2,11 +2,10 @@
 ##
 # Read multiple *.csv files and plot each column vs the 1st.
 #
-# Time-stamp: <2018-06-20 11:30:27 gepr>
+# Time-stamp: <2019-05-20 16:39:35 gepr>
 #
 
-
-plot.data <- T
+sample.freq <- 1
 plot.svg <- F
 ma.window <- 181
 
@@ -14,16 +13,18 @@ source("~/R/misc.r")
 
 argv <- commandArgs(TRUE)
 
-if (length(argv) < 2) {
-    print("Usage: cmp-movavg.r <analysis .csv file> <analysis .csv file>")
-    print("  e.g. cmp-movavg.r x00[1-6]_body.csv y00[1-6]_hsolute-dCV.csv")
+if (length(argv) < 3) {
+    print("Usage: cmp-plot.r <raw|data|nodata> <analysis .csv file> <analysis .csv file>")
+    print("  e.g. cmp-plot.r data x00[1-6]_body.csv y00[1-6]_hsolute-dCV.csv")
     print("Note that columns must match across all files.")
     quit()
 }
 
+data.status <- argv[1]
+files <- argv[-1]
 
 # determine # of plots
-nplots <- length(argv)
+nplots <- length(files)
 plot.cols <- round(sqrt(nplots))
 #plot.cols <- 2
 # add a new row if we rounded up
@@ -39,13 +40,13 @@ data <- vector("list")
 data.ma <- vector("list")
 titles <- vector("list")
 ## get component name from basename of 1st argument
-argv.basename <- basename(argv[1])
-compname <- substr(argv.basename,regexpr('_',argv.basename)+1,nchar(argv.basename))
+files.basename <- basename(files[1])
+compname <- substr(files.basename,regexpr('_',files.basename)+1,nchar(files.basename))
 fileName.base <- substr(compname, 0, regexpr('(_|.csv)', compname)-1)
 expnames <- ""
 print(fileName.base)
 filenum <- 1
-for (f in argv) {
+for (f in files) {
   nxtName <- substr(basename(f),0,regexpr('_',basename(f))-1)
   titles[[filenum]] <- nxtName
   expnames <- paste(expnames,nxtName,sep="-")
@@ -84,9 +85,16 @@ for (column in columns[2:length(columns)]) {
   min.2 <- Inf
   max.2 <- -1 # init max.2
 
-  ## if we're plotting the original data, use it for the dependent scale
-  if (plot.data) refData <- data
-  else refData <- data.ma
+  ## raw ≡ only raw data
+  ## nodata ≡ only moving average
+  ## data ≡ raw data + moving average
+  if (data.status == "data" || data.status == "raw") {
+    refData <- data
+    plot.data <- T
+  } else { # data.status == "nodata"
+    refData <- data.ma
+    plot.data <- F
+  }
 
   for (df in refData) {
     if (!is.element(column,colnames(df)) || all(is.na(df[column]))) skip <- TRUE
@@ -95,16 +103,15 @@ for (column in columns[2:length(columns)]) {
       max.2 <- max(max.2, max(df[column], na.rm=TRUE), na.rm=TRUE)
     }
   }
-  ##if (skip) next  # skip columns that don't exist in all files
 
   ##print(paste("Working on",column,"..."))
 
   fileName <- paste("graphics/", fileName.base, "-", column,
-                    ifelse(plot.data, "-wd", ""), expnames, sep="")
+                    ifelse(plot.data, "-wd", ""), "-", expnames, sep="")
   if (nchar(fileName) > 255) {
     library(digest)
     fileName <- paste("graphics/", fileName.base, "-", column,
-                      ifelse(plot.data, "-wd", ""), digest(expnames), sep="")
+                      ifelse(plot.data, "-wd", ""), "-", digest(expnames), sep="")
   }
 
   if (plot.svg) {
@@ -123,22 +130,31 @@ for (column in columns[2:length(columns)]) {
     attach(df)
     if (exists(column)) {
       zeroed <- F
-      ma <- cbind(get(column.1), get(column))
+      ma <- as.data.frame(cbind(get(column.1), get(column)))
     } else {
       zeroed <- T
       index <- get(column.1)
-      ma <- cbind(index, rep(0,length(index)))
+      ma <- as.data.frame(cbind(index, rep(0,length(index))))
     }
     detach(df)
     colnames(ma) <- c(column.1, column)
-    plot(ma, main=titles[[ndx]], xlim=c(0,max.1), ylim=c(min.2,max.2), type="l") ##, pch=NA)
-    ##lines(ma)
-    ## if we're plotting original data, use points()
     if (plot.data && !zeroed) {
       attach(data[[ndx]])
-      dat <- cbind(get(column.1), get(column))
+      dat <- as.data.frame(cbind(get(column.1), get(column)))
       detach(data[[ndx]])
-      points(dat[,1],dat[,2],pch="·")
+      colnames(dat) <- c(column.1, column)
+      plot(dat[ (row(dat)%%sample.freq)==0 ,1], dat[ (row(dat)%%sample.freq)==0 ,2],
+           main=titles[[ndx]],
+           xlab=colnames(dat)[1], ylab=colnames(dat)[2],
+           xlim=c(0,max.1), ylim=c(min.2,max.2),
+           type="p", pch="·")
+      if (data.status == "data") lines(ma[ (row(ma)%%sample.freq)==0 ,1], ma[ (row(ma)%%sample.freq)==0 ,2])
+    } else {
+      plot(ma[ (row(ma)%%sample.freq)==0 ,1], ma[ (row(ma)%%sample.freq)==0 ,2],
+           main=titles[[ndx]],
+           xlab=colnames(ma)[1], ylab=colnames(ma)[2],
+           xlim=c(0,max.1), ylim=c(min.2,max.2),
+           type="l") ##, pch=NA)
     }
     minor.tick(nx=5,ny=5)
 
