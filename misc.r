@@ -1,8 +1,10 @@
 #########################################
-## Time-stamp: <2018-01-23 16:54:26 gepr>
+## Time-stamp: <2019-05-22 11:04:28 gepr>
 ##
 ## Define the following functions:
+## %!in%: infix operator returns T ∀x∈X such that x∉Y.
 ## ma.cent, ma.left: moving averages centered and left
+## ma.check: if the window is too long, return a shorter odd window
 ## minor.tick: add minor tickmarks to a plot
 ## maxdPV: get the maximum dPV values from hsolute files
 ## snd: calculate and write sums and divisors for hsolutes
@@ -11,6 +13,11 @@
 ## pad1stcolumns: pads the 1st DF with new columns from the 2nd
 ##
 #########################################
+
+#########################################
+## infix operator to determine which members of the 1st operand are NOT members of the 2nd operand
+## i.e. return T ∀x∈X such that x∉Y.
+'%!in%' <- function(x,y)!('%in%'(x,y))
 
 #########################################
 ## a function to apply is.nan() and is.infinite to data.frames
@@ -23,15 +30,30 @@ is.infinite.data.frame <- function(x) do.call(cbind, lapply(x, is.infinite))
 require(stats)
 ma.cent <- function(x, n=5) {
   if (n%%2 == 0) {
-     print("A centered moving average should use an odd window.")
-     q("no")
+    print("A centered moving average should use an odd window.")
+    q("no")
   }
   filter(x,rep(1/n,n), sides=2)
 }
 #########################################
 ## leftward moving average
 ma.left <- function(x, n=5) {
-    filter(x,rep(1/n,n), sides=1)
+  filter(x,rep(1/n,n), sides=1)
+}
+#########################################
+## Check MA window and, if the given window is too long, return a dynamic odd MA window
+ma.check <- function(x, w=5) {
+  if (is.null(dim(x))) {
+    cat("Error! Argument must have non-zero number of rows.\n")
+    return(NaN)
+  }
+  w.new <- w
+  if (nrow(x) < w.new) {
+    w.new <- nrow(x)/4
+    w.new <- ifelse(w.new%%2 == 0, w.new-1, w.new)
+    cat("WARNING! MA Window of",w,"is longer than series. Using window of",w.new,"\n")
+  }
+  return(w.new)
 }
 
 #########################################

@@ -1,3 +1,8 @@
+2019-05-22-10:39  gepr  <gepr@tempusdictum.com>
+
+	* misc.r: Add %!in% function.
+	Add ma.check() to check the moving average window against the input data. If it's too long, return an odd valued shorter window.
+
 2019-05-21-09:57  gepr  <gepr@tempusdictum.com>
 
 	* cmp-plot.r: Renamed from cmp-movavg.r because all plots will have the option for raw, MA+raw, MA-raw. This accompanies a commit in Assembla's Subversion removing the cmp-by-col.r script.
