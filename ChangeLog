@@ -1,3 +1,8 @@
+2019-06-18-14:14  gepr  <gepr@tempusdictum.com>
+
+	* cmp-plot-gg.r: New script to use ggplot() instead of the standard plotting functions.
+	* cmp-plot.r: Updated to either use.frames (T) or not (F).
+
 2019-05-22-10:39  gepr  <gepr@tempusdictum.com>
 
 	* misc.r: Add %!in% function.

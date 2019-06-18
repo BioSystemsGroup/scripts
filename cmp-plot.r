@@ -2,12 +2,13 @@
 ##
 # Read multiple *.csv files and plot each column vs the 1st.
 #
-# Time-stamp: <2019-05-20 16:39:35 gepr>
+# Time-stamp: <2019-06-17 11:29:22 gepr>
 #
 
 sample.freq <- 1
-plot.svg <- F
+plot.svg <- T
 ma.window <- 181
+use.frames <- F
 
 source("~/R/misc.r")
 
@@ -23,13 +24,15 @@ if (length(argv) < 3) {
 data.status <- argv[1]
 files <- argv[-1]
 
-# determine # of plots
-nplots <- length(files)
-plot.cols <- round(sqrt(nplots))
-#plot.cols <- 2
-# add a new row if we rounded up
-plot.rows <- ifelse(plot.cols >= sqrt(nplots), plot.cols, plot.cols+1)
-#plot.rows <- 4
+if (use.frames) {
+  ## determine # of plot frames
+  nplots <- length(files)
+  plot.cols <- round(sqrt(nplots))
+  ##plot.cols <- 2
+  ## add a new row if we rounded up
+  plot.rows <- ifelse(plot.cols >= sqrt(nplots), plot.cols, plot.cols+1)
+  ##plot.rows <- 4
+}
 
 #
 # test for and create graphics subdirectory
@@ -44,7 +47,7 @@ files.basename <- basename(files[1])
 compname <- substr(files.basename,regexpr('_',files.basename)+1,nchar(files.basename))
 fileName.base <- substr(compname, 0, regexpr('(_|.csv)', compname)-1)
 expnames <- ""
-print(fileName.base)
+cat(paste(fileName.base,'\n'))
 filenum <- 1
 for (f in files) {
   nxtName <- substr(basename(f),0,regexpr('_',basename(f))-1)
@@ -68,7 +71,6 @@ for (f in files) {
   filenum <- filenum+1
 }
 ## assume all Time vectors are the same
-
 columns <- colnames(data[[1]])
 column.1 <- columns[1]
 max.1 <- max(data[[1]][column.1])
@@ -120,13 +122,26 @@ for (column in columns[2:length(columns)]) {
     png(paste(fileName,".png",sep=""), width=1600, height=1600)
   }
 
-  # set margins and title, axis, and label font sizes
-  par(mar=c(5,6,4,2), cex.main=2, cex.axis=2, cex.lab=2)
-  par(mfrow=c(plot.rows,plot.cols))
+  ## set margins and title, axis, and label font sizes
+  ##   format is c(bottom, left, top, right)
+  if (use.frames) {
+    par(mar=c(5,6,4,2), cex.main=2, cex.axis=2, cex.lab=2)
+    par(mfrow=c(plot.rows,plot.cols))
+  } else {
+    ## place the right margin 1 unit for each of the characters +  units for the line
+    right.margin <- max(nchar(titles)) + ifelse(plot.svg, -3, 6)
+    par(mar=c(5,6,4,right.margin), cex.main=2, cex.axis=2, cex.lab=2)
+  }
 
+  datnames <- c()
+  datcolors <- c()
+  datltys <- numeric()
   # plot this column from all data sets
   ndx <- 1
   for (df in data.ma) {
+    datcolors[ndx] <- ndx+1
+    datnames[ndx] <- titles[[ndx]]
+    datltys[ndx] <- 1
     attach(df)
     if (exists(column)) {
       zeroed <- F
@@ -143,24 +158,49 @@ for (column in columns[2:length(columns)]) {
       dat <- as.data.frame(cbind(get(column.1), get(column)))
       detach(data[[ndx]])
       colnames(dat) <- c(column.1, column)
-      plot(dat[ (row(dat)%%sample.freq)==0 ,1], dat[ (row(dat)%%sample.freq)==0 ,2],
-           main=titles[[ndx]],
-           xlab=colnames(dat)[1], ylab=colnames(dat)[2],
-           xlim=c(0,max.1), ylim=c(min.2,max.2),
-           type="p", pch="·")
-      if (data.status == "data") lines(ma[ (row(ma)%%sample.freq)==0 ,1], ma[ (row(ma)%%sample.freq)==0 ,2])
+      if (use.frames || ndx == 1) {
+        mainTitle <- ifelse(use.frames, titles[[ndx]], fileName.base)
+        plot(dat[ (row(dat)%%sample.freq)==0 ,1], dat[ (row(dat)%%sample.freq)==0 ,2],
+             main=mainTitle,
+             xlab=colnames(dat)[1], ylab=colnames(dat)[2],
+             xlim=c(0,max.1), ylim=c(min.2,max.2),
+             type="p",
+             col=datcolors[ndx],
+             pch="·")
+      } else {
+        points(dat[ (row(dat)%%sample.freq)==0 ,1], dat[ (row(dat)%%sample.freq)==0 ,2],
+               pch="·",
+               col=datcolors[ndx])
+      }
+      if (data.status == "data") lines(ma[ (row(ma)%%sample.freq)==0 ,1], ma[ (row(ma)%%sample.freq)==0 ,2],
+                                       col=datcolors[ndx])
     } else {
-      plot(ma[ (row(ma)%%sample.freq)==0 ,1], ma[ (row(ma)%%sample.freq)==0 ,2],
-           main=titles[[ndx]],
-           xlab=colnames(ma)[1], ylab=colnames(ma)[2],
-           xlim=c(0,max.1), ylim=c(min.2,max.2),
-           type="l") ##, pch=NA)
+      if (use.frames || ndx == 1) {
+        mainTitle <- ifelse(use.frames, titles[[ndx]], fileName.base)
+        plot(ma[ (row(ma)%%sample.freq)==0 ,1], ma[ (row(ma)%%sample.freq)==0 ,2],
+             main=mainTitle,
+             xlab=colnames(ma)[1], ylab=colnames(ma)[2],
+             xlim=c(0,max.1), ylim=c(min.2,max.2),
+             type="l",
+             col=datcolors[ndx]
+             )#, pch=NA)
+      } else {
+        lines(ma[ (row(ma)%%sample.freq)==0 ,1], ma[ (row(ma)%%sample.freq)==0 ,2],
+              col=datcolors[ndx])
+      }
     }
     minor.tick(nx=5,ny=5)
 
     grid()
     ndx <- ndx+1
   }
+  if (!use.frames) {
+    par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 1), new = TRUE)
+    plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n")
+    fontSize <- ifelse(plot.svg, 0.8, 2)
+    legend("right", legend=datnames, col=datcolors, lty=datltys, cex=fontSize, bty="n", inset=c(0,0))
+  }
+
   setTxtProgressBar(pb,getTxtProgressBar(pb)+1)
 }
 
