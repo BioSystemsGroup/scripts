@@ -1,3 +1,7 @@
+2019-06-25-16:53  gepr  <gepr@tempusdictum.com>
+
+	* plot-graph.r: New script to plot an adjacency matrix.
+
 2019-06-18-14:14  gepr  <gepr@tempusdictum.com>
 
 	* cmp-plot-gg.r: New script to use ggplot() instead of the standard plotting functions.
