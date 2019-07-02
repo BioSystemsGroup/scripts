@@ -2,13 +2,13 @@
 ##
 # Read multiple *.csv files and plot each column vs the 1st.
 #
-# Time-stamp: <2019-06-18 14:11:21 gepr>
+# Time-stamp: <2019-07-02 10:54:39 gepr>
 #
 
 sample.freq <- 1
 plot.svg <- F
 ma.window <- 181
-use.frames <- T
+use.frames <- F
 
 library(ggplot2)
 library(grid)
@@ -147,7 +147,7 @@ for (column in columns[2:length(columns)]) {
     par(mar=c(bottom.margin, 6,4,2))
   }
 
-  colors = rainbow(filenum, s=.6, v=.9)[sample(1:filenum,filenum)] # random colors for that many files
+  colors = rainbow(filenum, s=0.6, v=0.9)[sample(1:filenum,filenum)] # random colors for that many files
 
   if (!use.frames) gg <- ggplot() # all series on 1 plot frame
   datnames <- c()
@@ -214,6 +214,7 @@ for (column in columns[2:length(columns)]) {
             panel.border = element_rect(linetype = "solid", colour = "black", fill=NA),
             legend.position="none"
             )
+      gg <- gg + scale_color_manual(values=rep("black",3))
       suppressWarnings(print(gg, vp = vplayout(grid.row, grid.col)))
 
       ## increment the grid indices ordered by row

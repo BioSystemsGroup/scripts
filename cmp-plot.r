@@ -2,13 +2,13 @@
 ##
 # Read multiple *.csv files and plot each column vs the 1st.
 #
-# Time-stamp: <2019-06-17 11:29:22 gepr>
+# Time-stamp: <2019-07-02 10:56:13 gepr>
 #
 
 sample.freq <- 1
-plot.svg <- T
+plot.svg <- F
 ma.window <- 181
-use.frames <- F
+use.frames <- T
 
 source("~/R/misc.r")
 
@@ -139,7 +139,7 @@ for (column in columns[2:length(columns)]) {
   # plot this column from all data sets
   ndx <- 1
   for (df in data.ma) {
-    datcolors[ndx] <- ndx+1
+    datcolors[ndx] <- ifelse(use.frames, "black", ndx+1)
     datnames[ndx] <- titles[[ndx]]
     datltys[ndx] <- 1
     attach(df)
