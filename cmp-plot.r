@@ -2,13 +2,13 @@
 ##
 # Read multiple *.csv files and plot each column vs the 1st.
 #
-# Time-stamp: <2019-07-02 10:56:13 gepr>
+# Time-stamp: <2019-08-16 16:28:02 gepr>
 #
 
 sample.freq <- 1
 plot.svg <- F
 ma.window <- 181
-use.frames <- T
+use.frames <- F
 
 source("~/R/misc.r")
 
@@ -173,7 +173,7 @@ for (column in columns[2:length(columns)]) {
                col=datcolors[ndx])
       }
       if (data.status == "data") lines(ma[ (row(ma)%%sample.freq)==0 ,1], ma[ (row(ma)%%sample.freq)==0 ,2],
-                                       col=datcolors[ndx])
+                                       col=datcolors[ndx],lwd=5)
     } else {
       if (use.frames || ndx == 1) {
         mainTitle <- ifelse(use.frames, titles[[ndx]], fileName.base)
@@ -181,12 +181,12 @@ for (column in columns[2:length(columns)]) {
              main=mainTitle,
              xlab=colnames(ma)[1], ylab=colnames(ma)[2],
              xlim=c(0,max.1), ylim=c(min.2,max.2),
-             type="l",
+             type="l", lwd=5,
              col=datcolors[ndx]
              )#, pch=NA)
       } else {
         lines(ma[ (row(ma)%%sample.freq)==0 ,1], ma[ (row(ma)%%sample.freq)==0 ,2],
-              col=datcolors[ndx])
+              col=datcolors[ndx],lwd=5)
       }
     }
     minor.tick(nx=5,ny=5)
@@ -198,7 +198,7 @@ for (column in columns[2:length(columns)]) {
     par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 1), new = TRUE)
     plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n")
     fontSize <- ifelse(plot.svg, 0.8, 2)
-    legend("right", legend=datnames, col=datcolors, lty=datltys, cex=fontSize, bty="n", inset=c(0,0))
+    legend("right", legend=datnames, col=datcolors, lty=datltys, lwd=5, cex=fontSize, bty="n", inset=c(0,0))
   }
 
   setTxtProgressBar(pb,getTxtProgressBar(pb)+1)
