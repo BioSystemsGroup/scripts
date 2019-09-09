@@ -1,3 +1,7 @@
+2019-09-09-10:46  glen e. p. ropella  <gepr@tempusdictum.com>
+
+	* plot-cols.r: Bring up to speed with recent cmp-plot.r improvements.
+
 2019-08-16    <gepr@tempusdictum.com>
 
 	* cmp-plot.r: Δ lwd to 5 to make them more visible in plots w/o frames.
