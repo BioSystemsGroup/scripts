@@ -4,7 +4,7 @@
 ## Derived from Yuanyuan Xiao's implementation of Dev Nag's paper, "Decomposition
 ## of Similarity Measures for Time Series Analysis", 2004.
 ##
-## Time-stamp: <2018-06-08 15:50:54 gepr>
+## Time-stamp: <2019-09-09 15:10:38 gepr>
 ###
 argv <- commandArgs(TRUE)
 
@@ -12,6 +12,7 @@ exp1 <- argv[1]
 exp2 <- argv[2]
 
 options(width=135)
+
 ###--------------------------------------------------------------------------
 ##                               peakID
 ## A function that disects an outflow profile into different segments:
@@ -226,8 +227,8 @@ calcSimilarity <- function(model, ref, logit=TRUE,
   return(D)
 }
 
-d1 <- read.csv(paste(exp1,"-analysis/",exp1,"_body.csv",sep=""))
-d2 <- read.csv(paste(exp2,"-analysis/",exp2,"_body.csv",sep=""))
+d1 <- read.csv(paste(exp1,"-reduced/",exp1,"_body-avg.csv",sep=""))
+d2 <- read.csv(paste(exp2,"-reduced/",exp2,"_body-avg.csv",sep=""))
 
 calcSimilarity(d1,d2,logit=F,similarity.funcs=smList)
 calcSimilarity(d1,d2,logit=F,similarity.funcs=DevsList)

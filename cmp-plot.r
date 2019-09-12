@@ -2,7 +2,7 @@
 ##
 # Read multiple *.csv files and plot each column vs the 1st.
 #
-# Time-stamp: <2019-08-16 16:28:02 gepr>
+# Time-stamp: <2019-09-12 16:54:27 gepr>
 #
 
 sample.freq <- 1
@@ -172,12 +172,14 @@ for (column in columns[2:length(columns)]) {
                pch="·",
                col=datcolors[ndx])
       }
-      if (data.status == "data") lines(ma[ (row(ma)%%sample.freq)==0 ,1], ma[ (row(ma)%%sample.freq)==0 ,2],
+##      if (data.status == "data") lines(ma[ (row(ma)%%sample.freq)==0 ,1], ma[ (row(ma)%%sample.freq)==0 ,2],
+      if (data.status == "data") lines(ma[ (row(ma)%%1)==0 ,1], ma[ (row(ma)%%1)==0 ,2],
                                        col=datcolors[ndx],lwd=5)
     } else {
       if (use.frames || ndx == 1) {
         mainTitle <- ifelse(use.frames, titles[[ndx]], fileName.base)
-        plot(ma[ (row(ma)%%sample.freq)==0 ,1], ma[ (row(ma)%%sample.freq)==0 ,2],
+##        plot(ma[ (row(ma)%%sample.freq)==0 ,1], ma[ (row(ma)%%sample.freq)==0 ,2],
+        plot(ma[ (row(ma)%%1)==0 ,1], ma[ (row(ma)%%1)==0 ,2],
              main=mainTitle,
              xlab=colnames(ma)[1], ylab=colnames(ma)[2],
              xlim=c(0,max.1), ylim=c(min.2,max.2),
@@ -185,7 +187,8 @@ for (column in columns[2:length(columns)]) {
              col=datcolors[ndx]
              )#, pch=NA)
       } else {
-        lines(ma[ (row(ma)%%sample.freq)==0 ,1], ma[ (row(ma)%%sample.freq)==0 ,2],
+##        lines(ma[ (row(ma)%%sample.freq)==0 ,1], ma[ (row(ma)%%sample.freq)==0 ,2],
+        lines(ma[ (row(ma)%%1)==0 ,1], ma[ (row(ma)%%1)==0 ,2],
               col=datcolors[ndx],lwd=5)
       }
     }

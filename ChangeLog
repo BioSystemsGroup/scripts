@@ -1,3 +1,9 @@
+2019-09-12-16:56  glen e. p. ropella  <gepr@tempusdictum.com>
+
+	* jsd2.r: Modified version of jsd.r to operate directly on files, rather than assuming the experiment directory structure.
+	* similarity.r: Update to use the new filename "body-avg.csv".
+	* cmp-plot.r: Don't use the sampling interval when computing the MA. The MA should be based on the raw data.
+
 2019-09-09-10:46  glen e. p. ropella  <gepr@tempusdictum.com>
 
 	* plot-cols.r: Bring up to speed with recent cmp-plot.r improvements.
