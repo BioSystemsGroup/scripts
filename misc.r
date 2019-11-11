@@ -1,5 +1,5 @@
 #########################################
-## Time-stamp: <2019-05-22 11:04:28 gepr>
+## Time-stamp: <2019-11-11 19:42:44 gepr>
 ##
 ## Define the following functions:
 ## %!in%: infix operator returns T ∀x∈X such that x∉Y.
@@ -331,9 +331,11 @@ sumBandByLastTag <- function(dat, band) {
     if (exists("gsums")) gsums <- cbind(gsums,gsum)
     else gsums <- gsum
   }
-  gsums <- cbind(dat[,1],gsums)
-  colnames(gsums) <- c("Time",groups)
 
+  if (length(gsums) >= 1) {
+    gsums <- cbind(dat[,1],gsums)
+    colnames(gsums) <- c("Time",groups)
+  }
   gsums
 }
 
