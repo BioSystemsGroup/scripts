@@ -9,7 +9,7 @@
 sample.freq <- 10
 ma.window <- 181
 plot.data <- F
-plot.svg <- T
+plot.svg <- F
 
 source("~/R/misc.r") # for moving average
 
@@ -68,6 +68,13 @@ cat(paste(fileName.base,"\n"))
   for (column in colnames(dat)[2:ncol(dat)]) {
     fileName <- paste("graphics/", fileName.base, "-", column,
                       ifelse(plot.data, "-wd", ""), sep="")
+    
+    ## if there are no values, skip this plot
+    if (all(is.na(dat[[column]]))) {
+        cat("All values are NA for",column,"Skipping the plot.\n")
+        next()
+    }
+    
     if (plot.svg) {
       svg(paste(fileName,".svg",sep=""), width=9, height=9)
       cex=1
@@ -87,13 +94,11 @@ cat(paste(fileName.base,"\n"))
       refData <- dat.ma
       plot.data <- F
     }
-    if (all(is.na(dat[[column]]))) {
-        cat("All values are NA for",column,"Skipping the plot.\n")
-        next()
-    }
     if (plot.data) {
+      pointsize <- ifelse(data.status == "raw", cex*2, cex)
+      if (data.status == "raw") pointsize <- cex*2
       plot( dat[ (row(dat)%%sample.freq)==0, 1], dat[ (row(dat)%%sample.freq)==0, column],
-           xlab=colnames(dat)[1], ylab=column, type="p", pch="·")
+           xlab=colnames(dat)[1], ylab=column, type="p", pch="·",cex=pointsize)
       if (data.status == "data")
         lines(dat.ma[ (row(dat.ma)%%sample.freq)==0, 1], dat.ma[ (row(dat.ma)%%sample.freq)==0, column], lwd=5)
     } else {
