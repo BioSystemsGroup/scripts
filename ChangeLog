@@ -1,3 +1,7 @@
+2019-11-16  gepr  <gepr@elf>
+
+	* plot-cols.r (usage): Fixed an exception where all values are NA for a given column.
+
 2019-11-11    <gepr@mia.c.ucsf-generic.internal>
 
 	* misc.r: Add test for nil results to avoid trying to set colnames when there is only the Time column available.

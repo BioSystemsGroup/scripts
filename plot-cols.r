@@ -87,7 +87,10 @@ cat(paste(fileName.base,"\n"))
       refData <- dat.ma
       plot.data <- F
     }
-
+    if (all(is.na(dat[[column]]))) {
+        cat("All values are NA for",column,"Skipping the plot.\n")
+        next()
+    }
     if (plot.data) {
       plot( dat[ (row(dat)%%sample.freq)==0, 1], dat[ (row(dat)%%sample.freq)==0, column],
            xlab=colnames(dat)[1], ylab=column, type="p", pch="·")
