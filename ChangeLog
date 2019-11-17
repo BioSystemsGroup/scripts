@@ -1,3 +1,8 @@
+2019-11-17    <gepr@mia.c.ucsf-generic.internal>
+
+	* plot-cols.r: Manually calculate the Y limits to handle both the cases where all observations are NA and where only 1 observation is not NA.
+	Add "maw", moving average window, to plot title when plotting the MA.
+
 2019-11-16  gepr  <gepr@elf>
 
 	* plot-cols.r: Don't generate empty files. And increase the point size if plot type is "raw".

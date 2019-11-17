@@ -3,7 +3,7 @@
 ###
 ## Read multiple *.csv files and plot each column.
 ##
-## Time-stamp: <2019-09-09 10:14:11 gepr>
+## Time-stamp: <2019-11-17 16:58:00 gepr>
 ##
 
 sample.freq <- 10
@@ -73,7 +73,7 @@ cat(paste(fileName.base,"\n"))
     if (all(is.na(dat[[column]]))) {
         cat("All values are NA for",column,"Skipping the plot.\n")
         next()
-    }
+    } 
     
     if (plot.svg) {
       svg(paste(fileName,".svg",sep=""), width=9, height=9)
@@ -94,21 +94,29 @@ cat(paste(fileName.base,"\n"))
       refData <- dat.ma
       plot.data <- F
     }
+    ## handle the case where there's only 1 value in the series
+    ylim <- c(min(0, refData, na.rm=T), max(refData,na.rm=T))
+
     if (plot.data) {
       pointsize <- ifelse(data.status == "raw", cex*2, cex)
       if (data.status == "raw") pointsize <- cex*2
       plot( dat[ (row(dat)%%sample.freq)==0, 1], dat[ (row(dat)%%sample.freq)==0, column],
-           xlab=colnames(dat)[1], ylab=column, type="p", pch="·",cex=pointsize)
+        ylim=ylim,
+        xlab=colnames(dat)[1], ylab=column, type="p", pch="·",cex=pointsize)
       if (data.status == "data")
         lines(dat.ma[ (row(dat.ma)%%sample.freq)==0, 1], dat.ma[ (row(dat.ma)%%sample.freq)==0, column], lwd=5)
     } else {
-      plot(Time, dat.ma[[column]], ylab=column, type="l")
+      plot(Time, dat.ma[[column]],
+      ylim=ylim,
+      ylab=column, type="l")
     }
 
     grid()
     minor.tick(nx=5, ny=5, tick.ratio=0.5)
 
-    title(fileName.base)
+    if (data.status == "raw") title(fileName.base)
+    else title(paste(fileName.base,", maw =",ma.window))
+
   }
   detach(dat)
 }
