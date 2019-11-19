@@ -1,3 +1,8 @@
+2019-11-19    <gepr@mia.c.ucsf-generic.internal>
+
+	* cmp-plot.r: Add test for a re-calculated MA window that turns out to be even.
+	Calculate the maximum for the X axis based on all data sets, rather than the first one.
+
 2019-11-17    <gepr@mia.c.ucsf-generic.internal>
 
 	* plot-cols.r: Manually calculate the Y limits to handle both the cases where all observations are NA and where only 1 observation is not NA.

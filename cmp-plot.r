@@ -2,7 +2,7 @@
 ##
 # Read multiple *.csv files and plot each column vs the 1st.
 #
-# Time-stamp: <2019-09-12 16:54:27 gepr>
+# Time-stamp: <2019-11-19 17:42:43 gepr>
 #
 
 sample.freq <- 1
@@ -60,6 +60,7 @@ for (f in files) {
 
   if (nrow(raw) < ma.window) {
     ma.window.new <- nrow(raw)/4
+    if (ma.window.new %% 2 == 0) ma.window.new <- ma.window.new -1
     cat("WARNING! MA Window of",ma.window,"is longer than series. Using window of",ma.window.new,"\n")
     ma.window <- ma.window.new
   }
@@ -73,7 +74,7 @@ for (f in files) {
 ## assume all Time vectors are the same
 columns <- colnames(data[[1]])
 column.1 <- columns[1]
-max.1 <- max(data[[1]][column.1])
+max.1 <- -1 # init max X axis
 
 pb <- txtProgressBar(min=0,max=length(columns),style=3)
 setTxtProgressBar(pb,1)
@@ -101,6 +102,7 @@ for (column in columns[2:length(columns)]) {
   for (df in refData) {
     if (!is.element(column,colnames(df)) || all(is.na(df[column]))) skip <- TRUE
     else {
+      max.1 <- max(max.1, max(df[column.1], na.rm=T), na.rm=T)
       min.2 <- min(min.2, min(df[column], na.rm=TRUE), na.rm=TRUE)
       max.2 <- max(max.2, max(df[column], na.rm=TRUE), na.rm=TRUE)
     }
