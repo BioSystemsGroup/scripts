@@ -2,7 +2,7 @@
 ##
 # Read multiple *.csv files and plot each column vs the 1st.
 #
-# Time-stamp: <2019-11-19 17:42:43 gepr>
+# Time-stamp: <2019-11-26 17:00:22 gepr>
 #
 
 sample.freq <- 1
@@ -44,7 +44,7 @@ data.ma <- vector("list")
 titles <- vector("list")
 ## get component name from basename of 1st argument
 files.basename <- basename(files[1])
-compname <- substr(files.basename,regexpr('_',files.basename)+1,nchar(files.basename))
+compname <- substr(files.basename,tail(gregexpr('_',files.basename)[[1]], n=1)+1,nchar(files.basename))
 fileName.base <- substr(compname, 0, regexpr('(_|.csv)', compname)-1)
 expnames <- ""
 cat(paste(fileName.base,'\n'))

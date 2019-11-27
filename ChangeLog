@@ -1,3 +1,7 @@
+2019-11-26-17:00  glen e. p. ropella  <gepr@tempusdictum.com>
+
+	* cmp-plot.r: Index for component name from the *last* underscore, not the first.
+
 2019-11-19    <gepr@mia.c.ucsf-generic.internal>
 
 	* cmp-plot.r: Add test for a re-calculated MA window that turns out to be even.
