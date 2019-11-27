@@ -2,7 +2,7 @@
 ##
 # Read multiple *.csv files and plot each column vs the 1st.
 #
-# Time-stamp: <2019-11-26 17:00:22 gepr>
+# Time-stamp: <2019-11-27 10:05:43 gepr>
 #
 
 sample.freq <- 1
@@ -42,6 +42,7 @@ if (!file.exists("graphics")) dir.create("graphics")
 data <- vector("list")
 data.ma <- vector("list")
 titles <- vector("list")
+maws <- vector("list")
 ## get component name from basename of 1st argument
 files.basename <- basename(files[1])
 compname <- substr(files.basename,tail(gregexpr('_',files.basename)[[1]], n=1)+1,nchar(files.basename))
@@ -50,7 +51,7 @@ expnames <- ""
 cat(paste(fileName.base,'\n'))
 filenum <- 1
 for (f in files) {
-  nxtName <- substr(basename(f),0,regexpr('_',basename(f))-1)
+  nxtName <- substr(basename(f),0,tail(gregexpr('_',basename(f))[[1]], n=1)-1)
   titles[[filenum]] <- nxtName
   expnames <- paste(expnames,nxtName,sep="-")
   raw <- read.csv(f)
@@ -64,6 +65,7 @@ for (f in files) {
     cat("WARNING! MA Window of",ma.window,"is longer than series. Using window of",ma.window.new,"\n")
     ma.window <- ma.window.new
   }
+  maws[[filenum]] <- ma.window
   ma <- apply(raw[,2:ncol(raw)], 2, ma.cent, n=ma.window)
   ma <- cbind(raw[,1], ma)
   colnames(ma)[1] <- colnames(raw)[1]
@@ -131,7 +133,7 @@ for (column in columns[2:length(columns)]) {
     par(mfrow=c(plot.rows,plot.cols))
   } else {
     ## place the right margin 1 unit for each of the characters +  units for the line
-    right.margin <- max(nchar(titles)) + ifelse(plot.svg, -3, 6)
+    right.margin <- max(nchar(titles)) + max(nchar(maws)) + ifelse(plot.svg, 0, 12)
     par(mar=c(5,6,4,right.margin), cex.main=2, cex.axis=2, cex.lab=2)
   }
 
@@ -142,7 +144,7 @@ for (column in columns[2:length(columns)]) {
   ndx <- 1
   for (df in data.ma) {
     datcolors[ndx] <- ifelse(use.frames, "black", ndx+1)
-    datnames[ndx] <- titles[[ndx]]
+    datnames[ndx] <- paste(titles[[ndx]],", maw = ",maws[[ndx]],sep="")
     datltys[ndx] <- 1
     attach(df)
     if (exists(column)) {
@@ -161,7 +163,11 @@ for (column in columns[2:length(columns)]) {
       detach(data[[ndx]])
       colnames(dat) <- c(column.1, column)
       if (use.frames || ndx == 1) {
-        mainTitle <- ifelse(use.frames, titles[[ndx]], fileName.base)
+        if (use.frames) {
+          mainTitle <- titles[[ndx]]
+          if (data.status != "raw") mainTitle <- paste(mainTitle,", maw = ",ma.window, sep="") ## append maw if plotting MA
+        } else
+          mainTitle <- fileName.base
         plot(dat[ (row(dat)%%sample.freq)==0 ,1], dat[ (row(dat)%%sample.freq)==0 ,2],
              main=mainTitle,
              xlab=colnames(dat)[1], ylab=colnames(dat)[2],
@@ -179,8 +185,7 @@ for (column in columns[2:length(columns)]) {
                                        col=datcolors[ndx],lwd=5)
     } else {
       if (use.frames || ndx == 1) {
-        mainTitle <- ifelse(use.frames, titles[[ndx]], fileName.base)
-##        plot(ma[ (row(ma)%%sample.freq)==0 ,1], ma[ (row(ma)%%sample.freq)==0 ,2],
+        mainTitle <- ifelse(use.frames, paste(titles[[ndx]],", maw = ",maws[[ndx]], sep=""), fileName.base)
         plot(ma[ (row(ma)%%1)==0 ,1], ma[ (row(ma)%%1)==0 ,2],
              main=mainTitle,
              xlab=colnames(ma)[1], ylab=colnames(ma)[2],
