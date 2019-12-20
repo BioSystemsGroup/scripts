@@ -110,6 +110,7 @@ for (column in columns[2:length(columns)]) {
     }
   }
 
+  if (skip) next()
   ##print(paste("Working on",column,"..."))
 
   fileName <- paste("graphics/", fileName.base, "-", column,

@@ -1,3 +1,7 @@
+2019-12-20    <gepr@mia.c.ucsf-generic.internal>
+
+	* cmp-plot.r: Restore the use of skip to avoid trying to plot series with all NA values.
+
 2019-11-27-10:07  glen e. p. ropella  <gepr@tempusdictum.com>
 
 	* cmp-plot.r: Add MA windows to titles (for use.frames=T) and legend names (for single frames).
