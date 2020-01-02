@@ -1,3 +1,7 @@
+2020-01-02-09:48  glen e. p. ropella  <gepr@tempusdictum.com>
+
+	* randname.sh (sandboxes): Remove branches/islj-hepn & islj-ssf and replace with islj-nexo & islj-gshexo.
+
 2019-12-20    <gepr@mia.c.ucsf-generic.internal>
 
 	* cmp-plot.r: Restore the use of skip to avoid trying to plot series with all NA values.
