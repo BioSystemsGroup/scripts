@@ -1,3 +1,12 @@
+2020-01-03-13:44  glen e. p. ropella  <gepr@tempusdictum.com>
+
+	* cmp-plot.r: Refine "raw" into "rawlines" vs "rawpoints" to support the way we've been producing SVGs for publication.
+	Only add the "maw = ..." to the series legend for plots that include the MA.
+	Do not plot the grid() for SVGs.
+	* plot-cols.r: Refine "raw" into "rawlines" vs "rawpoints" to support the way we've been producing SVGs for publication.
+	Fix problem with ylim when some reference data contains incompatible structures.
+	Do not plot the grid() for SVGs.
+
 2020-01-02-09:48  glen e. p. ropella  <gepr@tempusdictum.com>
 
 	* randname.sh (sandboxes): Remove branches/islj-hepn & islj-ssf and replace with islj-nexo & islj-gshexo.

@@ -2,21 +2,21 @@
 ##
 # Read multiple *.csv files and plot each column vs the 1st.
 #
-# Time-stamp: <2019-11-27 10:05:43 gepr>
+# Time-stamp: <2020-01-03 12:11:50 gepr>
 #
 
 sample.freq <- 1
 plot.svg <- F
 ma.window <- 181
-use.frames <- F
+use.frames <- T
 
 source("~/R/misc.r")
 
 argv <- commandArgs(TRUE)
 
 if (length(argv) < 3) {
-    print("Usage: cmp-plot.r <raw|data|nodata> <analysis .csv file> <analysis .csv file>")
-    print("  e.g. cmp-plot.r data x00[1-6]_body.csv y00[1-6]_hsolute-dCV.csv")
+    print("Usage: cmp-plot.r <raw[lines|points]|data|nodata> <analysis .csv file> <analysis .csv file>")
+    print("  e.g. cmp-plot.r rawlines x00[1-6]_body.csv y00[1-6]_hsolute-dCV.csv")
     print("Note that columns must match across all files.")
     quit()
 }
@@ -90,10 +90,11 @@ for (column in columns[2:length(columns)]) {
   min.2 <- Inf
   max.2 <- -1 # init max.2
 
-  ## raw ≡ only raw data
+  ## rawlines ≡ only raw data plotted with lines and no symbols
+  ## rawpoints ≡ only raw plotted with symbols and no lines
   ## nodata ≡ only moving average
   ## data ≡ raw data + moving average
-  if (data.status == "data" || data.status == "raw") {
+  if (data.status == "data" || data.status == "rawlines" || data.status == "rawpoints") {
     refData <- data
     plot.data <- T
   } else { # data.status == "nodata"
@@ -145,7 +146,7 @@ for (column in columns[2:length(columns)]) {
   ndx <- 1
   for (df in data.ma) {
     datcolors[ndx] <- ifelse(use.frames, "black", ndx+1)
-    datnames[ndx] <- paste(titles[[ndx]],", maw = ",maws[[ndx]],sep="")
+    datnames[ndx] <- ifelse(data.status == "data" || data.status == "nodata", paste(titles[[ndx]],", maw = ",maws[[ndx]],sep=""), titles[[ndx]])
     datltys[ndx] <- 1
     attach(df)
     if (exists(column)) {
@@ -158,33 +159,47 @@ for (column in columns[2:length(columns)]) {
     }
     detach(df)
     colnames(ma) <- c(column.1, column)
+
     if (plot.data && !zeroed) {
       attach(data[[ndx]])
       dat <- as.data.frame(cbind(get(column.1), get(column)))
       detach(data[[ndx]])
       colnames(dat) <- c(column.1, column)
+
       if (use.frames || ndx == 1) {
+
+        ## Set the main title for the plot depending on frames and MAW status
         if (use.frames) {
           mainTitle <- titles[[ndx]]
-          if (data.status != "raw") mainTitle <- paste(mainTitle,", maw = ",ma.window, sep="") ## append maw if plotting MA
-        } else
-          mainTitle <- fileName.base
+          if (data.status != "rawlines" && data.status != "rawpoints") mainTitle <- paste(mainTitle,", maw = ",ma.window, sep="") ## append maw if plotting MA
+
+        } else mainTitle <- fileName.base
+
+        ## Plot the raw data
         plot(dat[ (row(dat)%%sample.freq)==0 ,1], dat[ (row(dat)%%sample.freq)==0 ,2],
              main=mainTitle,
              xlab=colnames(dat)[1], ylab=colnames(dat)[2],
              xlim=c(0,max.1), ylim=c(min.2,max.2),
-             type="p",
+             type=ifelse(data.status == "rawlines", "l", "p"),
              col=datcolors[ndx],
              pch="·")
-      } else {
-        points(dat[ (row(dat)%%sample.freq)==0 ,1], dat[ (row(dat)%%sample.freq)==0 ,2],
-               pch="·",
-               col=datcolors[ndx])
+
+      } else { ## all in the same frame OR ndx>1
+
+        if (data.status == "rawlines")
+          lines(dat[ (row(dat)%%sample.freq)==0 ,1], dat[ (row(dat)%%sample.freq)==0 ,2],
+                 col=datcolors[ndx])
+        else ## "rawpoints" or "data" so we're plotting both MA and raw
+          points(dat[ (row(dat)%%sample.freq)==0 ,1], dat[ (row(dat)%%sample.freq)==0 ,2],
+                 pch="·",
+                 col=datcolors[ndx])
+
       }
-##      if (data.status == "data") lines(ma[ (row(ma)%%sample.freq)==0 ,1], ma[ (row(ma)%%sample.freq)==0 ,2],
+
       if (data.status == "data") lines(ma[ (row(ma)%%1)==0 ,1], ma[ (row(ma)%%1)==0 ,2],
                                        col=datcolors[ndx],lwd=5)
-    } else {
+
+    } else { ## not plotting the raw data at all
       if (use.frames || ndx == 1) {
         mainTitle <- ifelse(use.frames, paste(titles[[ndx]],", maw = ",maws[[ndx]], sep=""), fileName.base)
         plot(ma[ (row(ma)%%1)==0 ,1], ma[ (row(ma)%%1)==0 ,2],
@@ -195,14 +210,13 @@ for (column in columns[2:length(columns)]) {
              col=datcolors[ndx]
              )#, pch=NA)
       } else {
-##        lines(ma[ (row(ma)%%sample.freq)==0 ,1], ma[ (row(ma)%%sample.freq)==0 ,2],
         lines(ma[ (row(ma)%%1)==0 ,1], ma[ (row(ma)%%1)==0 ,2],
               col=datcolors[ndx],lwd=5)
       }
     }
     minor.tick(nx=5,ny=5)
 
-    grid()
+    if( !plot.svg) grid()
     ndx <- ndx+1
   }
   if (!use.frames) {

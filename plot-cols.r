@@ -3,10 +3,10 @@
 ###
 ## Read multiple *.csv files and plot each column.
 ##
-## Time-stamp: <2019-11-17 16:58:00 gepr>
+## Time-stamp: <2020-01-03 13:43:50 gepr>
 ##
 
-sample.freq <- 10
+sample.freq <- 1
 ma.window <- 181
 plot.data <- F
 plot.svg <- F
@@ -16,8 +16,8 @@ source("~/R/misc.r") # for moving average
 argv <- commandArgs(TRUE)
 
 usage <- function() {
-  print("Usage: plot-cols <raw|data|nodata> <CSV file1> <CSV file2>")
-  print("  e.g. plot-cols.r exp_hsolute-dCV∈[0,100).csv")
+  print("Usage: plot-cols <raw[lines|points]|data|nodata> <CSV file1> <CSV file2>")
+  print("  e.g. plot-cols.r rawlines exp_hsolute-dCV∈[0,100).csv")
   quit()
 }
 if (length(argv) < 2) {
@@ -25,7 +25,7 @@ if (length(argv) < 2) {
   usage()
 }
 data.status <- argv[1]
-if (data.status != "raw" && data.status != "data" && data.status != "nodata") {
+if (data.status != "rawlines" && data.status != "rawpoints" && data.status != "data" && data.status != "nodata") {
   cat( paste("Data status", data.status, "invalid.\n"))
   usage()
 }
@@ -68,13 +68,13 @@ cat(paste(fileName.base,"\n"))
   for (column in colnames(dat)[2:ncol(dat)]) {
     fileName <- paste("graphics/", fileName.base, "-", column,
                       ifelse(plot.data, "-wd", ""), sep="")
-    
+
     ## if there are no values, skip this plot
     if (all(is.na(dat[[column]]))) {
         cat("All values are NA for",column,"Skipping the plot.\n")
         next()
-    } 
-    
+    }
+
     if (plot.svg) {
       svg(paste(fileName,".svg",sep=""), width=9, height=9)
       cex=1
@@ -87,7 +87,7 @@ cat(paste(fileName.base,"\n"))
     ## raw ≡ only raw data
     ## nodata ≡ only moving average
     ## data ≡ raw data + moving average
-    if (data.status == "data" || data.status == "raw") {
+    if (data.status == "data" || data.status == "rawlines" || data.status == "rawpoints") {
       refData <- dat[[column]]
       plot.data <- T
     } else { # data.status == "nodata"
@@ -95,14 +95,17 @@ cat(paste(fileName.base,"\n"))
       plot.data <- F
     }
     ## handle the case where there's only 1 value in the series
-    ylim <- c(min(0, refData, na.rm=T), max(refData,na.rm=T))
+    ylim <- c(min(0, as.matrix(refData), na.rm=T), max(refData,na.rm=T))
 
     if (plot.data) {
-      pointsize <- ifelse(data.status == "raw", cex*2, cex)
-      if (data.status == "raw") pointsize <- cex*2
+      pointsize <- ifelse(data.status == "rawlines" || data.status == "rawpoints", cex*2, cex)
+      if (data.status == "rawlines" || data.status == "rawpoints") pointsize <- cex*2
       plot( dat[ (row(dat)%%sample.freq)==0, 1], dat[ (row(dat)%%sample.freq)==0, column],
-        ylim=ylim,
-        xlab=colnames(dat)[1], ylab=column, type="p", pch="·",cex=pointsize)
+           ylim=ylim,
+           xlab=colnames(dat)[1], ylab=column,
+           type=ifelse(data.status == "rawlines", "l", "p"),
+           pch="·",
+           cex=pointsize)
       if (data.status == "data")
         lines(dat.ma[ (row(dat.ma)%%sample.freq)==0, 1], dat.ma[ (row(dat.ma)%%sample.freq)==0, column], lwd=5)
     } else {
@@ -111,10 +114,10 @@ cat(paste(fileName.base,"\n"))
       ylab=column, type="l")
     }
 
-    grid()
+    if (!plot.svg) grid()
     minor.tick(nx=5, ny=5, tick.ratio=0.5)
 
-    if (data.status == "raw") title(fileName.base)
+    if (data.status == "rawlines" || data.status == "rawpoints") title(fileName.base)
     else title(paste(fileName.base,", maw =",ma.window))
 
   }
