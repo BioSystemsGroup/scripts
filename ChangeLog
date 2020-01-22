@@ -1,3 +1,8 @@
+
+2020-01-22    <gepr@aks0.c.ucsf-generic.internal>
+
+	* plot-hcounts.r: Set the name of the plots to sum (Σ) or integral (∫) depending on the value of the CUMSUM parameter.
+
 2020-01-03-13:44  glen e. p. ropella  <gepr@tempusdictum.com>
 
 	* cmp-plot.r: Refine "raw" into "rawlines" vs "rawpoints" to support the way we've been producing SVGs for publication.

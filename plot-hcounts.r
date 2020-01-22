@@ -2,13 +2,13 @@
 ##
 ## Plot the cumulative, total over all trials, Hcounts as function of d[CP]V
 ##
-## Time-stamp: <2019-04-19 09:44:20 gepr>
+## Time-stamp: <2020-01-22 19:28:19 gepr>
 ##
 argv <- commandArgs(T)
 
-CUMSUM <- T
+CUMSUM <- F
 BARPLOT <- T
-PLOT.SVG <- F
+PLOT.SVG <- T
 
 exps <- argv
 directions <- c("dCV", "dPV")
@@ -20,14 +20,18 @@ if (!file.exists("graphics")) dir.create("graphics")
 
 for (exp in exps) {
   for (direction in directions) {
-    contents <- paste(ifelse(CUMSUM,"∫",""), "Σtrial(ΣHcount∕",direction,")", sep="")
+    if (CUMSUM) {
+      contents <- paste(ifelse(CUMSUM,"∫",""), "Σtrial(ΣHcount∕",direction,")", sep="")
+    } else {
+      contents <- paste(ifelse(CUMSUM,"∫",""), "μ(ΣHcount∕",direction,")", sep="")
+    }
     infile <- paste(exp,"_Hcounts-all-", direction, sep="")
     d <- read.csv(paste(exp,"-reduced/",infile, ".csv",sep=""))
     main <- exp
     xlabel <- direction
     ylabel <- contents
     columns <- 2:(ncol(d)-3)
-    dt <- t(d[(nrow(d)-2),columns])
+    dt <- t(d[(nrow(d)-1),columns])
 
     if (CUMSUM) dt <- cumsum(dt)
 
