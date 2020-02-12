@@ -17,7 +17,7 @@ argv <- commandArgs(TRUE)
 
 usage <- function() {
   print("Usage: plot-cols <raw[lines|points]|data|nodata> <CSV file1> <CSV file2>")
-  print("  e.g. plot-cols.r rawlines exp_hsolute-dCV∈[0,100).csv")
+  print("  e.g. plot-cols.r rawlines exp_mobileObject-dCV∈[0,100).csv")
   quit()
 }
 if (length(argv) < 2) {

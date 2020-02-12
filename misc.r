@@ -6,8 +6,8 @@
 ## ma.cent, ma.left: moving averages centered and left
 ## ma.check: if the window is too long, return a shorter odd window
 ## minor.tick: add minor tickmarks to a plot
-## maxdPV: get the maximum dPV values from hsolute files
-## snd: calculate and write sums and divisors for hsolutes
+## maxdPV: get the maximum dPV values from mobileObjectute files
+## snd: calculate and write sums and divisors for mobileObjectutes
 ## tot: use sums and divisors files to calculate totals (averages)
 ## insertRow: inserts a row of zeros into a data.frame
 ## pad1stcolumns: pads the 1st DF with new columns from the 2nd
@@ -94,8 +94,8 @@ minor.tick <- function (nx = 2, ny = 2, tick.ratio = 0.5, x.args = list(), y.arg
 ###
 ##  Declare a couple of globals
 ###
-inFileRoot <- "hsolute_zone_"
-outFileRoot <- "dPV.hsol"
+inFileRoot <- "mobileObjectute_zone_"
+outFileRoot <- "dPV.mobileObject"
 
 #########################################
 ## Calculate the maximum dPV in all files in all experiments.
@@ -170,28 +170,28 @@ for (expDir in exps) {
 #stop()
         rm(fileDat)  # attempt to keep a small memory footprint
 
-        # parse out hsol products
-        hsolnames <- list()
+        # parse out mobileObject products
+        mobileObjectnames <- list()
         for (cname in colnames(dat[2:ncol(dat)])) {
-            hsolName <- unlist(strsplit(cname,"[.]"))[6] # hsolprod name is the 6th element
-            if (is.na(hsolName)) {
+            mobileObjectName <- unlist(strsplit(cname,"[.]"))[6] # mobileObjectprod name is the 6th element
+            if (is.na(mobileObjectName)) {
               print("Could not parse reaction product name from column header.")
               q()
             }
-            hsolnames[cname] <- hsolName
+            mobileObjectnames[cname] <- mobileObjectName
         }
-        hsolnames <- unique(hsolnames)
+        mobileObjectnames <- unique(mobileObjectnames)
 
-        hsolSum <- dat[1] # start with Time column
-        for (hsolName in hsolnames) {
-            hsolDat <- dat[,grep(paste("[.]",hsolName,"$",sep=""),names(dat))]
+        mobileObjectSum <- dat[1] # start with Time column
+        for (mobileObjectName in mobileObjectnames) {
+            mobileObjectDat <- dat[,grep(paste("[.]",mobileObjectName,"$",sep=""),names(dat))]
             # finally get the means for each time
-            if (is.vector(hsolDat)) hsolDat <- as.data.frame(hsolDat) # defensive
-            hsolSum <- cbind(hsolSum, rowSums(hsolDat))
+            if (is.vector(mobileObjectDat)) mobileObjectDat <- as.data.frame(mobileObjectDat) # defensive
+            mobileObjectSum <- cbind(mobileObjectSum, rowSums(mobileObjectDat))
         }
-        colnames(hsolSum) <- c("Time",hsolnames)
-        sumname <- paste(outFileRoot, "/", expDir, "_hsolute_dPV∈[", as.character(dPVMin), ",", as.character(dPVMax), "]-", datasetname, "-sum.csv", sep="")
-        write.csv(hsolSum, sumname, row.names=FALSE)
+        colnames(mobileObjectSum) <- c("Time",mobileObjectnames)
+        sumname <- paste(outFileRoot, "/", expDir, "_mobileObjectute_dPV∈[", as.character(dPVMin), ",", as.character(dPVMax), "]-", datasetname, "-sum.csv", sep="")
+        write.csv(mobileObjectSum, sumname, row.names=FALSE)
         cellNum[fileNdx,] <- c(datasetname,length(nPVcolumns)) # divisor for Sums to get averages
         fileNdx <- fileNdx + 1
 
@@ -200,7 +200,7 @@ for (expDir in exps) {
     } ## end for (file in files) {
     colnames(cellNum) <- c("trialfile", "#columns")
 
-    divname <- paste(outFileRoot, "/", expDir,"_hsolute_dPV∈[", as.character(dPVMin), ",", as.character(dPVMax), "]-divisors.csv", sep="")
+    divname <- paste(outFileRoot, "/", expDir,"_mobileObjectute_dPV∈[", as.character(dPVMin), ",", as.character(dPVMax), "]-divisors.csv", sep="")
     write.csv(cellNum, divname, row.names=FALSE)
 
   } ## end for (expDir in exps) {
@@ -218,7 +218,7 @@ tot <- function(band, expName) {
   print(paste("Calculating totals for",expName))
 
   ## get the file names
-  sndFileRoot <- paste(expName,"_hsolute_dPV∈\\[",dPVMin,",",dPVMax,"]",sep="")
+  sndFileRoot <- paste(expName,"_mobileObjectute_dPV∈\\[",dPVMin,",",dPVMax,"]",sep="")
   files <- list.files(path=outFileRoot, pattern=sndFileRoot, full.names=TRUE)
   ## ensure that the files start with the expName
   files <- files[grep(paste(outFileRoot,expName,sep="/"), files)]
@@ -226,8 +226,8 @@ tot <- function(band, expName) {
   sumfiles <- files[grep("-sum.csv",files)]
   divfile <- files[grep("-divisors.csv",files)]
 
-  ## extract and sum each hsol product from each data set and divide by the sum of the column numbers
-  ## i.e. (∑hsolᵢ)/∑colsⱼ, where i ∈ {NecInhib, S, G, Marker, ...} and j ∈ {1_2-????, 3-????}
+  ## extract and sum each mobileObject product from each data set and divide by the sum of the column numbers
+  ## i.e. (∑mobileObjectᵢ)/∑colsⱼ, where i ∈ {NecInhib, S, G, Marker, ...} and j ∈ {1_2-????, 3-????}
 
   for (sumfile in sumfiles) {
     fileDat <- read.csv(sumfile)
@@ -235,29 +235,29 @@ tot <- function(band, expName) {
     dat <- cbind(dat,fileDat[2:ncol(fileDat)])
   }
 
-  hsolnames <- unique(colnames(dat))
-  hsolnames <- hsolnames[2:length(hsolnames)]
+  mobileObjectnames <- unique(colnames(dat))
+  mobileObjectnames <- mobileObjectnames[2:length(mobileObjectnames)]
 
   ## sum the sums per unique reaction product
-  for (hsol in hsolnames) {
-    hsolDat <- dat[,grep(paste("^",hsol,"$",sep=""),names(dat))]
-    hsolDat <- as.matrix(hsolDat)
-    if (!exists("hsolSum"))
-      hsolSum <- rowSums(hsolDat)
+  for (mobileObject in mobileObjectnames) {
+    mobileObjectDat <- dat[,grep(paste("^",mobileObject,"$",sep=""),names(dat))]
+    mobileObjectDat <- as.matrix(mobileObjectDat)
+    if (!exists("mobileObjectSum"))
+      mobileObjectSum <- rowSums(mobileObjectDat)
     else
-      hsolSum <- cbind(hsolSum, rowSums(hsolDat))
+      mobileObjectSum <- cbind(mobileObjectSum, rowSums(mobileObjectDat))
   }
-  colnames(hsolSum) <- hsolnames
+  colnames(mobileObjectSum) <- mobileObjectnames
 
   ## now read in the total number of columns
   divs <- read.csv(divfile)
-  totalcells <- sum(divs[2])/length(hsolnames)  # number of columns divided by number of hsol products
+  totalcells <- sum(divs[2])/length(mobileObjectnames)  # number of columns divided by number of mobileObject products
 
   ## now divide in the total columns (number of cells) to get the avg per cell
-  hsolAvg <- cbind(dat[1], hsolSum/totalcells)
+  mobileObjectAvg <- cbind(dat[1], mobileObjectSum/totalcells)
 
   avgname <- sub("-divisors","-totals",divfile)
-  write.csv(hsolAvg, avgname, row.names=FALSE)
+  write.csv(mobileObjectAvg, avgname, row.names=FALSE)
 
 } ## end tot()
 ##

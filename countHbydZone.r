@@ -6,7 +6,7 @@ dev.off()
 
 usage <- function() {
     print("Usage: countHbyZone.r zone <exp directories>")
-    print("  directories should contain files named hsolute_zone_1_2-[0-9]+.csv")
+    print("  directories should contain files named mobileObject_zone_1_2-[0-9]+.csv")
     print("  zone = {0,1,2}")
     print("  Counts the number of Hepatocytes where dPVMin <= dPV <= dPVMax.")
     quit()
@@ -20,7 +20,7 @@ maxmean <- -9e10
 zone <- as.numeric(argv[1])
 tailName <- ifelse (zone < 2, "1_2", "3")
 
-fileRoot <- "hsolute_zone_"
+fileRoot <- "mobileObject_zone_"
 
 ## for each experiment
 for (expDir in argv[2:length(argv)]) {

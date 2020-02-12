@@ -6,9 +6,9 @@ dev.off()
 
 usage <- function() {
     print("Usage: countHbydCV.r dCVMin dCVMax <exp directories>")
-    print("  directories should contain files named hsolute_zone_1_2-[0-9]+.csv")
+    print("  directories should contain files named mobileObject_zone_1_2-[0-9]+.csv")
     print("  Counts the number of Hepatocytes where dCVMin <= dCV <= dCVMax.")
-    print("  Note, this requires the nectrig branch code changes, which output dCV to the hsolute files.")
+    print("  Note, this requires the nectrig branch code changes, which output dCV to the mobileObject files.")
     quit()
 }
 if (length(argv) < 3) usage()
@@ -20,7 +20,7 @@ maxmean <- -9e10
 dCVMin <- as.numeric(argv[1])
 dCVMax <- as.numeric(argv[2])
 
-fileRoot <- "hsolute_zone_"
+fileRoot <- "mobileObject_zone_"
 
 ## for each experiment
 for (expDir in argv[3:length(argv)]) {
@@ -31,7 +31,7 @@ for (expDir in argv[3:length(argv)]) {
   fileNdx <- 1 # needed to build cellNum as a data.frame with stringsAsFactors=FALSE (can't use rbind())
   for (file in files) {
     print(paste("Processing",file))
-    datasetname <- sub(".csv","",sub("hsolute_zone_","",file))
+    datasetname <- sub(".csv","",sub("mobileObject_zone_","",file))
     fileDat <- read.csv(paste(expDir,file,sep="/"), nrows=1) # only read in the first line
     ## extract the dCV data from this file and cbind it
     nCVNdx <- 1

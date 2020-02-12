@@ -6,7 +6,7 @@
 # Time-stamp: <2018-06-07 10:00:04 gepr>
 ##
 
-TYPE <- c("body","extra","extRatio","hsolute-dCV∈[0,100)")
+TYPE <- c("body","extra","extRatio","mobileObject-dCV∈[0,100)")
 
 argv <- commandArgs(TRUE)
 

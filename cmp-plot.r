@@ -16,7 +16,7 @@ argv <- commandArgs(TRUE)
 
 if (length(argv) < 3) {
     print("Usage: cmp-plot.r <raw[lines|points]|data|nodata> <analysis .csv file> <analysis .csv file>")
-    print("  e.g. cmp-plot.r rawlines x00[1-6]_body.csv y00[1-6]_hsolute-dCV.csv")
+    print("  e.g. cmp-plot.r rawlines x00[1-6]_body.csv y00[1-6]_mobileObject-dCV.csv")
     print("Note that columns must match across all files.")
     quit()
 }
