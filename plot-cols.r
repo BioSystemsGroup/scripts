@@ -119,7 +119,7 @@ cat(paste(fileName.base,"\n"))
 
     if (data.status == "rawlines" || data.status == "rawpoints") title(fileName.base)
     else title(paste(fileName.base,", maw =",ma.window))
-
+    dev.off()
   }
   detach(dat)
 }
