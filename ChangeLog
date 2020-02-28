@@ -1,3 +1,7 @@
+2020-02-28-14:50  glen e. p. ropella  <gepr@tempusdictum.com>
+
+	* jsondiff.py: Hack to compare JSON files.
+
 2020-02-21 Ryan Kennedy <rck3225>
 	Refactored all instances of "hsol" to "mobileObject" for both the code and filenames.
 	* plot-cols.r: Add dev.off() to properly clean the plots up
