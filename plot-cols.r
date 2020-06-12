@@ -55,7 +55,12 @@ cat(paste(fileName.base,"\n"))
   dat.tmp <- dat
   dat.tmp[is.na(dat.tmp)] <- 0 # replace NAs with zeros
   if (nrow(dat.tmp) < ma.window) {
-    ma.window.new <- nrow(dat.tmp)/4
+    if ((nrow(dat.tmp)/4)%%2 == 0) {
+      ma.window.new <- (nrow(dat.tmp)/4)-1
+    }
+    else {
+      ma.window.new <- nrow(dat.tmp)/4
+    }
     cat("WARNING! MA Window of",ma.window,"is longer than series. Using window of",ma.window.new,"\n")
     ma.window <- ma.window.new
   }
